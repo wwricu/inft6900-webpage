@@ -1,7 +1,7 @@
 <template>
   <v-data-table
       :headers="headers"
-      :items="staff"
+      :items="users"
       sort-by="calories"
       class="elevation-1"
   >
@@ -52,39 +52,40 @@ export default {
         text: 'Staff Number',
         align: 'start',
         sortable: false,
-        value: 'UserNumber',
+        value: 'userNumber',
       },
       {
         text: 'Staff Name',
         sortable: false,
-        value: 'UserName'
+        value: 'userName'
       },
       {
         text: 'Email',
         sortable: false,
-        value: 'Email'
+        value: 'email'
       },
       {
         text: 'Phone',
         sortable: false,
-        value: 'Phone'
+        value: 'phone'
       },
       {
         text: 'Faculty',
         sortable: false,
-        value: 'Academic'
+        value: 'academic'
       },
       { text: 'Edit', value: 'actions', sortable: false },
     ],
-    staff: [],
+    permission: 2,
+    users: [],
   }),
 
-  computed: {
-
-  },
-
-  watch: {
-
+  props: {
+    userType: {
+      type: String,
+      required: true,
+      default: 'Staff'
+    }
   },
 
   created () {
@@ -96,7 +97,20 @@ export default {
 
     },
     initialize () {
-      this.staff = [
+      this.axios({
+        method: "GET",
+        url: "http://localhost:5094/manage/getusers?permission=2",
+      }).then(res => {
+        if (res.data.status !== "success") {
+          alert("message: " + res.data.message);
+          return;
+        }
+        this.users = res.data.obj;
+        console.log("success query");
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+      this.users = [
         {
           UserNumber:"3362554",
           UserName:["Weiran","wwr","Wang"],
