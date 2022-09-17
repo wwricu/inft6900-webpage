@@ -64,14 +64,18 @@ export default {
           UserNumber: this.userNumber,
           PasswordHash: md5(this.password)
         }
-      }).then(function (res) {
-        alert("status: " + res.data.status);
+      }).then(res => {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);
+          return;
         }
+        this.jump('/')
       }).catch(function (err) {
         alert("err " + err);
       })
+    },
+    jump(path) {
+      this.$router.push(path);
     }
   },
   data: () => ({
