@@ -62,7 +62,7 @@ export default {
       { title: 'View Staff', icon: 'mdi-creation', link: 'manage_staff' },
       { title: 'View Applications', icon: 'mdi-creation', link: 'manage_staff' },
       { title: 'Personal Info', icon: 'mdi-account', link: '/' },
-      { title: 'About', icon: 'mdi-forum', link: '/' },
+      { title: 'About', icon: 'mdi-forum', link: 'user_info' },
     ],
   }),
 };

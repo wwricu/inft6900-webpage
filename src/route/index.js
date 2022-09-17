@@ -6,6 +6,7 @@ Vue.use(VueRouter)
 const Login = () => import('@/components/LoginCard') // lazy load
 const HelloWorld = () => import('@/components/HelloWorld')
 const ManageUser = () => import('@/components/ManageUserCard')
+const UserInfo = () => import('@/components/UserInfoCard')
 
 const routes = [
     {
@@ -22,6 +23,11 @@ const routes = [
         path: '/manage_staff',
         name: 'manage_staff',
         component: ManageUser,
+    },
+    {
+        path: '/user_info',
+        name: 'user_info',
+        component: UserInfo,
     },
 ]
 
