@@ -39,7 +39,8 @@
 
     <v-main>
       <HelloWorld v-if="false"></HelloWorld>
-      <LoginCard></LoginCard>
+      <LoginCard v-if="false"></LoginCard>
+      <SearchUserCard></SearchUserCard>
     </v-main>
   </v-app>
 </template>
@@ -47,6 +48,7 @@
 <script>
 import HelloWorld from './components/HelloWorld';
 import LoginCard from "@/components/LoginCard";
+import ManageUserCard from "@/components/ManageUserCard";
 
 export default {
   name: 'App',
@@ -54,6 +56,7 @@ export default {
   components: {
     HelloWorld,
     LoginCard,
+    SearchUserCard: ManageUserCard,
   },
 
   data: () => ({

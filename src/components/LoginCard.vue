@@ -1,6 +1,6 @@
 <template>
   <v-card
-      class="mx-auto pl-16 pr-16"
+      class="mx-auto pl-12 pr-12"
       max-width="400"
   >
     <v-card-text>
@@ -12,10 +12,11 @@
             label="Email"
             hide-details="auto"
             :rules="rules"
-            v-model="email"
+            v-model="userNumber"
         ></v-text-field>
         <v-text-field
           label="Password"
+          class="mt-8 mb-4"
           :type='"password"'
           v-model="password"
         ></v-text-field>
@@ -60,7 +61,7 @@ export default {
         url: "http://localhost:5094/auth/password",
         headers: {"Content-Type": "application/json"},
         data: {
-          Email: this.email,
+          UserNumber: this.userNumber,
           PasswordHash: md5(this.password)
         }
       }).then(function (res) {
@@ -74,8 +75,8 @@ export default {
     }
   },
   data: () => ({
+    userNumber: '',
     password: '',
-    email: '',
     rules: [
       value => !!value || 'Required.',
       value => (value && value.length >= 3) || 'Min 3 characters',
