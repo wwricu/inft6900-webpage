@@ -1,15 +1,16 @@
 <template>
   <v-card
-      class="mx-auto pl-12 pr-12"
+      class="mx-auto mt-8 pl-12 pr-12"
       max-width="400"
   >
     <v-card-text>
-      <p class="text-h4 text--primary text-center pt-2 pb-2">
-        Sign in to a really long name
-      </p>
+      <v-card-title
+        class="text-h4 text--primary text-center pt-4 pb-10">
+        Sign in to ACAS
+      </v-card-title>
       <div>
         <v-text-field
-            label="Email"
+            label="User Number"
             hide-details="auto"
             :rules="rules"
             v-model="userNumber"
@@ -24,7 +25,6 @@
     </v-card-text>
     <v-card-actions class="pt-0">
       <v-checkbox
-          class="mx-auto"
           tile
           :label="`Remember me`"
       ></v-checkbox>
