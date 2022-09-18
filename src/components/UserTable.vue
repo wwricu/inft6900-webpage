@@ -2,6 +2,7 @@
   <v-data-table
       :headers="headers"
       :items="users"
+      :search="search"
       sort-by="calories"
       class="elevation-1"
   >
@@ -9,18 +10,19 @@
       <v-toolbar
           flat
       >
-        <v-toolbar-title>Manage Staff</v-toolbar-title>
+        <v-toolbar-title>{{ userType }} Data</v-toolbar-title>
         <v-divider
-            class="mx-4"
+            class="ml-6 mx-4"
             inset
             vertical
         ></v-divider>
-        <v-spacer></v-spacer>
-        <v-btn
-          color="primary"
-        >
-          Add New User
-        </v-btn>
+        <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search in this view"
+            single-line
+            hide-details
+        ></v-text-field>
       </v-toolbar>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
@@ -45,6 +47,8 @@
 <script>
 export default {
   data: () => ({
+    permission: 2,
+    search: '',
     headers: [
       {
         text: 'Staff Number',
@@ -65,6 +69,7 @@ export default {
       {
         text: 'Phone',
         sortable: false,
+        filterable: false,
         value: 'phone'
       },
       {
@@ -74,7 +79,6 @@ export default {
       },
       { text: 'Edit', value: 'actions', sortable: false },
     ],
-    permission: 2,
   }),
 
   computed: {
