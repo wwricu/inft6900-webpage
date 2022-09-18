@@ -270,11 +270,14 @@ export default {
         data: this.inputInfo,
       }).then(res => {
         if (res.data.status === "success") {
-          alert("Your account info:\n\n"
-              + "User Number: "
-              + this.inputInfo.userNumber
-              + "\nPassword: " + password
-              + "\n\nPlease modify the password ASAP");
+          let output = "Your account info:\n\n"
+                      .concat("User Number: ")
+                      .concat(this.inputInfo.userNumber)
+                      .concat("\nPassword: ")
+                      .concat(password)
+                      .concat("\n\nPlease modify the password ASAP");
+          alert(output);
+
           this.$router.push('user_manage')
         } else {
           alert(res.data.message);
