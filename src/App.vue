@@ -2,26 +2,46 @@
   <v-app>
     <v-app-bar
         app
-        color="primary"
         dark
+        dense
+        color="white"
     >
+      <v-app-bar-nav-icon
+        color="primary"
+        @click="showMenu = true"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
       <v-btn
           text
+          class="primary white--text"
+          v-if="loginStatus===false"
           v-on:click="function(){$router.push('login')}"
       >
         Login
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
+      <v-avatar
+          color="primary"
+          size="36"
+          v-if="loginStatus===true"
+      >{{AVN}}</v-avatar>
     </v-app-bar>
     <v-navigation-drawer
         app
         enable-resize-watcher
-        permanent
+        floating
         v-model="showMenu"
+        v-if="loginStatus"
+        class="elevation-4"
     >
-      <v-list rounded>
-        <v-list-item></v-list-item>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="text-h6">
+            {{role}}
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider></v-divider>
+      <v-list rounded nav>
         <v-list-item
             v-for="item in items"
             :key="item.title"
@@ -46,6 +66,7 @@
 </template>
 
 <script>
+import { store } from '@/main.js';
 
 export default {
   name: 'App',
@@ -54,8 +75,20 @@ export default {
 
   },
 
+  computed: {
+    loginStatus() {
+      return store.loginStatus;
+    },
+    role() {
+      return store.role;
+    },
+    AVN() {
+      return store.AVN;
+    }
+  },
+
   data: () => ({
-    showMenu: true,
+    showMenu: false,
     items: [
       { title: 'Home', icon: 'mdi-home', link: '/' },
       { title: 'User Management', icon: 'mdi-view-dashboard', link: '/user_manage' },
