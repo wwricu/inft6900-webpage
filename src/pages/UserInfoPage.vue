@@ -47,9 +47,16 @@
             >
             </v-text-field>
           </v-col>
+          <v-col md="6">
+            <v-text-field
+                label="birthdate"
+                type="date"
+                v-model="inputInfo.birthdate"
+            ></v-text-field>
+          </v-col>
 
           <v-col
-              md="6"
+              md="12"
           >
             <v-text-field
                 v-model="inputInfo.academic"
@@ -161,7 +168,8 @@
             v-if="func==='edit'"
         >
           <v-btn
-              color="error"
+            color="error"
+            @click="deleteUser"
           >
             Delete User
           </v-btn>
@@ -188,6 +196,7 @@ export default {
       addresses: ['','',''],
       passwordHash: '',
       permission: 0,
+      birthdate: '',
     },
     userTypeSelect: {userType: 'Staff', permission: 2},
     userTypeItems: [
@@ -226,6 +235,11 @@ export default {
     if (userInfo.permission !== undefined) {
       this.inputInfo.permission = userInfo.permission;
     }
+    if (userInfo.birthdate !== undefined) {
+      this.inputInfo.birthdate = this
+                                .formatDate(userInfo.birthdate,
+                                    'toShow');
+    }
     if (this.$route.path === '/add_user') {
       this.func = 'add';
     }
@@ -248,6 +262,7 @@ export default {
       let password = (Math.random() * 1000000).toString().substring(0, 6);
       this.inputInfo.permission = this.userTypeSelect.permission;
       this.inputInfo.passwordHash = md5(password);
+      this.inputInfo.birthdate = this.formatDate(this.inputInfo.birthdate,'toData');
       this.axios({
         method: "POST",
         url: 'http://localhost:5094/manage/adduser',
@@ -265,6 +280,20 @@ export default {
       }).catch(function (err) {
         alert("err " + err);
       })
+    },
+    deleteUser() {
+      alert(this.inputInfo.birthdate);
+    },
+    formatDate(date, swt) {
+      if (!date) return null
+
+      if (swt === 'toShow') {
+        const [day, month, year] = date.split('-')
+        return `${year}-${month}-${day}`
+      } else {
+        const [year, month, day] = date.split('-')
+        return `${day}-${month}-${year}`
+      }
     },
   }
 }
