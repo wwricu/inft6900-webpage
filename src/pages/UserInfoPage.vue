@@ -4,7 +4,7 @@
       <v-container>
         <v-row>
           <v-col
-              md="6"
+              :md="func!=='add'?6:4"
           >
             <v-text-field
                 :disabled="func!=='add'"
@@ -13,7 +13,7 @@
             ></v-text-field>
           </v-col>
           <v-col
-              md="6"
+              :md="func!=='add'?6:4"
           >
             <v-text-field
                 :disabled="func!=='add'"
@@ -21,6 +21,20 @@
                 label="E-mail"
             >
             </v-text-field>
+          </v-col>
+          <v-col
+              md="4"
+              v-if="func==='add'"
+          >
+            <v-select
+                return-object
+                label="Select User Type"
+                item-text="userType"
+                item-value="permission"
+                :v-model="userTypeSelect"
+                :items="userTypeItems"
+            >
+            </v-select>
           </v-col>
 
           <v-col
@@ -103,42 +117,63 @@
         </v-row>
       </v-container>
     </v-form>
-    <v-container class="d-flex justify-end">
-      <v-btn
-        color="success"
-        class="ml-1 mr-1"
-        v-if="func==='add'"
-      >
-        Add User
-      </v-btn>
-      <v-btn
-        color="info"
-        class="ml-1 mr-1"
-        v-if="userInfo.permission===2"
-      >
-        Config Roles
-      </v-btn>
-      <v-btn
-        class="ml-1 mr-1"
-        color="success"
-        @click="updateUser()"
-        v-if="func==='edit'"
-      >
-        Update User
-      </v-btn>
-      <v-btn
-        class="ml-1 mr-1"
-        color="error"
-        v-if="func==='edit'"
-      >
-        Delete User
-      </v-btn>
+    <v-container>
+      <v-row>
+        <v-col
+            md="3"
+            v-if="func==='add'"
+        >
+          <v-btn
+              color="success"
+              class="ml-1 mr-1"
+              @click="addUser"
+          >
+            Add User
+          </v-btn>
+        </v-col>
+
+        <v-col
+            md="4"
+            class="text-center"
+            align-self="center"
+            v-if="false"
+        >
+          <v-btn
+              color="info"
+              class="mr-n4"
+          >
+            Config Roles
+          </v-btn>
+        </v-col>
+        <v-col
+            md="3"
+            v-if="func==='edit'"
+        >
+          <v-btn
+              color="success"
+              @click="updateUser()"
+          >
+            Update User
+          </v-btn>
+        </v-col>
+        <v-col
+            md="3"
+            v-if="func==='edit'"
+        >
+          <v-btn
+              color="error"
+          >
+            Delete User
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-container>
 
   </v-card>
 </template>
 
 <script>
+import md5 from 'md5-js';
 export default {
   name: "UserInfoPage",
   data: () => ({
@@ -151,8 +186,14 @@ export default {
       phone: '',
       academic: '',
       addresses: ['','',''],
+      passwordHash: '',
       permission: 0,
     },
+    userTypeSelect: {userType: 'Staff', permission: 2},
+    userTypeItems: [
+      {userType: 'Student', permission: 1},
+      {userType: 'Staff', permission: 2},
+    ],
     userRoles: [
       'User',
       'Student',
@@ -204,9 +245,28 @@ export default {
       })
     },
     addUser() {
-
-    }
-  },
+      let password = (Math.random() * 1000000).toString().substring(0, 6);
+      this.inputInfo.permission = this.userTypeSelect.permission;
+      this.inputInfo.passwordHash = md5(password);
+      this.axios({
+        method: "POST",
+        url: 'http://localhost:5094/manage/adduser',
+        data: this.inputInfo,
+      }).then(res => {
+        if (res.data.status === "success") {
+          alert("Your account info:\n\n" +
+              + "User Number: "
+              + this.inputInfo.userNumber
+              + "\nPassword: " + password
+              + "\n\nPlease modify the password ASAP");
+        } else {
+          alert(res.data.message);
+        }
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    },
+  }
 }
 </script>
 
