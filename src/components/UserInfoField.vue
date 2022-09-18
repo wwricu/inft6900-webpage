@@ -117,7 +117,24 @@ export default {
     },
   },
   created() {
-    this.inputInfo = this.userInfo;
+    if (this.userInfo.userNumber !== undefined) {
+      this.inputInfo.userNumber = this.userInfo;
+    }
+    if (this.userInfo.userName !== undefined) {
+      this.inputInfo.userName = this.userName;
+    }
+    if (this.userInfo.email !== undefined) {
+      this.inputInfo.email = this.email;
+    }
+    if (this.userInfo.phone !== undefined) {
+      this.inputInfo.phone = this.phone;
+    }
+    if (this.userInfo.academic !== undefined) {
+      this.inputInfo.academic = this.academic;
+    }
+    if (this.userInfo.addresses !== undefined) {
+      this.inputInfo.addresses = this.addresses;
+    }
     this.resetInfo = this.inputInfo;
     console.log(this.inputInfo);
   },
@@ -125,9 +142,6 @@ export default {
     resetInfo: {},
     inputInfo: {
       userNumber: '',
-      firstName: '',
-      middleName: '',
-      lastName: '',
       userName: ['','',''],
       email: '',
       phone: '',

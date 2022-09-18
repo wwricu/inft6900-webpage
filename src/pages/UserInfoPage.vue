@@ -48,6 +48,11 @@ export default {
     userType: 'Student',
     func:'edit',
   }),
+  created() {
+    if (this.$route.path === 'add_user') {
+      this.func = 'add';
+    }
+  },
   methods: {
     updateUser() {
       this.axios({
@@ -57,7 +62,6 @@ export default {
       }).then(res => {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);
-          return;
         }
       }).catch(function (err) {
         alert("err " + err);

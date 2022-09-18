@@ -28,7 +28,7 @@
           ></v-select>
         </v-col>
         <v-col
-            md="10"
+            md="8"
         >
           <v-text-field
               label="Search Users"
@@ -41,10 +41,22 @@
             md="2"
         >
           <v-btn
-            color="primary"
+            color="info"
             @click="searchUsers"
           >
             Search
+          </v-btn>
+        </v-col>
+        <v-col
+            align-self="center"
+            class="text-center"
+            md="2"
+        >
+          <v-btn
+              color="primary"
+              @click="addUser"
+          >
+            Add User
           </v-btn>
         </v-col>
       </v-row>
@@ -102,6 +114,26 @@ export default {
         alert("err " + err);
       })
     },
+    addUser() {
+      // let item = {
+      //   userNumber: '',
+      //   userName: ['','',''],
+      //   email: '',
+      //   phone: '',
+      //   academic: '',
+      //   addresses: ['','',''],
+      // };
+      this.$router.push({
+        name:'add_user',
+        params: {
+          userNumber: '',
+          email: '',
+          phone: '',
+          academic: '',
+
+        }
+      })
+    }
   }
 }
 </script>
