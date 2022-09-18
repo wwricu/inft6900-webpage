@@ -31,7 +31,7 @@
                 label="Select User Type"
                 item-text="userType"
                 item-value="permission"
-                :v-model="userTypeSelect"
+                v-model="userTypeSelect"
                 :items="userTypeItems"
             >
             </v-select>
@@ -198,7 +198,7 @@ export default {
       permission: 0,
       birthdate: '',
     },
-    userTypeSelect: {userType: 'Staff', permission: 2},
+    userTypeSelect: {userType: 'Student', permission: 1},
     userTypeItems: [
       {userType: 'Student', permission: 1},
       {userType: 'Staff', permission: 2},

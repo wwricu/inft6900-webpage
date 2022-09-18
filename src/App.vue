@@ -92,7 +92,6 @@ export default {
     items: [
       { title: 'Home', icon: 'mdi-home', link: '/' },
       { title: 'User Management', icon: 'mdi-view-dashboard', link: '/user_manage' },
-      { title: 'User Info', icon: 'mdi-creation', link: 'user_info' },
       { title: 'View Applications', icon: 'mdi-creation', link: 'manage_user' },
       { title: 'Personal Info', icon: 'mdi-account', link: '/' },
       { title: 'About', icon: 'mdi-forum', link: 'user_info' },
