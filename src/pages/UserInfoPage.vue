@@ -7,9 +7,8 @@
               md="6"
           >
             <v-text-field
-                disabled
+                :disabled="func!=='add'"
                 v-model="inputInfo.userNumber"
-                :counter="100"
                 :label="userRoles[inputInfo.permission] + ' Number'"
             ></v-text-field>
           </v-col>
@@ -17,7 +16,7 @@
               md="6"
           >
             <v-text-field
-                disabled
+                :disabled="func!=='add'"
                 v-model="inputInfo.email"
                 label="E-mail"
             >
@@ -115,7 +114,7 @@
       <v-btn
         color="info"
         class="ml-1 mr-1"
-        v-if="userType==='staff'"
+        v-if="userInfo.permission===2"
       >
         Config Roles
       </v-btn>
@@ -143,8 +142,7 @@
 export default {
   name: "UserInfoPage",
   data: () => ({
-    userType: 'Student',
-    func:'edit',
+    func: 'edit',
     resetInfo: {},
     inputInfo: {
       userNumber: '',
@@ -153,17 +151,19 @@ export default {
       phone: '',
       academic: '',
       addresses: ['','',''],
-      permission: 1,
+      permission: 0,
     },
     userRoles: [
-      'Invalid',
+      'User',
       'Student',
       'Staff',
       'Admin'
     ],
+    userInfo: {}
   }),
   created() {
     let userInfo = this.$route.params;
+    this.userInfo = userInfo;
     if (userInfo.userNumber !== undefined) {
       this.inputInfo.userNumber = userInfo.userNumber;
     }
@@ -185,7 +185,7 @@ export default {
     if (userInfo.permission !== undefined) {
       this.inputInfo.permission = userInfo.permission;
     }
-    if (this.$route.path === 'add_user') {
+    if (this.$route.path === '/add_user') {
       this.func = 'add';
     }
   },
@@ -202,16 +202,9 @@ export default {
       }).catch(function (err) {
         alert("err " + err);
       })
-    }
-  },
-  mounted() {
-    console.log('show', this.$route.params)
-    if (this.$route.params.userNumber === 'null') {
-      this.func = 'add';
-    }
-    switch (this.$route.params.permission) {
-      case 1: this.userType = 'Staff'; break;
-      case 2: this.userType = 'Admin'; break;
+    },
+    addUser() {
+
     }
   },
 }
