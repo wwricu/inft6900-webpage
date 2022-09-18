@@ -251,8 +251,9 @@ export default {
         url: 'http://localhost:5094/manage/updateuser',
         data: this.inputInfo,
       }).then(res => {
-        if (res.data.status !== "success") {
-          alert("message: " + res.data.message);
+        if (res.data.status === "success") {
+          alert("updated");
+          this.$router.push('user_manage')
         }
       }).catch(function (err) {
         alert("err " + err);
@@ -269,11 +270,12 @@ export default {
         data: this.inputInfo,
       }).then(res => {
         if (res.data.status === "success") {
-          alert("Your account info:\n\n" +
+          alert("Your account info:\n\n"
               + "User Number: "
               + this.inputInfo.userNumber
               + "\nPassword: " + password
               + "\n\nPlease modify the password ASAP");
+          this.$router.push('user_manage')
         } else {
           alert(res.data.message);
         }
@@ -282,7 +284,23 @@ export default {
       })
     },
     deleteUser() {
-      alert(this.inputInfo.birthdate);
+      this.axios({
+        method: "POST",
+        url: 'http://localhost:5094/manage/updateuser',
+        data: {
+          userNumber: this.inputInfo.userNumber,
+          permission: 0
+        },
+      }).then(res => {
+        if (res.data.status === "success") {
+          alert("deleted!");
+          this.$router.push('user_manage')
+        } else {
+          alert(res.data.message);
+        }
+      }).catch(function (err) {
+        alert("err " + err);
+      })
     },
     formatDate(date, swt) {
       if (!date) return null
