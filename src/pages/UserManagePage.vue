@@ -91,9 +91,6 @@ export default {
     searchString: '',
     users: [],
   }),
-  watch: {
-
-  },
   methods: {
     searchUsers() {
       let addr = 'http://localhost:5094/manage/getusers?permission='
@@ -115,14 +112,6 @@ export default {
       })
     },
     addUser() {
-      // let item = {
-      //   userNumber: '',
-      //   userName: ['','',''],
-      //   email: '',
-      //   phone: '',
-      //   academic: '',
-      //   addresses: ['','',''],
-      // };
       this.$router.push({
         name:'add_user',
         params: {
@@ -130,7 +119,6 @@ export default {
           email: '',
           phone: '',
           academic: '',
-
         }
       })
     }
