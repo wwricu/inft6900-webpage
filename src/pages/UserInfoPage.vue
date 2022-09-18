@@ -1,6 +1,7 @@
 <template>
   <v-card class="pa-8 ma-8">
     <UserInfoField
+      ref="infoForm"
       :user-info="this.$route.params"
     ></UserInfoField>
     <v-container class="d-flex justify-end">
@@ -21,6 +22,7 @@
       <v-btn
         class="ml-1 mr-1"
         color="success"
+        @click="updateUser()"
         v-if="func==='edit'"
       >
         Update User
@@ -46,6 +48,22 @@ export default {
     userType: 'Student',
     func:'edit',
   }),
+  methods: {
+    updateUser() {
+      this.axios({
+        method: "POST",
+        url: 'http://localhost:5094/manage/updateuser',
+        data: this.$refs.infoForm.inputInfo,
+      }).then(res => {
+        if (res.data.status !== "success") {
+          alert("message: " + res.data.message);
+          return;
+        }
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    }
+  },
   mounted() {
     console.log('show', this.$route.params)
     if (this.$route.params.userNumber === 'null') {
