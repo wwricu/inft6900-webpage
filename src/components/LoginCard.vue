@@ -69,14 +69,11 @@ export default {
           alert("message: " + res.data.message);
           return;
         }
-        this.jump('/')
+        this.$router.push('/');
       }).catch(function (err) {
         alert("err " + err);
       })
     },
-    jump(path) {
-      this.$router.push(path);
-    }
   },
   data: () => ({
     userNumber: '',
