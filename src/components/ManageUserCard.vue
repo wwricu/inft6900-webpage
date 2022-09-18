@@ -37,7 +37,7 @@
           color="primary"
           @click="initialize"
       >
-        Reset
+        Show All
       </v-btn>
     </template>
   </v-data-table>
@@ -45,8 +45,6 @@
 <script>
 export default {
   data: () => ({
-    dialog: false,
-    dialogDelete: false,
     headers: [
       {
         text: 'Staff Number',
@@ -77,19 +75,26 @@ export default {
       { text: 'Edit', value: 'actions', sortable: false },
     ],
     permission: 2,
-    users: [],
   }),
+
+  computed: {
+    users: function() {
+      return this.userData;
+    }
+  },
 
   props: {
     userType: {
       type: String,
       required: true,
       default: 'Staff'
+    },
+    userData: {
+      required: true,
     }
   },
 
   created () {
-    this.initialize()
   },
 
   methods: {
@@ -110,53 +115,6 @@ export default {
       }).catch(function (err) {
         alert("err " + err);
       })
-      this.users = [
-        {
-          UserNumber:"3362554",
-          UserName:["Weiran","wwr","Wang"],
-          BirthDate:"16-03-1996",
-          Addresses:["2 Heritage Pl","Birmingham Garden","NSW 2272"],
-          Phone:"493316052",
-          Email:"wang.wei.ran11@outlook.com",
-          Academic: "default"
-        },
-        {
-          UserNumber:"3362554",
-          UserName:["Weiran","wwr","Wang"],
-          BirthDate:"16-03-1996",
-          Addresses:["2 Heritage Pl","Birmingham Garden","NSW 2272"],
-          Phone:"493316052",
-          Email:"wang.wei.ran11@outlook.com",
-          Academic: "default"
-        },
-        {
-          UserNumber:"3362554",
-          UserName:["Weiran","wwr","Wang"],
-          BirthDate:"16-03-1996",
-          Addresses:["2 Heritage Pl","Birmingham Garden","NSW 2272"],
-          Phone:"493316052",
-          Email:"wang.wei.ran11@outlook.com",
-          Academic: "default"
-        },
-        {
-          UserNumber:"3362554",
-          UserName:["Weiran","wwr","Wang"],
-          BirthDate:"16-03-1996",
-          Addresses:["2 Heritage Pl","Birmingham Garden","NSW 2272"],
-          Phone:"493316052",
-          Email:"wang.wei.ran11@outlook.com",
-          Academic: "default"
-        },
-        {
-          UserNumber:"3362554",
-          UserName:["Weiran","wwr","Wang"],
-          BirthDate:"16-03-1996",
-          Addresses:["2 Heritage Pl","Birmingham Garden","NSW 2272"],
-          Phone:"493316052",
-          Email:"wang.wei.ran11@outlook.com",
-          Academic: "default"
-        },
-      ]
     },
   }
 }

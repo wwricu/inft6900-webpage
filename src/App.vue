@@ -58,7 +58,7 @@ export default {
     showMenu: true,
     items: [
       { title: 'Home', icon: 'mdi-home', link: '/' },
-      { title: 'View Students', icon: 'mdi-view-dashboard', link: '/' },
+      { title: 'User Management', icon: 'mdi-view-dashboard', link: '/user_manage' },
       { title: 'View Staff', icon: 'mdi-creation', link: 'manage_staff' },
       { title: 'View Applications', icon: 'mdi-creation', link: 'manage_staff' },
       { title: 'Personal Info', icon: 'mdi-account', link: '/' },

@@ -7,6 +7,7 @@ const Login = () => import('@/components/LoginCard') // lazy load
 const HelloWorld = () => import('@/components/HelloWorld')
 const ManageUser = () => import('@/components/ManageUserCard')
 const UserInfo = () => import('@/components/UserInfoCard')
+const UserManage = () => import('@/pages/UserManagePage')
 
 const routes = [
     {
@@ -29,6 +30,11 @@ const routes = [
         name: 'user_info',
         component: UserInfo,
     },
+    {
+        path: '/user_manage',
+        name: 'user_manage',
+        component: UserManage,
+    }
 ]
 
 const router = new VueRouter({
