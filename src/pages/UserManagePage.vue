@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import ManageUserCard from "@/components/ManageUserCard";
+import ManageUserCard from "@/components/UserTable";
 export default {
   name: "UserManagePage",
   components: {ManageUserCard},

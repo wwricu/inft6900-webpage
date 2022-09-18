@@ -94,12 +94,9 @@ export default {
     }
   },
 
-  created () {
-  },
-
   methods: {
-    editUser() {
-
+    editUser(item) {
+      this.$router.push({name:'user_info',params:item});
     },
     initialize () {
       this.axios({

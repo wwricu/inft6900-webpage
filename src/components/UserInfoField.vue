@@ -1,8 +1,6 @@
 <template>
-  <v-card
-      class="mx-auto text-center pa-4"
-  >
-    <v-form v-model="valid">
+  <div>
+    <v-form>
       <v-container>
         <v-row>
           <v-col
@@ -10,9 +8,9 @@
           >
             <v-text-field
                 disabled
-                v-model="userNumber"
+                v-model="inputInfo.userNumber"
                 :counter="100"
-                :label="userType + ' Number'"
+                :label="userRoles[userInfo.permission] + ' Number'"
             ></v-text-field>
           </v-col>
           <v-col
@@ -20,27 +18,29 @@
           >
             <v-text-field
                 disabled
-                v-model="email"
+                v-model="inputInfo.email"
                 :rules="emailRules"
                 label="E-mail"
-            ></v-text-field>
+            >
+            </v-text-field>
           </v-col>
 
           <v-col
               md="6"
           >
             <v-text-field
-                v-model="phone"
+                v-model="inputInfo.phone"
                 label="Phone Number"
                 required
-            ></v-text-field>
+            >
+            </v-text-field>
           </v-col>
 
           <v-col
               md="6"
           >
             <v-text-field
-                v-model="academic"
+                v-model="inputInfo.academic"
                 label="Faculty"
                 required
             ></v-text-field>
@@ -50,9 +50,7 @@
               md="4"
           >
             <v-text-field
-                v-model="firstName"
-                :rules="nameRules"
-                :counter="10"
+                v-model="inputInfo.userName[0]"
                 label="First name"
                 required
             ></v-text-field>
@@ -61,9 +59,7 @@
               md="4"
           >
             <v-text-field
-                v-model="middleName"
-                :rules="nameRules"
-                :counter="10"
+                v-model="inputInfo.userName[1]"
                 label="Middle name"
                 required
             ></v-text-field>
@@ -72,9 +68,7 @@
               md="4"
           >
             <v-text-field
-                v-model="lastName"
-                :rules="nameRules"
-                :counter="10"
+                v-model="inputInfo.userName[2]"
                 label="Last name"
                 required
             ></v-text-field>
@@ -84,7 +78,7 @@
               md="4"
           >
             <v-text-field
-                v-model="placeName"
+                v-model="inputInfo.addresses[0]"
                 label="Address Line 1"
                 required
             ></v-text-field>
@@ -93,7 +87,7 @@
               md="4"
           >
             <v-text-field
-                v-model="placeName"
+                v-model="inputInfo.addresses[1]"
                 label="Address Line 2"
                 required
             ></v-text-field>
@@ -102,8 +96,8 @@
               md="4"
           >
             <v-text-field
-                v-model="placeName"
-                label="Address Line 2"
+                v-model="inputInfo.addresses[2]"
+                label="Address Line 3"
                 required
             ></v-text-field>
           </v-col>
@@ -111,94 +105,41 @@
         </v-row>
       </v-container>
     </v-form>
-  </v-card>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "UserInfoCard",
+  name: "UserInfoField",
   props: {
-    userType: {
-      type: String,
+    userInfo: {
       required: true,
-      default: 'Staff'
     },
   },
+  created() {
+    this.inputInfo = this.userInfo;
+    this.resetInfo = this.inputInfo;
+    console.log(this.inputInfo);
+  },
   data: () => ({
-    valid: false,
-    activityTypes: [
-      'Lightning',
-      'HOT WATER',
-      'RC',
-      'SOLAR',
-      'HVAC/Space Conditioning',
-      'Fans/Motors',
+    resetInfo: {},
+    inputInfo: {
+      userNumber: '',
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      userName: ['','',''],
+      email: '',
+      phone: '',
+      academic: '',
+      addresses: ['','',''],
+    },
+    userRoles: [
+      'Invalid',
+      'Student',
+      'Staff',
+      'Admin'
     ],
-    userNumber: '3362554',
-    firstName: '',
-    middleName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    academic: '',
-    typeSwitch: true,
-    abnNumber: '',
-    placeName: '',
-    unitTypes: [
-      'Apartment',
-      'Shop',
-      'Room',
-      'Office',
-      'Flat',
-      'Floor',
-      'House',
-      'Cottage',
-      'Factory',
-      'Level',
-      'Lot',
-      'Shed',
-      'Showroom',
-      'Site',
-      'Suit',
-      'Townhouse',
-      'Villa',
-      'Unit',
-    ],
-    unitNumber: '',
-    levelTypes: [
-      'Block',
-      'Floor',
-      'Level',
-      'Lot'
-    ],
-    levelNumber: '',
-    streetNumber: '',
-    streetName: '',
-    streetTypes: [
-      'Street',
-      'Avenue',
-      'Road',
-      'Alley',
-      'Alleyway',
-      'Approach',
-      'Beach',
-      'Bank',
-      'Bay',
-    ],
-    streetSuffix: '',
-    suburbName: '',
-    states: [
-      'ACT',
-      'NSW',
-      'QLD',
-      'VIC',
-      'NT',
-      'SA',
-      'TAS',
-      'WA',
-    ],
-    postcode: '',
-
     nameRules: [
       v => !!v || 'Name is required',
       v => v.length <= 10 || 'Name must be less than 10 characters',

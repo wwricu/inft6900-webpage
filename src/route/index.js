@@ -5,8 +5,8 @@ Vue.use(VueRouter)
 
 const Login = () => import('@/components/LoginCard') // lazy load
 const HelloWorld = () => import('@/components/HelloWorld')
-const ManageUser = () => import('@/components/ManageUserCard')
-const UserInfo = () => import('@/components/UserInfoCard')
+const ManageUser = () => import('@/components/UserTable')
+const UserInfo = () => import('@/pages/UserInfoPage')
 const UserManage = () => import('@/pages/UserManagePage')
 
 const routes = [
