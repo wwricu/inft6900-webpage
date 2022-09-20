@@ -139,7 +139,6 @@ export default {
         sortable: false
       },
     ],
-    courseData: [],
     // below is dialog data
     addCourseDialog: false,
     addedCourses: [], // courseNameForShow:, courseID:
@@ -147,7 +146,7 @@ export default {
   }),
 
   computed: {
-    courses: function() {
+    courses: function() { // full course data for display
       return this.inputCourseData;
     }
   },
@@ -169,10 +168,29 @@ export default {
 
   methods: {
     deleteCourse(item) {
-      this.$router.push({
-        name:'edit_user_course',
-        params: item
-      });
+      if (item !== null) {
+        console.log(item)
+      }
+      this.axios({
+        method: "POST",
+        url: 'http://localhost:5094/manage/relation',
+        data: {
+          user: {
+            userNumber: this.userNumber,
+            permission: this.permission
+          },
+          courseRemoveList: [{
+            courseOfferingID: item.courseOfferingID
+          }]
+        },
+      }).then(res => {
+        if (res.data.status === "success") {
+          alert("deleted");
+          this.courses.splice(this.addedCourses.indexOf(item), 1)
+        }
+      }).catch(function (err) {
+        alert("err " + err);
+      })
     },
     removeAddCourses(item) {
       this.addedCourses.splice(this.addedCourses.indexOf(item), 1)
@@ -227,7 +245,7 @@ export default {
       }).then(res => {
         if (res.data.status === "success") {
           alert("updated");
-          // this.$router.push('user_manage')
+          this.$parent.searchCourse()
         }
       }).catch(function (err) {
         alert("err " + err);

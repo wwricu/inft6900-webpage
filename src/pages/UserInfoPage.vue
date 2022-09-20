@@ -136,7 +136,7 @@
         >
           <v-btn
               color="primary"
-              @click="searchCourse"
+              @click="switchTable"
           >
             Manage User's Course
           </v-btn>
@@ -330,13 +330,15 @@ export default {
         alert("err " + err);
       })
     },
-    searchCourse() {
+    switchTable() {
       if (this.showTable === true) {
         this.showTable = false;
         return;
       }
       this.showTable = true;
-
+      this.searchCourse();
+    },
+    searchCourse() {
       this.axios({
         method: "GET",
         url: 'http://localhost:5094/course/get?userNumber='
