@@ -182,8 +182,9 @@
   <CourseTable
     class="mt-8"
     v-show="showTable"
-    :course-data="courseData"
-    :user-type="userRoles[inputInfo.permission]"
+    :input-course-data="courseData"
+    :user-permission="inputInfo.permission"
+    :user-number="inputInfo.userNumber"
   ></CourseTable>
   </div>
 </template>
@@ -221,7 +222,7 @@ export default {
       'Admin'
     ],
     userInfo: {}, // get from params
-    courseData: {}, // send to table
+    courseData: [], // send to table
     showTable: false
   }),
   created() {
@@ -338,13 +339,16 @@ export default {
 
       this.axios({
         method: "GET",
-        url: 'http://localhost:5094/course/get?UserNumber='
-                .concat(this.inputInfo.userNumber),
+        url: 'http://localhost:5094/course/get?userNumber='
+                .concat(this.inputInfo.userNumber)
+                .concat('&permission=')
+                .concat(this.inputInfo.permission.toString()),
       }).then(res => {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);
           return;
         }
+        console.log(this.courseData)
         this.courseData = res.data.obj;
 
         window.scrollTo({
