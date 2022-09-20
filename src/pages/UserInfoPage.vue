@@ -1,8 +1,9 @@
 <template>
-  <v-card class="pa-8 ma-8">
+  <div class="pa-8">
+  <v-card class="pa-8">
     <v-form>
       <v-container>
-        <v-row>
+        <v-row class="d-flex justify-end">
           <v-col
               :md="func!=='add'?6:4"
           >
@@ -125,14 +126,27 @@
       </v-container>
     </v-form>
     <v-container>
-      <v-row>
+      <v-row
+        justify-md="end"
+      >
         <v-col
             md="3"
+            class="mr-3"
+            v-if="func==='edit'"
+        >
+          <v-btn
+              color="primary"
+              @click="searchCourse"
+          >
+            Manage User's Course
+          </v-btn>
+        </v-col>
+        <v-col
+            md="4"
             v-if="func==='add'"
         >
           <v-btn
               color="success"
-              class="ml-1 mr-1"
               @click="addUser"
           >
             Add User
@@ -140,20 +154,7 @@
         </v-col>
 
         <v-col
-            md="4"
-            class="text-center"
-            align-self="center"
-            v-if="false"
-        >
-          <v-btn
-              color="info"
-              class="mr-n4"
-          >
-            Config Roles
-          </v-btn>
-        </v-col>
-        <v-col
-            md="3"
+            md="2"
             v-if="func==='edit'"
         >
           <v-btn
@@ -164,7 +165,7 @@
           </v-btn>
         </v-col>
         <v-col
-            md="3"
+            md="2"
             v-if="func==='edit'"
         >
           <v-btn
@@ -174,16 +175,25 @@
             Delete User
           </v-btn>
         </v-col>
+
       </v-row>
     </v-container>
-
   </v-card>
+  <CourseTable
+    class="mt-8"
+    v-show="showTable"
+    :course-data="courseData"
+    :user-type="userRoles[inputInfo.permission]"
+  ></CourseTable>
+  </div>
 </template>
 
 <script>
 import md5 from 'md5-js';
+import CourseTable from "@/components/CourseTable";
 export default {
   name: "UserInfoPage",
+  components: {CourseTable},
   data: () => ({
     func: 'edit',
     resetInfo: {},
@@ -210,7 +220,9 @@ export default {
       'Staff',
       'Admin'
     ],
-    userInfo: {}
+    userInfo: {}, // get from params
+    courseData: {}, // send to table
+    showTable: false
   }),
   created() {
     let userInfo = this.$route.params;
@@ -313,6 +325,34 @@ export default {
         } else {
           alert(res.data.message);
         }
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    },
+    searchCourse() {
+      if (this.showTable === true) {
+        this.showTable = false;
+        return;
+      }
+      this.showTable = true;
+
+      this.axios({
+        method: "GET",
+        url: 'http://localhost:5094/course/get?UserNumber='
+                .concat(this.inputInfo.userNumber),
+      }).then(res => {
+        if (res.data.status !== "success") {
+          alert("message: " + res.data.message);
+          return;
+        }
+        this.courseData = res.data.obj;
+
+        window.scrollTo({
+          top: 1000, // to be fix
+          left: 0,
+          behavior: 'smooth'
+        })
+        console.log("success query");
       }).catch(function (err) {
         alert("err " + err);
       })

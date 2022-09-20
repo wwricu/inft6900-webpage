@@ -107,7 +107,6 @@ export default {
       Admin: [
           // { title: 'Home', icon: 'mdi-home', link: '/' },
           { title: 'User Management', icon: 'mdi-view-dashboard', link: '/user_manage' },
-          { title: 'Role Management', icon: 'mdi-view-dashboard', link: '/user_manage' },
           { title: 'View Applications', icon: 'mdi-view-dashboard', link: 'manage_user' },
           { title: 'Personal Info', icon: 'mdi-account', link: '/' },
           { title: 'About', icon: 'mdi-forum', link: 'user_info' },
