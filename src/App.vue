@@ -8,7 +8,7 @@
     >
       <v-app-bar-nav-icon
         color="primary"
-        @click="showMenu = true"></v-app-bar-nav-icon>
+        @click="showMenu = loginStatus"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
       <v-btn
           text
@@ -43,7 +43,7 @@
       <v-divider></v-divider>
       <v-list rounded nav>
         <v-list-item
-            v-for="item in items"
+            v-for="item in items[role]"
             :key="item.title"
             @click="function(){$router.push(item.link)}"
             link
@@ -89,13 +89,30 @@ export default {
 
   data: () => ({
     showMenu: false,
-    items: [
-      { title: 'Home', icon: 'mdi-home', link: '/' },
-      { title: 'User Management', icon: 'mdi-view-dashboard', link: '/user_manage' },
-      { title: 'View Applications', icon: 'mdi-creation', link: 'manage_user' },
-      { title: 'Personal Info', icon: 'mdi-account', link: '/' },
-      { title: 'About', icon: 'mdi-forum', link: 'user_info' },
-    ],
+    items: {
+      Student: [
+        // { title: 'Home', icon: 'mdi-home', link: '/' },
+        { title: 'Apply', icon: 'mdi-pencil', link: '/user_manage' },
+        { title: 'My Applications', icon: 'mdi-view-dashboard', link: 'manage_user' },
+        { title: 'Personal Info', icon: 'mdi-account', link: '/' },
+        { title: 'About', icon: 'mdi-forum', link: 'user_info' },
+      ],
+      Staff: [
+        // { title: 'Home', icon: 'mdi-home', link: '/' },
+        { title: 'View Applications', icon: 'mdi-view-dashboard', link: 'manage_user' },
+        { title: 'Search Contact', icon: 'mdi-magnify', link: '/user_manage' },
+        { title: 'Personal Info', icon: 'mdi-account', link: '/' },
+        { title: 'About', icon: 'mdi-forum', link: 'user_info' },
+      ],
+      Admin: [
+          // { title: 'Home', icon: 'mdi-home', link: '/' },
+          { title: 'User Management', icon: 'mdi-view-dashboard', link: '/user_manage' },
+          { title: 'Role Management', icon: 'mdi-view-dashboard', link: '/user_manage' },
+          { title: 'View Applications', icon: 'mdi-view-dashboard', link: 'manage_user' },
+          { title: 'Personal Info', icon: 'mdi-account', link: '/' },
+          { title: 'About', icon: 'mdi-forum', link: 'user_info' },
+      ],
+    },
   }),
 };
 </script>
