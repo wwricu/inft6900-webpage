@@ -121,7 +121,15 @@ export default {
       this.inputInfo.userNumber = this.userInfo;
     }
     if (this.userInfo.userName !== undefined) {
-      this.inputInfo.userName = this.userName;
+      const nameArray = this.userName.split(' ');
+      this.inputInfo.fullName = this.userName;
+      this.inputInfo.userName[0] = nameArray[0];
+      if (nameArray.length > 1) {
+        this.inputInfo.userName[1] = nameArray[1];
+      }
+      if (nameArray.length > 2) {
+        this.inputInfo.userName[2] = nameArray[2];
+      }
     }
     if (this.userInfo.email !== undefined) {
       this.inputInfo.email = this.email;
@@ -142,6 +150,7 @@ export default {
     resetInfo: {},
     inputInfo: {
       userNumber: '',
+      fullName: '',
       userName: ['','',''],
       email: '',
       phone: '',

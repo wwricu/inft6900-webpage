@@ -69,7 +69,7 @@
               md="4"
           >
             <v-text-field
-                v-model="inputInfo.userName[0]"
+                v-model="inputInfo.userNameArray[0]"
                 label="First name"
                 required
             ></v-text-field>
@@ -78,7 +78,7 @@
               md="4"
           >
             <v-text-field
-                v-model="inputInfo.userName[1]"
+                v-model="inputInfo.userNameArray[1]"
                 label="Middle name"
                 required
             ></v-text-field>
@@ -87,7 +87,7 @@
               md="4"
           >
             <v-text-field
-                v-model="inputInfo.userName[2]"
+                v-model="inputInfo.userNameArray[2]"
                 label="Last name"
                 required
             ></v-text-field>
@@ -189,7 +189,8 @@ export default {
     resetInfo: {},
     inputInfo: {
       userNumber: '',
-      userName: ['','',''],
+      userName: '',
+      userNameArray: ['','',''],
       email: '',
       phone: '',
       academic: '',
@@ -219,6 +220,7 @@ export default {
     }
     if (userInfo.userName !== undefined) {
       this.inputInfo.userName = userInfo.userName;
+      this.inputInfo.userNameArray = userInfo.userName.split(' ');
     }
     if (userInfo.email !== undefined) {
       this.inputInfo.email = userInfo.email;
@@ -246,6 +248,11 @@ export default {
   },
   methods: {
     updateUser() {
+      this.inputInfo.userName = this.inputInfo.userNameArray[0]
+          .concat(' ')
+          .concat(this.inputInfo.userNameArray[1])
+          .concat(' ')
+          .concat(this.inputInfo.userNameArray[2]);
       this.axios({
         method: "POST",
         url: 'http://localhost:5094/manage/updateuser',
@@ -260,6 +267,11 @@ export default {
       })
     },
     addUser() {
+      this.inputInfo.userName = this.inputInfo.userNameArray[0]
+                                    .concat(' ')
+                                    .concat(this.inputInfo.userNameArray[1])
+                                    .concat(' ')
+                                    .concat(this.inputInfo.userNameArray[2]);
       let password = (Math.random() * 1000000).toString().substring(0, 6);
       this.inputInfo.permission = this.userTypeSelect.permission;
       this.inputInfo.passwordHash = md5(password);

@@ -73,9 +73,18 @@ export default {
         console.log(res.data.obj)
         store.loginStatus = true;
         store.role = store.roles[res.data.obj[0].permission];
-        store.name = res.data.obj[0].userName[0] + res.data.obj[0].userName[2];
-        store.AVN = res.data.obj[0].userName[0].substring(0,1)
-                  + res.data.obj[0].userName[2].substring(0,1)
+        const nameArray = res.data.obj[0].userName.split(' ');
+        store.name = nameArray[0];
+        store.AVN = nameArray[0].substring(0,1);
+
+        if (nameArray.length > 1) {
+          store.name.concat(' ').concat(nameArray[1]);
+        }
+        if (nameArray.length > 2) {
+          store.name.concat(nameArray[2]);
+          store.AVN.concat(' ').concat(nameArray[2].substring(0,1));
+        }
+
         this.$router.push('/');
       }).catch(function (err) {
         alert("err " + err);
