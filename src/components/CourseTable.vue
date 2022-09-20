@@ -114,7 +114,6 @@
 export default {
   name: "CourseTable",
   data: () => ({
-    permission: 2,
     search: '',
     headers: [
       {
@@ -177,7 +176,7 @@ export default {
         data: {
           user: {
             userNumber: this.userNumber,
-            permission: this.permission
+            permission: this.userPermission
           },
           courseRemoveList: [{
             courseOfferingID: item.courseOfferingID
@@ -238,7 +237,7 @@ export default {
         data: {
           user: {
             userNumber: this.userNumber,
-            permission: this.permission
+            permission: this.userPermission
           },
           courseAddList: this.addedCourses
         },
