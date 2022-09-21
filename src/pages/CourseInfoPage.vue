@@ -120,7 +120,7 @@
         userType="Staff"
         :courseOfferingID="inputCourseInfo.courseOfferingID"
         :permission="2"
-        v-show="userData.length > 0"
+        v-show="showTable"
     ></UserTable>
   </div>
 </template>
@@ -151,6 +151,7 @@ export default {
         'Trimester 2',
         'Trimester 3',
     ],
+    showTable: false,
     userData: []
   }),
   created() {
@@ -214,7 +215,8 @@ export default {
     },
     searchUsers(permission) {
       console.log(this.inputCourseInfo.courseOfferingID);
-      let addr = 'http://localhost:5094/manage/getusers?permission='
+      this.showTable = true;
+      let addr = 'http://localhost:5094/manage/GetUsersByCourse?permission='
                   .concat(permission.toString())
                   .concat('&courseOfferingID=')
                   .concat(this.inputCourseInfo.courseOfferingID.toString());

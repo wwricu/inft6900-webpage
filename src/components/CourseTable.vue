@@ -275,9 +275,6 @@ export default {
 
   methods: {
     deleteCourse(item) {
-      if (item !== null) {
-        console.log(item)
-      }
       this.axios({
         method: "POST",
         url: 'http://localhost:5094/manage/relation',

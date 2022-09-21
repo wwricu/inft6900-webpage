@@ -74,17 +74,15 @@ export default {
         store.loginStatus = true;
         store.role = store.roles[res.data.obj[0].permission];
         const nameArray = res.data.obj[0].userName.split(' ');
+        console.log(nameArray)
         store.name = nameArray[0];
         store.AVN = nameArray[0].substring(0,1);
 
-        if (nameArray.length > 1) {
-          store.name.concat(' ').concat(nameArray[1]);
+        for (let i = 1; i < nameArray.length; i++) {
+          store.name = store.name.concat(' ').concat(nameArray[i]);
+          store.AVN = store.AVN.concat(' ')
+                           .concat(nameArray[i].substring(0,1));
         }
-        if (nameArray.length > 2) {
-          store.name.concat(nameArray[2]);
-          store.AVN.concat(' ').concat(nameArray[2].substring(0,1));
-        }
-
         this.$router.push('/');
       }).catch(function (err) {
         alert("err " + err);

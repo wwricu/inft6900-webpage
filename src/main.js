@@ -12,7 +12,7 @@ export const store = reactive({
   loginStatus: false,
   role: '',
   permission: 0,
-  name: [],
+  name: '',
   roles: [
     'User',
     'Student',

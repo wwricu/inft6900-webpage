@@ -115,7 +115,16 @@
     <template v-slot:[`item.actions`]="{ item }">
       <v-icon
           small
+          class="ml-8"
+          v-if="isFromCoursePage"
+          @click="removeCourseFromUser(item)"
+      >
+        mdi-trash-can
+      </v-icon>
+      <v-icon
+          small
           class="mr-2"
+          v-else
           @click="editUser(item)"
       >
         mdi-pencil
@@ -123,10 +132,9 @@
     </template>
     <template v-slot:no-data>
       <v-btn
-          color="primary"
-          @click="initialize"
+          color="error"
       >
-        Show All
+        NO DATA
       </v-btn>
     </template>
   </v-data-table>
@@ -166,10 +174,10 @@ export default {
       { text: 'Edit', value: 'actions', sortable: false },
     ],
     // below for from page course management
-    isFromCoursePage: true,
+    isFromCoursePage: false,
     addUserToCourseDialog: false, // dialog switch
-    addedUsers: [],
-    usersForAdd: [],
+    addedUsers: [], // to add, userNameForShow, userNumber
+    usersForAdd: [], // for choose to add
     searchStringForUser: '',
   }),
 
@@ -201,7 +209,15 @@ export default {
       default: 2
     }
   },
-
+  created() {
+    if (this.sourcePage === 'CourseManage') {
+      this.isFromCoursePage = true;
+      this.headers.pop()
+      this.headers.push(
+        { text: 'Delete From Course', value: 'actions', sortable: false }
+      )
+    }
+  },
   methods: {
     editUser(item) {
       this.$router.push({
@@ -209,34 +225,14 @@ export default {
         params: item
       });
     },
-    initialize () {
-      let url = "http://localhost:5094/manage/getusers?permission=";
-      if (this.sourcePage !== 'StudentManage') {
-        url.concat('2');
-      }
-      this.axios({
-        method: "GET",
-        url: url,
-      }).then(res => {
-        if (res.data.status !== "success") {
-          alert("message: " + res.data.message);
-          return;
-        }
-        this.users = res.data.obj;
-        console.log("success query");
-      }).catch(function (err) {
-        alert("err " + err);
-      })
-    },
 
     // below for from course page
     getUsersForAdd() {
-      let addr = 'http://localhost:5094/manage/GetUsers?permission=2';
-      console.log(this.searchStringForUser.length);
+      let addr = 'http://localhost:5094/manage/GetUsers?permission=';
+      addr = addr.concat(this.permission.toString());
       if (this.searchStringForUser.length > 0) {
         addr = addr.concat('&userName=').concat(this.searchStringForUser)
       }
-
       this.axios({
         method: "GET",
         url: addr,
@@ -269,8 +265,10 @@ export default {
         method: "POST",
         url: 'http://localhost:5094/manage/relation',
         data: {
-          courseOfferingID: this.courseOfferingID,
-          userAddList: this.addedCourses
+          courseOffering: {
+            courseOfferingID: this.courseOfferingID,
+          },
+          userAddList: this.addedUsers
         },
       }).then(res => {
         if (res.data.status === "success") {
@@ -282,6 +280,28 @@ export default {
             this.$parent.searchUsers(this.permission)
           }
           this.addUserToCourseDialog = false;
+        }
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    },
+    removeCourseFromUser(item) {
+      this.axios({
+        method: "POST",
+        url: 'http://localhost:5094/manage/relation',
+        data: {
+          courseOffering: {
+            courseOfferingID: this.courseOfferingID
+          },
+          userRemoveList: [{
+            userNumber: item.userNumber,
+            permission: item.userPermission
+          }],
+        },
+      }).then(res => {
+        if (res.data.status === "success") {
+          alert("deleted");
+          this.addedUsers.splice(this.addedUsers.indexOf(item), 1)
         }
       }).catch(function (err) {
         alert("err " + err);
