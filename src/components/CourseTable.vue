@@ -359,7 +359,10 @@ export default {
       })
     },
     manageCourse(item) {
-      console.log(item);
+      this.$router.push({
+        name:'edit_course',
+        params: item
+      });
     },
     addNewCourse() {
       this.axios({

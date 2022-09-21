@@ -8,6 +8,7 @@ const HelloWorld = () => import('@/components/HelloWorld')
 const UserInfo = () => import('@/pages/UserInfoPage')
 const UserManage = () => import('@/pages/UserManagePage')
 const CourseManage = () => import('@/pages/CourseManagePage')
+const CourseInfo = () => import('@/pages/CourseInfoPage')
 
 const routes = [
     {
@@ -39,7 +40,12 @@ const routes = [
         path: '/course_manage',
         name: 'course_manage',
         component: CourseManage
-    }
+    },
+    {
+        path: '/edit_course',
+        name: 'edit_course',
+        component: CourseInfo
+    },
 ]
 
 const router = new VueRouter({
