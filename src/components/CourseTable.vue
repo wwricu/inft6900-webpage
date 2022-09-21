@@ -29,8 +29,9 @@
             class="ml-4 mr-4"
         ></v-divider>
         <v-dialog
-            v-model="addCourseDialog"
             width="500"
+            v-if="isUserPage"
+            v-model="addCourseToUserDialog"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -40,7 +41,7 @@
                 v-on="on"
                 @click="getCoursesForAdd"
             >
-              Add courses
+              Add courses to user
             </v-btn>
           </template>
 
@@ -90,15 +91,92 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <v-dialog
+          v-else
+          width="500"
+          v-model="newCourseDialog"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+                color="success"
+                dark
+                v-bind="attrs"
+                v-on="on"
+            >
+              new course
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title class="text-h5 grey lighten-2">
+              Add a new Course
+            </v-card-title>
+            <v-container class="pa-10">
+              <v-row>
+                <v-col md="12">
+                  <v-text-field
+                    label="Course Name"
+                    v-model="newCourse.courseName"
+                  ></v-text-field>
+                </v-col>
+                <v-col md="12">
+                  <v-text-field
+                    label="Year"
+                    v-model="newCourse.year"
+                  ></v-text-field>
+                </v-col>
+                <v-col md="12">
+                  <v-text-field
+                    label="Semester/Trimester"
+                    v-model="newCourse.semester"
+                  ></v-text-field>
+                </v-col>
+                <v-col md="12">
+                  <v-text-field
+                      label="Begin Date"
+                      v-model="newCourse.beginDate"
+                  ></v-text-field>
+                </v-col>
+                <v-col md="12">
+                  <v-text-field
+                      label="End Date"
+                      v-model="newCourse.endDate"
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                  color="primary"
+                  text
+                  @click="addNewCourse"
+              >
+                CONFIRM
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-toolbar>
     </template>
-    <template v-slot:[`item.actions`]="{ item }">
+    <template
+        v-slot:[`item.actions`]="{ item }"
+    >
       <v-icon
           small
-          class="mr-2"
+          class="ml-3"
+          v-if="isUserPage"
           @click="deleteCourse(item)"
       >
         mdi-trash-can
+      </v-icon>
+      <v-icon
+          small
+          class="ml-3"
+          v-else
+          @click="manageCourse(item)"
+      >
+        mdi-pencil
       </v-icon>
     </template>
     <template v-slot:no-data>
@@ -138,15 +216,27 @@ export default {
         sortable: false
       },
     ],
-    // below is dialog data
-    addCourseDialog: false,
+    // below is add course to user dialog data
+    addCourseToUserDialog: false,
     addedCourses: [], // courseNameForShow:, courseID:
     coursesForAdd: [],
+    // add course dialog
+    newCourseDialog: false,
+    newCourse: {
+      courseName: '',
+      year: '',
+      semester: '',
+      beginDate: '',
+      endDate: '',
+    }
   }),
 
   computed: {
     courses: function() { // full course data for display
       return this.inputCourseData;
+    },
+    isUserPage: function() {
+      return this.sourcePage === 'UserManage';
     }
   },
 
@@ -157,12 +247,30 @@ export default {
     },
     userPermission: {
       type: Number,
-      required: true,
       default: 2
     },
     inputCourseData: {
       required: true,
+    },
+    sourcePage: {
+      type: String,
+      default: 'UserManage'
     }
+  },
+
+  created() {
+      this.headers.pop();
+      let action = 'Delete';
+      if (this.sourcePage === 'UserManage') {
+        action = 'Delete';
+      } else if (this.sourcePage === 'CourseManage') {
+        action = 'Edit Course'
+      }
+      this.headers.push({
+        text: action,
+        value: 'actions',
+        sortable: false
+      })
   },
 
   methods: {
@@ -219,7 +327,7 @@ export default {
         }
 
         window.scrollTo({
-          top: 1000, // to be fix
+          top: 1000, // to be fixed
           left: 0,
           behavior: 'smooth'
         })
@@ -230,7 +338,7 @@ export default {
     },
     addCoursesToUser() {
       console.log(this.addedCourses[0].courseOfferingID);
-      this.addCourseDialog = false;
+      this.addCourseToUserDialog = false;
       this.axios({
         method: "POST",
         url: 'http://localhost:5094/manage/relation',
@@ -249,6 +357,24 @@ export default {
       }).catch(function (err) {
         alert("err " + err);
       })
+    },
+    manageCourse(item) {
+      console.log(item);
+    },
+    addNewCourse() {
+      this.axios({
+        method: "POST",
+        url: 'http://localhost:5094/course/new',
+        data: this.newCourse,
+      }).then(res => {
+        if (res.data.status === "success") {
+          alert("added");
+          this.$parent.searchCourse()
+        }
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+      this.newCourseDialog = false;
     }
   }
 }

@@ -41,7 +41,7 @@
             md="2"
         >
           <v-btn
-            color="info"
+            color="primary"
             @click="searchUsers"
           >
             Search
@@ -80,7 +80,7 @@ export default {
     userTypeItems: [
       {userType: 'Student', permission: 1},
       {userType: 'Staff', permission: 2},
-      {userType: 'Admin', permission: 3},
+      // {userType: 'Admin', permission: 3},
     ],
     stringTypeSelect: {stringType: 'Number', parameter: 'userNumber'},
     stringTypeItems: [
