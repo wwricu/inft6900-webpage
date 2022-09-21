@@ -23,6 +23,93 @@
             single-line
             hide-details
         ></v-text-field>
+        <v-dialog
+            width="500"
+            v-if="isFromCoursePage"
+            v-model="addUserToCourseDialog"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+                color="success"
+                class="ml-4"
+                dark
+                v-bind="attrs"
+                v-on="on"
+                @click="getUsersForAdd"
+            >
+              Add users to course
+            </v-btn>
+          </template>
+
+          <v-card>
+            <v-card-title class="text-h5 grey lighten-2">
+              Add a User
+            </v-card-title>
+            <v-container>
+              <v-row no-gutters>
+                <v-col cols="8">
+                  <v-text-field
+                      class="justify-end ml-5"
+                      v-model="searchStringForUser"
+                      append-icon="mdi-magnify"
+                      label="Filter by user name"
+                      single-line
+                      hide-details
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="4" class="align-self-end">
+                  <v-btn
+                      class="justify-end ml-9"
+                      color="primary"
+                      @click="getUsersForAdd"
+                  >
+                    Filtrate
+                  </v-btn>
+                </v-col>
+                <v-col cols="12">
+                  <v-combobox
+                      solo
+                      chips
+                      clearable
+                      multiple
+                      return-object
+                      hide-selected
+                      item-text="userNameForShow"
+                      item-value="userNumber"
+                      label="Choose Available Courses"
+                      class="ml-4 mr-4 mt-6"
+                      v-model="addedUsers"
+                      :items="usersForAdd"
+                  >
+                    <template v-slot:selection="{ attrs, item, select, selected }">
+                      <v-chip
+                          v-bind="attrs"
+                          :input-value="selected"
+                          close
+                          @click="select"
+                          @click:close="removeAddUsers(item)"
+                      >
+                        <strong>{{ item.userNameForShow }}</strong>&nbsp;
+                      </v-chip>
+                    </template>
+                  </v-combobox>
+                </v-col>
+              </v-row>
+            </v-container>
+            <v-divider></v-divider>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                  color="primary"
+                  text
+                  @click="addUsersToCourse"
+              >
+                CONFIRM
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-toolbar>
     </template>
     <template v-slot:[`item.actions`]="{ item }">
@@ -47,7 +134,6 @@
 <script>
 export default {
   data: () => ({
-    permission: 2,
     search: '',
     headers: [
       {
@@ -79,6 +165,12 @@ export default {
       },
       { text: 'Edit', value: 'actions', sortable: false },
     ],
+    // below for from page course management
+    isFromCoursePage: true,
+    addUserToCourseDialog: false, // dialog switch
+    addedUsers: [],
+    usersForAdd: [],
+    searchStringForUser: '',
   }),
 
   computed: {
@@ -95,6 +187,18 @@ export default {
     },
     userData: {
       required: true,
+    },
+    sourcePage: {
+      type: String,
+      default: 'UserManage'
+    },
+    courseOfferingID: {
+      type: Number,
+      required: true,
+    },
+    permission: {
+      type: Number,
+      default: 2
     }
   },
 
@@ -106,9 +210,13 @@ export default {
       });
     },
     initialize () {
+      let url = "http://localhost:5094/manage/getusers?permission=";
+      if (this.sourcePage !== 'StudentManage') {
+        url.concat('2');
+      }
       this.axios({
         method: "GET",
-        url: "http://localhost:5094/manage/getusers?permission=2",
+        url: url,
       }).then(res => {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);
@@ -120,6 +228,65 @@ export default {
         alert("err " + err);
       })
     },
+
+    // below for from course page
+    getUsersForAdd() {
+      let addr = 'http://localhost:5094/manage/GetUsers?permission=2';
+      console.log(this.searchStringForUser.length);
+      if (this.searchStringForUser.length > 0) {
+        addr = addr.concat('&userName=').concat(this.searchStringForUser)
+      }
+
+      this.axios({
+        method: "GET",
+        url: addr,
+      }).then(res => {
+        if (res.data.status !== "success") {
+          alert("message: " + res.data.message);
+          return;
+        }
+        // this.users = res.data.obj;
+        this.usersForAdd = [];
+        for (const userItem of res.data.obj) {
+          this.usersForAdd.push({
+            userNameForShow: userItem.userNumber
+                                     .concat(' ')
+                                     .concat(userItem.userName),
+            userNumber: userItem.userNumber
+          })
+        }
+        console.log("success query");
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    },
+    removeAddUsers(item) {
+      this.addedUsers.splice(this.addedUsers.indexOf(item), 1)
+    },
+    addUsersToCourse() {
+      this.addCourseToUserDialog = false;
+      this.axios({
+        method: "POST",
+        url: 'http://localhost:5094/manage/relation',
+        data: {
+          courseOfferingID: this.courseOfferingID,
+          userAddList: this.addedCourses
+        },
+      }).then(res => {
+        if (res.data.status === "success") {
+          alert("updated");
+          if (this.$parent.searchCourse !== undefined) {
+            this.$parent.searchCourse()
+          }
+          if (this.$parent.searchUsers !== undefined) {
+            this.$parent.searchUsers(this.permission)
+          }
+          this.addUserToCourseDialog = false;
+        }
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    }
   }
 }
 </script>

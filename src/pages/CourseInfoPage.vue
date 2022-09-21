@@ -94,7 +94,7 @@
         >
           <v-btn
               color="primary"
-              @click="manageUser"
+              @click="searchUsers(2)"
           >
             Manage Course's User
           </v-btn>
@@ -113,19 +113,30 @@
       </v-row>
     </v-container>
   </v-card>
+    <UserTable
+        class="mt-8"
+        :userData="userData"
+        source-page="CourseManage"
+        userType="Staff"
+        :courseOfferingID="inputCourseInfo.courseOfferingID"
+        :permission="2"
+        v-show="userData.length > 0"
+    ></UserTable>
   </div>
 </template>
 
 <script>
+import UserTable from "@/components/UserTable";
 export default {
   name: "CourseInfoPage",
+  components: {UserTable},
   data: () => ({
     beginDate: '',
     endDate: '',
     menu1: false,
     menu2: false,
     inputCourseInfo: {
-      courseID: 0,
+      courseOfferingID: Number(0),
       courseName: '',
       year: '',
       semester: '',
@@ -139,11 +150,35 @@ export default {
         'Semester 2',
         'Trimester 2',
         'Trimester 3',
-    ]
+    ],
+    userData: []
   }),
   created() {
-    console.log(this.$route.params);
-    this.inputCourseInfo = this.$route.params;
+    let params = this.$route.params;
+    if (params.courseOfferingID !== undefined) {
+      console.log(params.courseOfferingID)
+      this.inputCourseInfo.courseOfferingID = params.courseOfferingID;
+    }
+    if (params.courseName !== undefined) {
+      console.log(params.courseName)
+      this.inputCourseInfo.courseName = params.courseName;
+    }
+    if (params.year !== undefined) {
+      console.log(params.year)
+      this.inputCourseInfo.year = params.year;
+    }
+    if (params.semester !== undefined) {
+      console.log(params.semester)
+      this.inputCourseInfo.semester = params.semester;
+    }
+    if (params.beginDate !== undefined) {
+      console.log(params.beginDate)
+      this.inputCourseInfo.beginDate = params.beginDate;
+    }
+    if (params.endDate !== undefined) {
+      console.log(params.endDate)
+      this.inputCourseInfo.endDate = params.endDate;
+    }
     this.semesterSelect = this.inputCourseInfo.semester;
   },
   computed: {
@@ -177,9 +212,26 @@ export default {
         alert("err " + err);
       })
     },
-    manageUser() {
-
-    }
+    searchUsers(permission) {
+      console.log(this.inputCourseInfo.courseOfferingID);
+      let addr = 'http://localhost:5094/manage/getusers?permission='
+                  .concat(permission.toString())
+                  .concat('&courseOfferingID=')
+                  .concat(this.inputCourseInfo.courseOfferingID.toString());
+      this.axios({
+        method: "GET",
+        url: addr,
+      }).then(res => {
+        if (res.data.status !== "success") {
+          alert("message: " + res.data.message);
+          return;
+        }
+        this.userData = res.data.obj;
+        console.log("success query");
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    },
   }
 }
 </script>
