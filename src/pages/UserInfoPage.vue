@@ -177,7 +177,7 @@
 <script>
 import md5 from 'md5-js';
 import CourseTable from "@/components/CourseTable";
-import { store } from "@/main.js";
+import { store } from "@/global.js";
 
 export default {
   name: "UserInfoPage",

@@ -140,7 +140,7 @@
   </v-data-table>
 </template>
 <script>
-import { store } from '@/main.js';
+import { store } from '@/global.js';
 
 export default {
   data: () => ({

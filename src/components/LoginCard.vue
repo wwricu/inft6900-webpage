@@ -51,7 +51,6 @@
 
 <script>
 import md5 from 'md5-js'
-import { store } from '@/main';
 
 export default {
   name: "LoginCard",
@@ -70,24 +69,13 @@ export default {
           alert("message: " + res.data.message);
           return;
         }
-        console.log(res.data.obj)
-        store.loginStatus = true;
-        store.role = store.roles[res.data.obj[0].permission];
-        const nameArray = res.data.obj[0].userName.split(' ');
-        console.log(nameArray)
-        store.name = nameArray[0];
-        store.AVN = nameArray[0].substring(0,1);
-
-        for (let i = 1; i < nameArray.length; i++) {
-          store.name = store.name.concat(' ').concat(nameArray[i]);
-          store.AVN = store.AVN.concat(' ')
-                           .concat(nameArray[i].substring(0,1));
-        }
+        this.$changeLoginStatus(res);
         this.$router.push('/');
       }).catch(function (err) {
         alert("err " + err);
       })
     },
+
   },
   data: () => ({
     userNumber: '',

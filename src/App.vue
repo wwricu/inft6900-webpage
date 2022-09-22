@@ -66,13 +66,17 @@
 </template>
 
 <script>
-import { store } from '@/main.js';
+import { store } from '@/global.js';
 
 export default {
   name: 'App',
 
   components: {
 
+  },
+
+  created() {
+    this.$autoLogin();
   },
 
   computed: {
