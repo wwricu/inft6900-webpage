@@ -348,7 +348,7 @@ export default {
 
   methods: {
     deleteCourseFromUser(item) {
-      this.axios({
+      this.$axios({
         method: "POST",
         url: 'http://localhost:5094/manage/relation',
         data: {
@@ -373,7 +373,7 @@ export default {
       this.addedCourses.splice(this.addedCourses.indexOf(item), 1)
     },
     getCoursesForAdd() {
-      this.axios({
+      this.$axios({
         method: "GET",
         url: 'http://localhost:5094/course/get',
       }).then(res => {
@@ -409,7 +409,7 @@ export default {
     addCoursesToUser() {
       console.log(this.addedCourses[0].courseOfferingID);
       this.addCourseToUserDialog = false;
-      this.axios({
+      this.$axios({
         method: "POST",
         url: 'http://localhost:5094/manage/relation',
         data: {
@@ -434,7 +434,7 @@ export default {
       });
     },
     deleteCourse(item) {
-      this.axios({
+      this.$axios({
         method: "POST",
         url: 'http://localhost:5094/course/delete',
         data: item,
@@ -447,7 +447,7 @@ export default {
       })
     },
     addNewCourse() {
-      this.axios({
+      this.$axios({
         method: "POST",
         url: 'http://localhost:5094/course/new',
         data: this.newCourse,

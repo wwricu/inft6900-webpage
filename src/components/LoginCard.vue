@@ -57,7 +57,7 @@ export default {
   name: "LoginCard",
   methods: {
     login() {
-      this.axios({
+      this.$axios({
         method: "post",
         url: "http://localhost:5094/auth/password",
         headers: {"Content-Type": "application/json"},

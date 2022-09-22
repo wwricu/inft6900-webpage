@@ -98,7 +98,7 @@ export default {
               + this.userTypeSelect.permission.toString()
               + "&" + this.stringTypeSelect.parameter
               + '=' + this.searchString;
-      this.axios({
+      this.$axios({
         method: "GET",
         url: addr,
       }).then(res => {

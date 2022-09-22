@@ -168,7 +168,7 @@ export default {
   },
   methods: {
     init(courseID) {
-      this.axios({
+      this.$axios({
         method: "GET",
         url: 'http://localhost:5094/course/get?courseOfferingID='
             .concat(courseID),
@@ -187,7 +187,7 @@ export default {
       })
     },
     updateCourse() {
-      this.axios({
+      this.$axios({
         method: "POST",
         url: 'http://localhost:5094/course/update',
         data: this.inputCourseInfo,
@@ -207,7 +207,7 @@ export default {
                   .concat(permission.toString())
                   .concat('&courseOfferingID=')
                   .concat(this.inputCourseInfo.courseOfferingID.toString());
-      this.axios({
+      this.$axios({
         method: "GET",
         url: addr,
       }).then(res => {

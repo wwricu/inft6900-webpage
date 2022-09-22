@@ -216,7 +216,7 @@ export default {
   },
   methods: {
     initUser(userNumber) {
-      this.axios({
+      this.$axios({
         method: "GET",
         url: 'http://localhost:5094/manage/getusers?userNumber='
                 .concat(userNumber).concat('&permission=')
@@ -241,7 +241,7 @@ export default {
           .concat(this.inputInfo.userNameArray[1])
           .concat(' ')
           .concat(this.inputInfo.userNameArray[2]);
-      this.axios({
+      this.$axios({
         method: "POST",
         url: 'http://localhost:5094/manage/updateuser',
         data: this.inputInfo,
@@ -264,7 +264,7 @@ export default {
       this.inputInfo.permission = this.userTypeSelect.permission;
       this.inputInfo.passwordHash = md5(password);
       this.inputInfo.birthdate = this.formatDate(this.inputInfo.birthdate,'toData');
-      this.axios({
+      this.$axios({
         method: "POST",
         url: 'http://localhost:5094/manage/adduser',
         data: this.inputInfo,
@@ -287,7 +287,7 @@ export default {
       })
     },
     deleteUser() {
-      this.axios({
+      this.$axios({
         method: "DELETE",
         url: 'http://localhost:5094/manage/Delete?userNumber='
               .concat(this.inputInfo.userNumber),
@@ -311,7 +311,7 @@ export default {
       this.searchCourse();
     },
     searchCourse() {
-      this.axios({
+      this.$axios({
         method: "GET",
         url: 'http://localhost:5094/course/get?userNumber='
                 .concat(this.inputInfo.userNumber)

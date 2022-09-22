@@ -90,7 +90,7 @@ export default {
         this.showTable = true;
       }
 
-      this.axios({
+      this.$axios({
         method: "POST",
         url: 'http://localhost:5094/course/getmultiple',
         data: {

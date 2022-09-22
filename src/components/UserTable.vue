@@ -234,7 +234,7 @@ export default {
       if (this.searchStringForUser.length > 0) {
         addr = addr.concat('&userName=').concat(this.searchStringForUser)
       }
-      this.axios({
+      this.$axios({
         method: "GET",
         url: addr,
       }).then(res => {
@@ -262,7 +262,7 @@ export default {
     },
     addUsersToCourse() {
       this.addCourseToUserDialog = false;
-      this.axios({
+      this.$axios({
         method: "POST",
         url: 'http://localhost:5094/manage/relation',
         data: {
@@ -287,7 +287,7 @@ export default {
       })
     },
     removeCourseFromUser(item) {
-      this.axios({
+      this.$axios({
         method: "POST",
         url: 'http://localhost:5094/manage/relation',
         data: {

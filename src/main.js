@@ -5,7 +5,7 @@ import vuetify from './plugins/vuetify'
 import router from './route/index'
 import axios from "axios"
 
-Vue.prototype.axios = axios
+Vue.prototype.$axios = axios
 Vue.config.productionTip = false
 
 export const store = reactive({
