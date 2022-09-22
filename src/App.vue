@@ -8,22 +8,67 @@
     >
       <v-app-bar-nav-icon
         color="primary"
-        @click="showMenu = loginStatus"></v-app-bar-nav-icon>
+        @click="()=>{this.showMenu = this.loginStatus}"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
       <v-btn
           text
           class="primary white--text"
-          v-if="loginStatus===false"
+          v-show="loginStatus===false"
           v-on:click="function(){$router.push('/login')}"
       >
         Login
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
-      <v-avatar
-          color="primary"
-          size="36"
-          v-if="loginStatus===true"
-      >{{AVN}}</v-avatar>
+      <v-container
+          fluid
+          v-show="loginStatus===true"
+      >
+        <v-row justify="end" align="center">
+          <v-menu
+              bottom
+              min-width="200px"
+              rounded
+              offset-y
+          >
+            <template v-slot:activator="{ on }">
+              <v-btn
+                  icon
+                  x-large
+                  v-on="on"
+              >
+                <v-avatar
+                    color="primary"
+                    size="40"
+                >
+                  {{ AVN }}
+                </v-avatar>
+              </v-btn>
+            </template>
+            <v-card>
+              <v-list-item-content class="justify-center">
+                <div class="mx-auto text-center">
+                  <v-btn
+                      depressed
+                      rounded
+                      text
+                  >
+                    Edit Account
+                  </v-btn>
+                  <v-divider class="my-3"></v-divider>
+                  <v-btn
+                      depressed
+                      rounded
+                      text
+                      @click="logOut"
+                  >
+                    Disconnect
+                  </v-btn>
+                </div>
+              </v-list-item-content>
+            </v-card>
+          </v-menu>
+        </v-row>
+      </v-container>
     </v-app-bar>
     <v-navigation-drawer
         app
@@ -118,5 +163,19 @@ export default {
       ],
     },
   }),
+  methods: {
+    logOut() {
+      localStorage.removeItem("JWT");
+      this.$axios({
+        method: "DELETE",
+        url: 'http://localhost:5094/auth/logout'
+      }).then(() => {
+        alert('Log out!');
+        location.reload();
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    }
+  }
 };
 </script>

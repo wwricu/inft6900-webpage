@@ -22,11 +22,10 @@ export const store = reactive({
 })
 
 export function autoLogin() {
-    let jwt = localStorage.getItem("JWT");
     Vue.prototype.$axios({
         method: "POST",
-        url: "http://localhost:5094/auth/token",
-        data: jwt
+        url: "http://localhost:5094/auth/token?token="
+            .concat(localStorage.getItem(("JWT"))),
     }).then(res => {
         if (res.data.status !== "success") {
             Vue.prototype.$router.push('/login').then();
@@ -49,8 +48,7 @@ export function changeLoginStatus(res) {
 
     for (let i = 1; i < nameArray.length; i++) {
         store.name = store.name.concat(' ').concat(nameArray[i]);
-        store.AVN = store.AVN.concat(' ')
-            .concat(nameArray[i].substring(0,1));
+        store.AVN = store.AVN.concat(nameArray[i].substring(0,1));
     }
 }
 
