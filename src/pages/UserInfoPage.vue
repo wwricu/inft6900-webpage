@@ -130,9 +130,10 @@
     </v-form>
     <div class="d-flex">
       <v-btn
+        class="ma-2"
         color="primary"
         @click="switchTable"
-        class="ma-2"
+        v-if="$route.params.action==='Edit'"
       >
           Manage User's Course
       </v-btn>
@@ -149,6 +150,7 @@
         class="ma-2"
         color="success"
         @click="updateUser()"
+        v-if="$route.params.action==='Edit'"
       >
         Update User
       </v-btn>
@@ -156,6 +158,7 @@
         class="ma-2"
         color="error"
         @click="deleteUser"
+        v-if="$route.params.action==='Edit'"
       >
         Delete User
       </v-btn>
@@ -285,12 +288,9 @@ export default {
     },
     deleteUser() {
       this.axios({
-        method: "POST",
-        url: 'http://localhost:5094/manage/updateuser',
-        data: {
-          userNumber: this.inputInfo.userNumber,
-          permission: 0
-        },
+        method: "DELETE",
+        url: 'http://localhost:5094/manage/Delete?userNumber='
+              .concat(this.inputInfo.userNumber),
       }).then(res => {
         if (res.data.status === "success") {
           alert("deleted!");
