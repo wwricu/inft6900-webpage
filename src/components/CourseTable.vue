@@ -212,11 +212,19 @@
       </v-icon>
       <v-icon
           small
-          class="ml-3"
-          v-else
+          class="ml-6"
+          v-if="sourcePage === 'course_manage'"
           @click="manageCourse(item)"
       >
         mdi-pencil
+      </v-icon>
+      <v-icon
+          small
+          class="ml-3"
+          v-if="sourcePage === 'course_manage'"
+          @click="deleteCourse(item)"
+      >
+        mdi-trash-can
       </v-icon>
     </template>
     <template v-slot:no-data>
@@ -328,7 +336,7 @@ export default {
       action = 'Delete';
     } else if (this.$route.path.match(/^\/course_manage/i)) {
       this.sourcePage = 'course_manage';
-      action = 'Edit Course'
+      action = 'Edit/Delete Course'
     }
     this.headers.pop();
     this.headers.push({
@@ -424,6 +432,19 @@ export default {
       this.$router.push({
         path: `course/Edit/${item.courseOfferingID}`,
       });
+    },
+    deleteCourse(item) {
+      this.axios({
+        method: "POST",
+        url: 'http://localhost:5094/course/delete',
+        data: item,
+      }).then(res => {
+        if (res.data.status === "success") {
+          alert("deleted");
+        }
+      }).catch(function (err) {
+        alert("err " + err);
+      })
     },
     addNewCourse() {
       this.axios({
