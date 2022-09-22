@@ -125,22 +125,62 @@
                   ></v-text-field>
                 </v-col>
                 <v-col md="12">
-                  <v-text-field
-                    label="Semester/Trimester"
-                    v-model="newCourse.semester"
-                  ></v-text-field>
+                  <v-select
+                      label="Semester/Trimester"
+                      v-model="semesterSelect"
+                      :items="semesterItems"
+                  >
+                  </v-select>
                 </v-col>
                 <v-col md="12">
-                  <v-text-field
-                      label="Begin Date"
-                      v-model="newCourse.beginDate"
-                  ></v-text-field>
+                  <v-menu
+                      ref="menu1"
+                      v-model="menu1"
+                      :close-on-content-click="true"
+                      transition="scale-transition"
+                      offset-y
+                      max-width="290px"
+                      min-width="auto">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                          v-model="newCourse.beginDate"
+                          label="Begin Date"
+                          persistent-hint
+                          prepend-icon="mdi-calendar"
+                          v-bind="attrs"
+                          v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                        v-model="pickerBeginDate"
+                        no-title
+                    ></v-date-picker>
+                  </v-menu>
                 </v-col>
                 <v-col md="12">
-                  <v-text-field
-                      label="End Date"
-                      v-model="newCourse.endDate"
-                  ></v-text-field>
+                  <v-menu
+                      ref="menu1"
+                      v-model="menu2"
+                      :close-on-content-click="true"
+                      transition="scale-transition"
+                      offset-y
+                      max-width="290px"
+                      min-width="auto">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                          v-model="newCourse.endDate"
+                          label="End Date"
+                          persistent-hint
+                          prepend-icon="mdi-calendar"
+                          v-bind="attrs"
+                          v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                        v-model="pickerEndDate"
+                        no-title
+                    ></v-date-picker>
+                  </v-menu>
                 </v-col>
               </v-row>
             </v-container>
@@ -221,6 +261,18 @@ export default {
     addedCourses: [], // courseNameForShow:, courseID:
     coursesForAdd: [],
     // add course dialog
+    semesterSelect: [],
+    semesterItems: [
+      'Semester 1',
+      'Trimester 1',
+      'Semester 2',
+      'Trimester 2',
+      'Trimester 3',
+    ],
+    pickerBeginDate: null,
+    pickerEndDate: null,
+    menu1: false,
+    menu2: false,
     newCourseDialog: false,
     newCourse: {
       courseName: '',
@@ -230,7 +282,24 @@ export default {
       endDate: '',
     }
   }),
-
+  watch: {
+    pickerBeginDate: {
+      handler(beginDate) {
+        if (beginDate == null) return;
+        const [year, month, day] = beginDate.split('-');
+        this.newCourse.beginDate = `${day}-${month}-${year}`;
+      },
+      immediate: true,
+    },
+    pickerEndDate: {
+      handler(endDate) {
+        if (endDate == null) return;
+        const [year, month, day] = endDate.split('-');
+        this.newCourse.endDate = `${day}-${month}-${year}`;
+      },
+      immediate: true,
+    },
+  },
   computed: {
     courses: function() { // full course data for display
       return this.inputCourseData;
