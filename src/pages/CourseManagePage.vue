@@ -8,6 +8,7 @@
               md="3"
           >
               <v-combobox
+                  class="mt-2"
                   v-model="yearSelect"
                   :items="yearItems"
                   label="Choose Year"
@@ -21,6 +22,7 @@
               md="3"
           >
             <v-combobox
+                class="mt-2"
                 v-model="semesterSelect"
                 :items="semesterItems"
                 label="Choose Semester/Trimester"
