@@ -1,6 +1,7 @@
 <template>
   <div class="pa-8">
   <v-card class="pt-4 pb-4 pl-8 pr-8 mb-8">
+    <v-card-title>Search Users</v-card-title>
     <v-container>
       <v-row>
         <v-col
@@ -113,13 +114,7 @@ export default {
     },
     addUser() {
       this.$router.push({
-        name:'add_user',
-        params: {
-          userNumber: '',
-          email: '',
-          phone: '',
-          academic: '',
-        }
+        path:'/user/Add/User/0',
       })
     }
   }

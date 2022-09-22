@@ -14,7 +14,7 @@
           text
           class="primary white--text"
           v-if="loginStatus===false"
-          v-on:click="function(){$router.push('login')}"
+          v-on:click="function(){$router.push('/login')}"
       >
         Login
         <v-icon>mdi-open-in-new</v-icon>

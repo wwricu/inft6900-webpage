@@ -19,6 +19,12 @@ export const store = reactive({
     'Staff',
     'Admin'
   ],
+  rolesMap: {
+    User: 0,
+    Student: 1,
+    Staff: 2,
+    Admin: 3,
+  },
   AVN: 'WW'
 })
 

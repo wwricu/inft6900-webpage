@@ -140,6 +140,8 @@
   </v-data-table>
 </template>
 <script>
+import { store } from '@/main.js';
+
 export default {
   data: () => ({
     search: '',
@@ -221,8 +223,7 @@ export default {
   methods: {
     editUser(item) {
       this.$router.push({
-        name:'edit_user',
-        params: item
+        path: `/user/Edit/${store.roles[item.permission]}/${item.userNumber}`,
       });
     },
 

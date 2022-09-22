@@ -32,6 +32,11 @@ const routes = [
         component: UserInfo,
     },
     {
+        path: '/user/:action/:role/:userNumber',
+        name: 'edit_user',
+        component: UserInfo,
+    },
+    {
         path: '/user_manage',
         name: 'user_manage',
         component: UserManage,
