@@ -216,7 +216,7 @@ export default {
         sortable: false
       },
     ],
-    // below is add course to user dialog data
+    // below is adding course to user dialog data
     addCourseToUserDialog: false,
     addedCourses: [], // courseNameForShow:, courseID:
     coursesForAdd: [],

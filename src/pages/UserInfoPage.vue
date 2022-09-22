@@ -353,7 +353,7 @@ export default {
         this.courseData = res.data.obj;
 
         window.scrollTo({
-          top: 1000, // to be fix
+          top: 1000, // to be fixed
           left: 0,
           behavior: 'smooth'
         })
