@@ -1,6 +1,9 @@
 <template>
   <div class="pa-8">
-  <v-card>
+  <v-card class="pt-4 pl-8 pr-8 pb-8">
+    <v-card-title>
+      {{$route.params.action}} Course
+    </v-card-title>
     <v-form>
       <v-container>
         <v-row class="d-flex justify-end">
@@ -41,7 +44,7 @@
                 min-width="auto">
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                    v-model="beginDateFormatted"
+                    v-model="inputCourseInfo.beginDate"
                     label="Begin Date"
                     persistent-hint
                     prepend-icon="mdi-calendar"
@@ -50,7 +53,7 @@
                 ></v-text-field>
               </template>
               <v-date-picker
-                  v-model="beginDate"
+                  v-model="pickerBeginDate"
                   no-title
               ></v-date-picker>
             </v-menu>
@@ -66,7 +69,7 @@
                 min-width="auto">
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                    v-model="endDateFormatted"
+                    v-model="inputCourseInfo.endDate"
                     label="End Date"
                     persistent-hint
                     prepend-icon="mdi-calendar"
@@ -75,7 +78,7 @@
                 ></v-text-field>
               </template>
               <v-date-picker
-                  v-model="endDate"
+                  v-model="pickerEndDate"
                   no-title
               ></v-date-picker>
             </v-menu>
@@ -83,35 +86,23 @@
         </v-row>
       </v-container>
     </v-form>
-    <v-container>
-      <v-row
-          no-gutters
-          justify-md="end"
+    <div class="d-flex">
+      <v-btn
+        class="ma-2"
+        color="primary"
+        @click="searchUsers(2)"
       >
-        <v-col
-            md="3"
-            class="mr-2"
-        >
-          <v-btn
-              color="primary"
-              @click="searchUsers(2)"
-          >
-            Manage Course's User
-          </v-btn>
-        </v-col>
-        <v-col
-            md="2"
-            class="mr-2"
-        >
-          <v-btn
-              color="success"
-              @click="updateCourse()"
-          >
-            Update Course
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
+        Manage Course's User
+      </v-btn>
+      <v-spacer></v-spacer>
+      <v-btn
+        class="ma-2"
+        color="success"
+        @click="updateCourse()"
+      >
+        Update Course
+      </v-btn>
+    </div>
   </v-card>
     <UserTable
         class="mt-8"
@@ -131,8 +122,8 @@ export default {
   name: "CourseInfoPage",
   components: {UserTable},
   data: () => ({
-    beginDate: '',
-    endDate: '',
+    pickerBeginDate: '',
+    pickerEndDate: '',
     menu1: false,
     menu2: false,
     inputCourseInfo: {
@@ -154,52 +145,48 @@ export default {
     showTable: false,
     userData: []
   }),
-  created() {
-    let params = this.$route.params;
-    if (params.courseOfferingID !== undefined) {
-      console.log(params.courseOfferingID)
-      this.inputCourseInfo.courseOfferingID = params.courseOfferingID;
-    }
-    if (params.courseName !== undefined) {
-      console.log(params.courseName)
-      this.inputCourseInfo.courseName = params.courseName;
-    }
-    if (params.year !== undefined) {
-      console.log(params.year)
-      this.inputCourseInfo.year = params.year;
-    }
-    if (params.semester !== undefined) {
-      console.log(params.semester)
-      this.inputCourseInfo.semester = params.semester;
-    }
-    if (params.beginDate !== undefined) {
-      console.log(params.beginDate)
-      this.inputCourseInfo.beginDate = params.beginDate;
-    }
-    if (params.endDate !== undefined) {
-      console.log(params.endDate)
-      this.inputCourseInfo.endDate = params.endDate;
-    }
-    this.semesterSelect = this.inputCourseInfo.semester;
-  },
-  computed: {
-    beginDateFormatted: function() {
-      if (!this.beginDate) return null
-
-      const [year, month, day] = this.beginDate.split('-');
-      return `${day}-${month}-${year}`;
+  watch: {
+    pickerBeginDate: {
+      handler(beginDate) {
+        if (beginDate == null) return;
+        const [year, month, day] = beginDate.split('-');
+        this.inputCourseInfo.beginDate = `${day}-${month}-${year}`;
+      },
+      immediate: true,
     },
-    endDateFormatted: function() {
-      if (!this.endDate) return null
-
-      const [year, month, day] = this.endDate.split('-');
-      return `${day}-${month}-${year}`;
-    }
+    pickerEndDate: {
+      handler(endDate) {
+        if (endDate == null) return;
+        const [year, month, day] = endDate.split('-');
+        this.inputCourseInfo.endDate = `${day}-${month}-${year}`;
+      },
+      immediate: true,
+    },
+  },
+  created() {
+    this.init(this.$route.params.courseID);
   },
   methods: {
+    init(courseID) {
+      this.axios({
+        method: "GET",
+        url: 'http://localhost:5094/course/get?courseOfferingID='
+            .concat(courseID),
+      }).then(res => {
+        if (res.data.status !== "success") {
+          alert("message: " + res.data.message);
+          return;
+        }
+
+        this.inputCourseInfo = res.data.obj[0];
+        this.semesterSelect = this.inputCourseInfo.semester;
+
+        console.log("success query");
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    },
     updateCourse() {
-      this.inputCourseInfo.beginDate = this.beginDateFormatted;
-      this.inputCourseInfo.endDate = this.endDate;
       this.axios({
         method: "POST",
         url: 'http://localhost:5094/course/update',
@@ -207,7 +194,7 @@ export default {
       }).then(res => {
         if (res.data.status === "success") {
           alert("added");
-          this.$router.push('course_manage');
+          this.$router.push('/course_manage');
         }
       }).catch(function (err) {
         alert("err " + err);

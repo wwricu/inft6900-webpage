@@ -22,19 +22,14 @@ const routes = [
         component: Login,
     },
     {
-        path: '/add_user',
-        name: 'add_user',
-        component: UserInfo,
-    },
-    {
-        path: '/edit_user',
-        name: 'edit_user',
-        component: UserInfo,
-    },
-    {
         path: '/user/:action/:role/:userNumber',
         name: 'edit_user',
         component: UserInfo,
+    },
+    {
+        path: '/course/:action/:courseID',
+        name: 'edit_user',
+        component: CourseInfo,
     },
     {
         path: '/user_manage',

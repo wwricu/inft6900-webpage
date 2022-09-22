@@ -357,8 +357,7 @@ export default {
     },
     manageCourse(item) {
       this.$router.push({
-        name:'edit_course',
-        params: item
+        path: `course/Edit/${item.courseOfferingID}`,
       });
     },
     addNewCourse() {
