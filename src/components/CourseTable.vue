@@ -30,7 +30,7 @@
         ></v-divider>
         <v-dialog
             width="500"
-            v-if="isUserPage"
+            v-if="$route.path === '/user/Edit/Staff/04014525'"
             v-model="addCourseToUserDialog"
         >
           <template v-slot:activator="{ on, attrs }">
@@ -205,8 +205,8 @@
       <v-icon
           small
           class="ml-3"
-          v-if="isUserPage"
-          @click="deleteCourse(item)"
+          v-if="sourcePage === 'user'"
+          @click="deleteCourseFromUser(item)"
       >
         mdi-trash-can
       </v-icon>
@@ -232,6 +232,7 @@
 export default {
   name: "CourseTable",
   data: () => ({
+    sourcePage: '',
     search: '',
     headers: [
       {
@@ -304,9 +305,6 @@ export default {
     courses: function() { // full course data for display
       return this.inputCourseData;
     },
-    isUserPage: function() {
-      return this.sourcePage === 'UserManage';
-    }
   },
 
   props: {
@@ -321,29 +319,27 @@ export default {
     inputCourseData: {
       required: true,
     },
-    sourcePage: {
-      type: String,
-      default: 'UserManage'
-    }
   },
 
   created() {
-      this.headers.pop();
-      let action = 'Delete';
-      if (this.sourcePage === 'UserManage') {
-        action = 'Delete';
-      } else if (this.sourcePage === 'CourseManage') {
-        action = 'Edit Course'
-      }
-      this.headers.push({
-        text: action,
-        value: 'actions',
-        sortable: false
-      })
+    let action = 'Delete';
+    if (this.$route.path.match(/^\/user/i)) {
+      this.sourcePage = 'user';
+      action = 'Delete';
+    } else if (this.$route.path.match(/^\/course_manage/i)) {
+      this.sourcePage = 'course_manage';
+      action = 'Edit Course'
+    }
+    this.headers.pop();
+    this.headers.push({
+      text: action,
+      value: 'actions',
+      sortable: false
+    })
   },
 
   methods: {
-    deleteCourse(item) {
+    deleteCourseFromUser(item) {
       this.axios({
         method: "POST",
         url: 'http://localhost:5094/manage/relation',
