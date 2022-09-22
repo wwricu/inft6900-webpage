@@ -52,9 +52,10 @@
 
             <v-combobox
                 solo
-                chips
-                clearable
                 multiple
+                clearable
+                small-chips
+                hide-selected
                 return-object
                 item-text="courseNameForShow"
                 item-value="courseOfferingID"

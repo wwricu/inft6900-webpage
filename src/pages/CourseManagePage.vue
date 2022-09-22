@@ -1,6 +1,7 @@
 <template>
   <div class="pa-8">
     <v-card class="pt-4 pb-4 pl-8 pr-8 mb-8">
+      <v-card-title>Search Courses</v-card-title>
       <v-container>
         <v-row>
           <v-col
@@ -11,7 +12,9 @@
                   :items="yearItems"
                   label="Choose Year"
                   multiple
-                  chips
+                  clearable
+                  small-chips
+                  hide-selected
               ></v-combobox>
           </v-col>
           <v-col
@@ -22,12 +25,13 @@
                 :items="semesterItems"
                 label="Choose Semester/Trimester"
                 multiple
-                chips
+                clearable
+                small-chips
+                hide-selected
             ></v-combobox>
           </v-col>
           <v-col
               md="4"
-              align-self="end"
           >
             <v-text-field
                 label="Course Name"

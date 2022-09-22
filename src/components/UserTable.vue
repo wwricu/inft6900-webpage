@@ -69,7 +69,7 @@
                 <v-col cols="12">
                   <v-combobox
                       solo
-                      chips
+                      small-chips
                       clearable
                       multiple
                       return-object
