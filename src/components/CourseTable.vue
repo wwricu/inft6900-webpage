@@ -237,6 +237,8 @@
   </v-data-table>
 </template>
 <script>
+import {store} from "@/global";
+
 export default {
   name: "CourseTable",
   data: () => ({
@@ -313,16 +315,15 @@ export default {
     courses: function() { // full course data for display
       return this.inputCourseData;
     },
+    userPermission: function() {
+      return store.rolesMap[this.$route.params.role];
+    }
   },
 
   props: {
     userNumber: {
       type: String,
       default: '04014525'
-    },
-    userPermission: {
-      type: Number,
-      default: 2
     },
     inputCourseData: {
       required: true,
@@ -375,7 +376,10 @@ export default {
     getCoursesForAdd() {
       this.$axios({
         method: "GET",
-        url: 'http://localhost:5094/course/get',
+        url: 'http://localhost:5094/course/getCandidates?userNumber='
+                      .concat(this.userNumber)
+                      .concat('&permission=')
+                      .concat(this.userPermission.toString()),
       }).then(res => {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);

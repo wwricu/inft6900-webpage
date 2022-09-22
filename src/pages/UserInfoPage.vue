@@ -248,7 +248,7 @@ export default {
       }).then(res => {
         if (res.data.status === "success") {
           alert("updated");
-          this.$router.push('user_manage')
+          this.$router.push('/user_manage')
         }
       }).catch(function (err) {
         alert("err " + err);
