@@ -229,8 +229,10 @@ export default {
 
     // below for from course page
     getUsersForAdd() {
-      let addr = 'http://localhost:5094/manage/GetUsers?permission=';
-      addr = addr.concat(this.permission.toString());
+      let addr = 'http://localhost:5094/manage/GetCandidates?permission='
+                      .concat(this.permission.toString())
+                      .concat('&courseOfferingID=')
+                      .concat(this.courseOfferingID.toString());
       if (this.searchStringForUser.length > 0) {
         addr = addr.concat('&userName=').concat(this.searchStringForUser)
       }
