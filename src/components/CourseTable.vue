@@ -447,6 +447,7 @@ export default {
       })
     },
     addNewCourse() {
+      this.newCourse.semester = this.semesterSelect;
       this.$axios({
         method: "POST",
         url: 'http://localhost:5094/course/new',
