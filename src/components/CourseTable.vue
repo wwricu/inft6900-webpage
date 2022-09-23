@@ -30,7 +30,7 @@
         ></v-divider>
         <v-dialog
             width="500"
-            v-if="$route.path === '/user/Edit/Staff/04014525'"
+            v-if="sourcePage === 'user'"
             v-model="addCourseToUserDialog"
         >
           <template v-slot:activator="{ on, attrs }">

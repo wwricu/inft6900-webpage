@@ -10,7 +10,7 @@
       <v-toolbar
           flat
       >
-        <v-toolbar-title>{{ userType }} Data</v-toolbar-title>
+        <v-toolbar-title>{{ tableUserType }} Data</v-toolbar-title>
         <v-divider
             class="ml-6 mx-4"
             inset
@@ -186,15 +186,13 @@ export default {
   computed: {
     users: function() {
       return this.userData;
+    },
+    tableUserType: function() {
+      return store.roles[this.permission]
     }
   },
 
   props: {
-    userType: {
-      type: String,
-      required: true,
-      default: 'Staff'
-    },
     userData: {
       required: true,
     },
@@ -216,7 +214,7 @@ export default {
       this.isFromCoursePage = true;
       this.headers.pop()
       this.headers.push(
-        { text: 'Delete From Course', value: 'actions', sortable: false }
+        { text: 'Remove From Course', value: 'actions', sortable: false }
       )
     }
   },

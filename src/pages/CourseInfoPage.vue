@@ -87,16 +87,28 @@
       </v-container>
     </v-form>
     <div class="d-flex">
-      <v-btn
-        class="ma-2"
-        color="primary"
-        @click="searchUsers(2)"
-      >
-        Manage Course's User
-      </v-btn>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+              color="primary"
+              dark
+              v-bind="attrs"
+              v-on="on"
+          >
+            Manage Users in Course
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item @click="searchUsers(1)">
+            <v-list-item-title>Student</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="searchUsers(2)">
+            <v-list-item-title>Staff</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-spacer></v-spacer>
       <v-btn
-        class="ma-2"
         color="success"
         @click="updateCourse()"
       >
@@ -108,9 +120,8 @@
         class="mt-8"
         :userData="userData"
         source-page="CourseManage"
-        userType="Staff"
         :courseOfferingID="inputCourseInfo.courseOfferingID"
-        :permission="2"
+        :permission="userTablePermission"
         v-show="showTable"
     ></UserTable>
   </div>
@@ -142,7 +153,9 @@ export default {
         'Trimester 2',
         'Trimester 3',
     ],
+    // below for user table
     showTable: false,
+    userTablePermission: 2,
     userData: []
   }),
   watch: {
@@ -203,6 +216,7 @@ export default {
     },
     searchUsers(permission) {
       console.log(this.inputCourseInfo.courseOfferingID);
+      this.userTablePermission = permission;
       this.showTable = true;
       let addr = 'http://localhost:5094/manage/GetUsersByCourse?permission='
                   .concat(permission.toString())

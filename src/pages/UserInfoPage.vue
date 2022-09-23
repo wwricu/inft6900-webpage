@@ -2,7 +2,7 @@
   <div class="pa-8">
   <v-card class="pt-4 pl-8 pr-8 pb-4">
     <v-card-title>
-      {{ $route.params.action }}&ensp;
+      {{ $route.params.action }}
       {{ $route.params.role }}</v-card-title>
     <v-form>
       <v-container>
