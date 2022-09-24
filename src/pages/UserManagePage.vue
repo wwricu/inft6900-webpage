@@ -94,13 +94,15 @@ export default {
   }),
   methods: {
     searchUsers() {
-      let addr = 'http://localhost:5094/manage/getusers?permission='
-              + this.userTypeSelect.permission.toString()
-              + "&" + this.stringTypeSelect.parameter
-              + '=' + this.searchString;
+      let url = 'http://localhost:5094/manage/getusers'
+          .concat(`?permission=${this.userTypeSelect.permission.toString()}`)
+      if (this.searchString.length > 0) {
+        url = url.concat(`&${this.stringTypeSelect.parameter}`)
+                 .concat(`=${this.searchString}`)
+      }
       this.$axios({
         method: "GET",
-        url: addr,
+        url: url,
       }).then(res => {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);

@@ -202,7 +202,7 @@ export default {
     },
     courseOfferingID: {
       type: Number,
-      required: true,
+      required: false,
     },
     permission: {
       type: Number,

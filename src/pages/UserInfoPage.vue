@@ -137,6 +137,14 @@
       >
           Manage User's Course
       </v-btn>
+      <v-btn
+          class="ma-2"
+          color="primary"
+          @click="switchAssessmentTable"
+          v-if="$route.params.action==='Edit'&&$route.params.role==='Student'"
+      >
+        Manage Student Assessment
+      </v-btn>
       <v-spacer></v-spacer>
       <v-btn
         class="ma-2"
@@ -283,7 +291,7 @@ export default {
                       .concat("\n\nPlease modify the password ASAP");
           alert(output);
 
-          this.$router.push('user_manage')
+          this.$router.push('/user_manage')
         } else {
           alert(res.data.message);
         }
@@ -313,7 +321,16 @@ export default {
         return;
       }
       this.showTable = true;
+      this.showAssessment = false;
       this.searchCourse();
+    },
+    switchAssessmentTable() {
+      if (this.showAssessment === true) {
+        this.showAssessment = false;
+        return;
+      }
+      this.showAssessment = true;
+      this.showTable = false;
     },
     searchCourse() {
       this.$axios({

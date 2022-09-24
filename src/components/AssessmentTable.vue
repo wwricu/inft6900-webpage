@@ -145,6 +145,15 @@
       <v-icon
           small
           class="ml-3"
+          v-if="sourcePage==='user'"
+          @click="updateAssessmentInstance(item)"
+      >
+        mdi-pencil
+      </v-icon>
+      <v-icon
+          small
+          class="ml-3"
+          v-if="sourcePage==='course'"
           @click="updateAssessment(item)"
       >
         mdi-pencil
@@ -152,6 +161,7 @@
       <v-icon
           small
           class="ml-3"
+          v-if="sourcePage==='course'"
           @click="deleteAssessment(item)"
       >
         mdi-trash-can
@@ -171,6 +181,7 @@
 export default {
   name: "AssessmentTable",
   data: () => ({
+    sourcePage: '',
     search: '',
     headers: [
       {
@@ -222,7 +233,12 @@ export default {
     ]
   }),
   created() {
-    this.searchAssessment();
+    if (this.$route.path.match(/^\/user/i)) {
+      this.sourcePage = 'user';
+    } else if (this.$route.path.match(/^\/course/i)) {
+      this.sourcePage = 'course';
+    }
+    this.searchAssessment(this.sourcePage);
   },
   watch: {
     pickerBeginDate: {
@@ -256,23 +272,31 @@ export default {
           alert("message: " + res.data.message);
           return;
         }
-        alert('Added')
+        this.searchAssessment();
+        alert('Added');
       }).catch(function (err) {
         alert("err " + err);
       })
       this.assessmentDialog = false;
     },
-    searchAssessment() {
-      let courseOfferingID = this.$route.params.courseID;
+    searchAssessment(sourcePage) {
+      let url = 'http://localhost:5094/assessment/get';
+      if (sourcePage === 'course') {
+        url = url.concat(`?courseOfferingID=${this.$route.params.courseID}`);
+      } else if (sourcePage === 'user') {
+        url = url.concat(`?userNumber=${this.$route.params.userNumber}`);
+      }
       this.$axios({
         method: "GET",
-        url: `http://localhost:5094/assessment/get?courseOfferingID=${courseOfferingID}`,
+        url: url,
       }).then(res => {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);
           return;
         }
-        this.assessments = res.data.obj;
+        if (res.data.obj !== null) {
+          this.assessments = res.data.obj;
+        }
         console.log("success query");
       }).catch(function (err) {
         alert("err " + err);
@@ -314,6 +338,9 @@ export default {
       }).catch(function (err) {
         alert("err " + err);
       })
+    },
+    updateAssessmentInstance(item) {
+      console.log(item)
     }
   }
 }
