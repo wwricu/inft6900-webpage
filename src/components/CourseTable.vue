@@ -446,6 +446,7 @@ export default {
       }).then(res => {
         if (res.data.status === "success") {
           alert("deleted");
+          this.courses.splice(this.courses.indexOf(item), 1)
         }
       }).catch(function (err) {
         alert("err " + err);

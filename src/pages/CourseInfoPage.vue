@@ -20,7 +20,7 @@
           >
             <v-text-field
                 v-model="inputCourseInfo.year"
-                label="Course Name"
+                label="Course Year"
             ></v-text-field>
           </v-col>
           <v-col
@@ -107,6 +107,14 @@
           </v-list-item>
         </v-list>
       </v-menu>
+      <v-btn
+          dark
+          color="primary"
+          class="ml-2"
+          @click="showAssessmentTable"
+      >
+        Manage Assessments in Course
+      </v-btn>
       <v-spacer></v-spacer>
       <v-btn
         color="success"
@@ -124,14 +132,19 @@
         :permission="userTablePermission"
         v-show="showTable"
     ></UserTable>
+    <AssessmentTable
+        class="mt-8"
+        v-if="showAssessment"
+    ></AssessmentTable>
   </div>
 </template>
 
 <script>
 import UserTable from "@/components/UserTable";
+import AssessmentTable from "@/components/AssessmentTable";
 export default {
   name: "CourseInfoPage",
-  components: {UserTable},
+  components: {AssessmentTable, UserTable},
   data: () => ({
     pickerBeginDate: '',
     pickerEndDate: '',
@@ -156,7 +169,9 @@ export default {
     // below for user table
     showTable: false,
     userTablePermission: 2,
-    userData: []
+    userData: [],
+    // below for assessment table
+    showAssessment: false,
   }),
   watch: {
     pickerBeginDate: {
@@ -218,6 +233,7 @@ export default {
       console.log(this.inputCourseInfo.courseOfferingID);
       this.userTablePermission = permission;
       this.showTable = true;
+      this.showAssessment = false;
       let addr = 'http://localhost:5094/manage/GetUsersByCourse?permission='
                   .concat(permission.toString())
                   .concat('&courseOfferingID=')
@@ -236,6 +252,10 @@ export default {
         alert("err " + err);
       })
     },
+    showAssessmentTable() {
+      this.showTable = false;
+      this.showAssessment = true;
+    }
   }
 }
 </script>
