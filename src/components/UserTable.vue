@@ -42,9 +42,10 @@
           </template>
 
           <v-card>
-            <v-card-title class="text-h5 grey lighten-2">
+            <v-card-title class="text-h5">
               Add a User
             </v-card-title>
+            <v-divider></v-divider>
             <v-container>
               <v-row no-gutters>
                 <v-col cols="8">
@@ -296,7 +297,7 @@ export default {
           },
           userRemoveList: [{
             userNumber: item.userNumber,
-            permission: item.userPermission
+            permission: item.permission
           }],
         },
       }).then(res => {

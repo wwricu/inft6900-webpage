@@ -34,6 +34,7 @@
                 dark
                 v-bind="attrs"
                 v-on="on"
+                v-if="sourcePage==='course'"
                 @click="dialogAction='New Assessment'"
             >
               New Assessment
@@ -41,26 +42,34 @@
           </template>
 
           <v-card>
-            <v-card-title class="text-h5 grey lighten-2">
+            <v-card-title class="text-h5">
               {{dialogAction}}
             </v-card-title>
+            <v-divider></v-divider>
             <v-container class="pl-8 pr-8">
               <v-row no-gutters>
                 <v-col cols="12">
                   <v-text-field
-                      single-line
-                      hide-details
                       label="Assessment Name"
                       v-model="assessmentData.name"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                   <v-select
-                      class="mt-6"
+                      class="mr-2"
                       label="Assessment Type"
                       :items="assessmentTypeItems"
                       v-model="assessmentData.type"
                   ></v-select>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                      hide-details
+                      label="Status"
+                      class="mb-6"
+                      v-if="sourcePage==='user'"
+                      v-model="assessmentData.status"
+                  ></v-text-field>
                 </v-col>
                 <v-col md="12">
                   <v-menu
@@ -185,6 +194,12 @@ export default {
     search: '',
     headers: [
       {
+        text: 'Courses',
+        align: 'start',
+        sortable: false,
+        value: 'courseOfferingName',
+      },
+      {
         text: 'Assessment Name',
         align: 'start',
         sortable: false,
@@ -206,6 +221,11 @@ export default {
         value: 'endDate',
       },
       {
+        text: 'Status',
+        align: 'start',
+        value: 'status',
+      },
+      {
         text: 'Modify/Delete',
         align: 'start',
         value: 'actions'
@@ -222,7 +242,7 @@ export default {
     assessmentData: {
       name: '',
       type: '',
-      description: '',
+      status: '',
       beginDate: '',
       endDate: '',
     },
@@ -237,6 +257,7 @@ export default {
       this.sourcePage = 'user';
     } else if (this.$route.path.match(/^\/course/i)) {
       this.sourcePage = 'course';
+      this.headers.shift();
     }
     this.searchAssessment(this.sourcePage);
   },
@@ -308,9 +329,15 @@ export default {
       this.assessmentDialog = true;
     },
     submitAssessment() {
+      let url = 'http://localhost:5094/assessment/'
+      if (this.sourcePage === 'course') {
+        url = url.concat('updateTemplate');
+      } else if (this.sourcePage === 'user') {
+        url = url.concat('updateInstance');
+      }
       this.$axios({
         method: "POST",
-        url: 'http://localhost:5094/assessment/updateTemplate',
+        url: url,
         data: this.assessmentData
       }).then(res => {
         if (res.data.status !== "success") {
@@ -332,7 +359,6 @@ export default {
           alert("message: " + res.data.message);
           return;
         }
-        this.assessments = res.data.obj;
         this.assessments.splice(this.assessments.indexOf(item), 1);
         console.log("success query");
       }).catch(function (err) {
@@ -340,7 +366,9 @@ export default {
       })
     },
     updateAssessmentInstance(item) {
-      console.log(item)
+      this.assessmentData = item;
+      this.dialogAction = 'Update Assessment';
+      this.assessmentDialog = true;
     }
   }
 }
