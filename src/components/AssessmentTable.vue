@@ -236,8 +236,8 @@ export default {
     dialogAction: '',
     beginDateMenu: false,
     endDateMenu: false,
-    pickerBeginDate: '',
-    pickerEndDate: '',
+    pickerBeginDate: null,
+    pickerEndDate: null,
     assessmentDialog: false,
     assessmentData: {
       name: '',
@@ -255,6 +255,7 @@ export default {
   created() {
     if (this.$route.path.match(/^\/user/i)) {
       this.sourcePage = 'user';
+      this.headers[this.headers.length - 1].text = 'Modify';
     } else if (this.$route.path.match(/^\/course/i)) {
       this.sourcePage = 'course';
       this.headers.shift();
