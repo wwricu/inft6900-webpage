@@ -57,7 +57,7 @@
     </v-card>
     <CourseTable
         class="mt-8"
-        v-show="showTable"
+        v-on="showTable"
         :input-course-data="courseData"
         sourcePage="CourseManage"
     ></CourseTable>
