@@ -25,7 +25,7 @@
         ></v-text-field>
         <v-dialog
             width="500"
-            v-model="newAssessmentDialog"
+            v-model="assessmentDialog"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -34,6 +34,7 @@
                 dark
                 v-bind="attrs"
                 v-on="on"
+                @click="dialogAction='New Assessment'"
             >
               New Assessment
             </v-btn>
@@ -41,7 +42,7 @@
 
           <v-card>
             <v-card-title class="text-h5 grey lighten-2">
-              Add an Assessment
+              {{dialogAction}}
             </v-card-title>
             <v-container class="pl-8 pr-8">
               <v-row no-gutters>
@@ -120,9 +121,18 @@
               <v-btn
                   text
                   color="primary"
+                  v-if="dialogAction==='New Assessment'"
                   @click="newAssessment"
               >
                 CONFIRM
+              </v-btn>
+              <v-btn
+                  text
+                  color="primary"
+                  v-if="dialogAction==='Update Assessment'"
+                  @click="submitAssessment"
+              >
+                UPDATE
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -192,11 +202,12 @@ export default {
     ],
     assessments: [],
     // below for new assessment dialog
+    dialogAction: '',
     beginDateMenu: false,
     endDateMenu: false,
     pickerBeginDate: '',
     pickerEndDate: '',
-    newAssessmentDialog: false,
+    assessmentDialog: false,
     assessmentData: {
       name: '',
       type: '',
@@ -249,7 +260,7 @@ export default {
       }).catch(function (err) {
         alert("err " + err);
       })
-      this.newAssessmentDialog = false;
+      this.assessmentDialog = false;
     },
     searchAssessment() {
       let courseOfferingID = this.$route.params.courseID;
@@ -268,10 +279,26 @@ export default {
       })
     },
     updateAssessment(item) {
-      console.log(item)
+      this.dialogAction = 'Update Assessment'
+      this.assessmentData = item;
+      this.assessmentDialog = true;
+    },
+    submitAssessment() {
+      this.$axios({
+        method: "POST",
+        url: 'http://localhost:5094/assessment/update',
+        data: this.assessmentData
+      }).then(res => {
+        if (res.data.status !== "success") {
+          alert("message: " + res.data.message);
+          return;
+        }
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+      this.assessmentDialog = false;
     },
     deleteAssessment(item) {
-      console.log(item);
       this.$axios({
         method: "DELETE",
         url: 'http://localhost:5094/assessment/delete',
