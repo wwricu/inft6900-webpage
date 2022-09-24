@@ -28,7 +28,7 @@ const routes = [
     },
     {
         path: '/course/:action/:courseID',
-        name: 'edit_user',
+        name: 'edit_course',
         component: CourseInfo,
     },
     {

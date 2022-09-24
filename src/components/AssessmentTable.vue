@@ -286,7 +286,7 @@ export default {
     submitAssessment() {
       this.$axios({
         method: "POST",
-        url: 'http://localhost:5094/assessment/update',
+        url: 'http://localhost:5094/assessment/updateTemplate',
         data: this.assessmentData
       }).then(res => {
         if (res.data.status !== "success") {

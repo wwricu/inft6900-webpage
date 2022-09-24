@@ -171,6 +171,9 @@
     :user-permission="inputInfo.permission"
     :user-number="inputInfo.userNumber"
   ></CourseTable>
+  <AssessmentTable
+    v-if="showAssessment"
+  ></AssessmentTable>
   </div>
 </template>
 
@@ -178,10 +181,11 @@
 import md5 from 'md5-js';
 import CourseTable from "@/components/CourseTable";
 import { store } from "@/global.js";
+import AssessmentTable from "@/components/AssessmentTable";
 
 export default {
   name: "UserInfoPage",
-  components: {CourseTable},
+  components: {AssessmentTable, CourseTable},
   data: () => ({
     inputInfo: {
       userNumber: '',
@@ -207,7 +211,8 @@ export default {
       'Admin'
     ],
     courseData: [], // send to table
-    showTable: false
+    showTable: false,
+    showAssessment: false,
   }),
   created() {
     if (this.$route.params.action === 'Edit') {
