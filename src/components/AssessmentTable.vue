@@ -343,7 +343,6 @@ export default {
       }).then(res => {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);
-          return;
         }
       }).catch(function (err) {
         alert("err " + err);

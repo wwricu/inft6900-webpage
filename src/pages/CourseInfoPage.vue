@@ -130,7 +130,7 @@
         source-page="CourseManage"
         :courseOfferingID="inputCourseInfo.courseOfferingID"
         :permission="userTablePermission"
-        v-on="showTable"
+        v-if="showTable"
     ></UserTable>
     <AssessmentTable
         class="mt-8"

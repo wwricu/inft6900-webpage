@@ -174,7 +174,7 @@
   </v-card>
   <CourseTable
     class="mt-8"
-    v-on="showTable"
+    v-if="showTable"
     :input-course-data="courseData"
     :user-permission="inputInfo.permission"
     :user-number="inputInfo.userNumber"

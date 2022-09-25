@@ -66,7 +66,7 @@
   <ManageUserCard
       :userData="users"
       :userType="userTypeSelect.userType"
-      v-on="users.length > 0"
+      v-if="users.length > 0"
   ></ManageUserCard>
   </div>
 </template>
