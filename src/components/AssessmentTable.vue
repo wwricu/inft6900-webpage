@@ -24,7 +24,7 @@
             hide-details
         ></v-text-field>
         <v-dialog
-            width="500"
+            width="800"
             v-model="assessmentDialog"
         >
           <template v-slot:activator="{ on, attrs }">
@@ -35,7 +35,7 @@
                 v-bind="attrs"
                 v-on="on"
                 v-if="sourcePage==='course'"
-                @click="dialogAction='New Assessment'"
+                @click="getLocation('campus')"
             >
               New Assessment
             </v-btn>
@@ -48,18 +48,49 @@
             <v-divider></v-divider>
             <v-container class="pl-8 pr-8">
               <v-row no-gutters>
-                <v-col cols="12">
+                <v-col cols="6">
                   <v-text-field
+                      class="mr-4"
                       label="Assessment Name"
                       v-model="assessmentData.name"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12">
+                <v-col cols="6">
                   <v-select
-                      class="mr-2"
+                      class="ml-4 mr-2"
                       label="Assessment Type"
                       :items="assessmentTypeItems"
                       v-model="assessmentData.type"
+                  ></v-select>
+                </v-col>
+                <v-col cols="4">
+                  <v-select
+                      class="ml-4 mr-2"
+                      label="Campus"
+                      :items="campusItems"
+                      @change="getLocation('building')"
+                      v-model="locationData.campus"
+                  ></v-select>
+                </v-col>
+                <v-col cols="4">
+                  <v-select
+                      class="ml-4 mr-2"
+                      label="Building"
+                      :items="buildingItems"
+                      @change="getLocation('room')"
+                      v-model="locationData.building"
+                  ></v-select>
+                </v-col>
+                <v-col cols="4">
+                  <v-select
+                      return-object
+                      class="ml-4 mr-2"
+                      label="Room"
+                      item-text="room"
+                      item-value="locationID"
+                      @change="assessmentData.locationID=roomSelect.locationID"
+                      :items="roomItems"
+                      v-model="roomSelect"
                   ></v-select>
                 </v-col>
                 <v-col cols="12">
@@ -245,12 +276,24 @@ export default {
       status: '',
       beginDate: '',
       endDate: '',
+      locationID: 0,
     },
     assessmentTypeItems: [
         'Quiz',
         'Assignment',
         'Formal Exam',
-    ]
+    ],
+    // below for select location
+    campusItems: [],
+    buildingItems: [],
+    roomSelect: [],
+    roomItems: [],
+    locationData: { // for selection also
+      locationID: 0,
+      campus: '',
+      building: '',
+      room: '',
+    }
   }),
   created() {
     if (this.$route.path.match(/^\/user/i)) {
@@ -281,10 +324,63 @@ export default {
     },
   },
   methods: {
+    getLocation(arg) {
+      this.dialogAction='New Assessment';
+
+      /*
+      * campus: /get
+      * building: /get?campus=
+      * room: /get?campus=&building=
+      * ID: /get?campus=&building=&room=&locationID=
+      * */
+      let url = 'http://localhost:5094/location/get';
+      if (arg !== 'campus') {  // return campus
+        url = url.concat(`?campus=${this.locationData.campus}`)
+      }
+      if (arg === 'room' || arg === 'ID') {
+        url = url.concat(`&building=${this.locationData.building}`)
+      }
+      if (arg === 'ID') {
+        url = url.concat(`&room=${this.locationData.room}`)
+                 .concat(`&locationID=${this.locationData.locationID}`)
+      }
+
+      this.$axios({
+        method: "GET",
+        url: url,
+      }).then(res => {
+        if (res.data.status !== "success"
+            || res.data.obj === null) {
+          alert("message: " + res.data.message);
+          return;
+        }
+        if (arg === 'campus') {
+          this.campusItems = [];
+        } else if (arg === 'building') {
+          this.buildingItems = [];
+        } else if (arg === 'room') {
+          this.roomItems = [];
+        }
+
+        for (let location of res.data.obj) {
+          if (arg === 'campus') {
+            this.campusItems.push(location.campus);
+          } else if (arg === 'building') {
+            this.buildingItems.push(location.building);
+          } else if (arg === 'room' && location.room !== null) {
+            this.roomItems.push({
+              room: location.room,
+              locationID: location.locationID,
+            });
+          }
+        }
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    },
     newAssessment() {
       this.assessmentData.courseOfferingID =
             parseInt(this.$route.params.courseID);
-
       this.$axios({
         method: "POST",
         url: 'http://localhost:5094/assessment/new',
@@ -294,7 +390,7 @@ export default {
           alert("message: " + res.data.message);
           return;
         }
-        this.searchAssessment();
+        this.searchAssessment(this.sourcePage);
         alert('Added');
       }).catch(function (err) {
         alert("err " + err);
