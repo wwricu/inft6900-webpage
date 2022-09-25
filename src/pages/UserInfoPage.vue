@@ -180,6 +180,7 @@
     :user-number="inputInfo.userNumber"
   ></CourseTable>
   <AssessmentTable
+    class="mt-8"
     v-if="showAssessment"
   ></AssessmentTable>
   </div>

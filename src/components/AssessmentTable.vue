@@ -57,7 +57,7 @@
                 </v-col>
                 <v-col cols="6">
                   <v-select
-                      class="ml-4 mr-2"
+                      class="ml-4"
                       label="Assessment Type"
                       :items="assessmentTypeItems"
                       v-model="assessmentData.type"
@@ -65,30 +65,32 @@
                 </v-col>
                 <v-col cols="4">
                   <v-select
-                      class="ml-4 mr-2"
+                      class="mr-2"
                       label="Campus"
                       :items="campusItems"
                       @change="getLocation('building')"
+                      @click="getLocation('campus', false)"
                       v-model="locationData.campus"
                   ></v-select>
                 </v-col>
                 <v-col cols="4">
                   <v-select
-                      class="ml-4 mr-2"
+                      class="ml-4 mr-4"
                       label="Building"
                       :items="buildingItems"
                       @change="getLocation('room')"
+                      @click="getLocation('building', false)"
                       v-model="locationData.building"
                   ></v-select>
                 </v-col>
                 <v-col cols="4">
                   <v-select
                       return-object
-                      class="ml-4 mr-2"
                       label="Room"
                       item-text="room"
                       item-value="locationID"
                       @change="assessmentData.locationID=roomSelect.locationID"
+                      @click="getLocation('room', false)"
                       :items="roomItems"
                       v-model="roomSelect"
                   ></v-select>
@@ -182,6 +184,7 @@
     <template v-slot:[`item.location`]="{ item }">
       <v-chip
           color="primary"
+          v-if="item.location !== null"
       >
         {{ item.location.campus }}
         {{ item.location.building }}
@@ -195,7 +198,7 @@
           small
           class="ml-3"
           v-if="sourcePage==='user'"
-          @click="updateAssessmentInstance(item)"
+          @click="updateAssessment(item)"
       >
         mdi-pencil
       </v-icon>
@@ -278,7 +281,7 @@ export default {
     ],
     assessments: [],
     // below for new assessment dialog
-    dialogAction: '',
+    dialogAction: 'New Assessment',
     beginDateMenu: false,
     endDateMenu: false,
     pickerBeginDate: null,
@@ -319,6 +322,7 @@ export default {
       this.headers.shift();
     }
     this.searchAssessment(this.sourcePage);
+    this.assessmentData.building = "test"
   },
   watch: {
     pickerBeginDate: {
@@ -339,9 +343,15 @@ export default {
     },
   },
   methods: {
-    getLocation(arg) {
-      this.dialogAction='New Assessment';
-
+    getLocation(arg, override) {
+      if (override === false) { // for click
+        if (arg === 'campus'
+              && this.campusItems.length > 0) return;
+        if (arg === 'building'
+            && this.buildingItems.length > 0) return;
+        if (arg === 'room'
+            && this.roomItems.length > 0) return;
+      }
       /*
       * campus: /get
       * building: /get?campus=
@@ -436,9 +446,25 @@ export default {
       })
     },
     updateAssessment(item) {
-      this.dialogAction = 'Update Assessment'
       this.assessmentData = item;
+      this.dialogAction = 'Update Assessment';
       this.assessmentDialog = true;
+
+      /* locationData is the selector, and also parameters for searching
+       so set them up then get location to fill the v-select
+       notice that selected item must be included in items to be shown
+      */
+      this.locationData.campus = item.location.campus;
+      this.locationData.building = item.location.building;
+      this.locationData.room = item.location.room;
+      this.roomSelect = {
+        room: item.location.room,
+        locationID: item.location.locationID,
+      }
+
+      this.getLocation('campus');
+      this.getLocation('building');
+      this.getLocation('room');
     },
     submitAssessment() {
       let url = 'http://localhost:5094/assessment/'
@@ -454,7 +480,9 @@ export default {
       }).then(res => {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);
+          return;
         }
+        this.searchAssessment(this.sourcePage)
       }).catch(function (err) {
         alert("err " + err);
       })
@@ -476,11 +504,6 @@ export default {
         alert("err " + err);
       })
     },
-    updateAssessmentInstance(item) {
-      this.assessmentData = item;
-      this.dialogAction = 'Update Assessment';
-      this.assessmentDialog = true;
-    }
   }
 }
 </script>
