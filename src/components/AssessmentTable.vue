@@ -179,6 +179,15 @@
         </v-dialog>
       </v-toolbar>
     </template>
+    <template v-slot:[`item.location`]="{ item }">
+      <v-chip
+          color="primary"
+      >
+        {{ item.location.campus }}
+        {{ item.location.building }}
+        {{ item.location.room }}
+      </v-chip>
+    </template>
     <template
         v-slot:[`item.actions`]="{ item }"
     >
@@ -252,6 +261,11 @@ export default {
         value: 'endDate',
       },
       {
+        text: 'Location',
+        align: 'center',
+        value: 'location',
+      },
+      {
         text: 'Status',
         align: 'start',
         value: 'status',
@@ -301,6 +315,7 @@ export default {
       this.headers[this.headers.length - 1].text = 'Modify';
     } else if (this.$route.path.match(/^\/course/i)) {
       this.sourcePage = 'course';
+      this.headers.splice(-2, 1);
       this.headers.shift();
     }
     this.searchAssessment(this.sourcePage);
