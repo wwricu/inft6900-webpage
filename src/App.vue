@@ -8,7 +8,7 @@
     >
       <v-app-bar-nav-icon
         color="primary"
-        @click="()=>{this.showMenu = this.loginStatus}"></v-app-bar-nav-icon>
+        @click="switchMenu"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
       <v-btn
           text
@@ -164,6 +164,11 @@ export default {
     },
   }),
   methods: {
+    switchMenu() {
+      if (this.loginStatus !== true) return;
+
+      this.showMenu = !this.showMenu;
+    },
     logOut() {
       localStorage.removeItem("JWT");
       this.$axios({
