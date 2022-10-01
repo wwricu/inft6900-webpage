@@ -158,7 +158,7 @@ export default {
           { title: 'User Management', icon: 'mdi-view-dashboard', link: '/user_manage' },
           { title: 'Course Management', icon: 'mdi-view-dashboard', link: '/course_manage' },
           { title: 'View Applications', icon: 'mdi-view-dashboard', link: '/' },
-          { title: 'Personal Info', icon: 'mdi-account', link: '/' },
+          { title: 'Personal Info', icon: 'mdi-account', link: '/student_page' },
           { title: 'About', icon: 'mdi-forum', link: 'user_info' },
       ],
     },

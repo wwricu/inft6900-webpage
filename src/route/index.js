@@ -9,6 +9,7 @@ const UserInfo = () => import('@/pages/UserInfoPage')
 const UserManage = () => import('@/pages/UserManagePage')
 const CourseManage = () => import('@/pages/CourseManagePage')
 const CourseInfo = () => import('@/pages/CourseInfoPage')
+const StudentPage = () => import('@/pages/StudentPage')
 
 const routes = [
     {
@@ -45,6 +46,11 @@ const routes = [
         path: '/edit_course',
         name: 'edit_course',
         component: CourseInfo
+    },
+    {
+        path: '/student_page',
+        name: 'student_page',
+        component: StudentPage
     },
 ]
 
