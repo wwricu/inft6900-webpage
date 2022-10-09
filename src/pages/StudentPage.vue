@@ -22,6 +22,7 @@
         <v-col
             cols="9"
         >
+          <v-card>
           <v-breadcrumbs :items="breadItems">
             <template v-slot:divider>
               <v-icon>mdi-chevron-right</v-icon>
@@ -36,6 +37,7 @@
             </template>
           </v-breadcrumbs>
           <router-view></router-view>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -103,5 +105,7 @@ export default {
 </script>
 
 <style scoped>
-
+#container {
+  width: 1000px;
+}
 </style>

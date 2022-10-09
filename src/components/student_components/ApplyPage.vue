@@ -1,6 +1,5 @@
 <template>
-  <v-card>
-    <v-card-title>Adverse Circumstance</v-card-title>
+  <div>
     <div class="blue-bar">
       <h5>Personal Details</h5>
     </div>
@@ -45,8 +44,31 @@
           <input type="text">
         </v-col>
       </v-row>
+      <v-row>
+        <v-col cols="3">
+          <v-btn
+              outlined
+              color="primary"
+              class="mt-8 mb-2 ml-n1"
+              @click="$router.push('/student_page/details')"
+          >
+            Back
+          </v-btn>
+        </v-col>
+        <v-col cols="3">
+          <v-btn
+              outlined
+              color="primary"
+              class="mt-8 mb-2 ml-n1"
+              @click="$router.push('/student_page/confirm')"
+          >
+            Next
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-container>
-  </v-card>
+
+  </div>
 </template>
 
 <script>
@@ -56,9 +78,6 @@ export default {
 </script>
 
 <style scoped>
-#container {
-  width: 800px;
-}
 .blue-bar {
   width: inherit;
   height: 50px;
@@ -74,13 +93,7 @@ export default {
   width: 400px;
   margin: 15px 15px 15px 15px;
 }
-.text {
-  padding: 0;
-  margin: 12px -25px 0 0;
-}
 input {
-  padding: 0;
-  margin: 0;
   border: 1px solid black;
 }
 </style>
