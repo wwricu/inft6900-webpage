@@ -3,70 +3,39 @@
     <v-container>
       <v-row>
         <v-col
-          cols="3"
+            cols="3"
         >
           <v-card>
-          <v-card-title>Application</v-card-title>
-          <v-list-item
-            v-for="menu in menus"
-            :key="menu.text">
-            <v-list-item-content>
-              <v-list-item-title>{{ menu.text }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+            <v-card-title>Application</v-card-title>
+            <v-list-item
+                v-for="menu in menus"
+                :key="menu.text">
+              <v-list-item-content>
+                <v-list-item-title
+                  @click="$router.push(menu.link)">
+                  {{ menu.text }}
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
           </v-card>
         </v-col>
         <v-col
             cols="9"
         >
-          <v-card>
-            <v-card-title>Adverse Circumstance</v-card-title>
-            <div class="blue-bar">
-              <h5>Personal Details</h5>
-            </div>
-            <v-container class="input-container">
-              <v-row>
-                <v-col
-                  class="text"
-                  cols="4">
-                  <p>Student ID:</p>
-                </v-col>
-                <v-col
-                  class="input"
-                    cols="8">
-                  <input type="text">
-                </v-col>
-              </v-row>
-            </v-container>
-
-            <div class="blue-bar">
-              <h5>Request Details</h5>
-            </div>
-            <v-container class="input-container">
-              <v-row>
-                <v-col
-                    class="text"
-                    cols="4">
-                  <p>Student ID:</p>
-                </v-col>
-                <v-col
-                    class="input"
-                    cols="8">
-                  <input type="text">
-                </v-col>
-                <v-col
-                    class="text"
-                    cols="4">
-                  <p>Student ID:</p>
-                </v-col>
-                <v-col
-                    class="input"
-                    cols="8">
-                  <input type="text">
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card>
+          <v-breadcrumbs :items="breadItems">
+            <template v-slot:divider>
+              <v-icon>mdi-chevron-right</v-icon>
+            </template>
+            <template v-slot:item="{ item }">
+              <v-breadcrumbs-item
+                  :href="item.href"
+                  :disabled="item.disabled"
+              >
+                {{ item.text }}
+              </v-breadcrumbs-item>
+            </template>
+          </v-breadcrumbs>
+          <router-view></router-view>
         </v-col>
       </v-row>
     </v-container>
@@ -79,52 +48,60 @@ export default {
   data: () => ({
     menus: [
       {
-        text: 'Policy and Guideline',
-        link: '/'
-      },
-      {
-        text: 'Request Details',
-        link: '/'
+        text: 'Apply',
+        link: '/student_page/details'
       },
       {
         text: 'My Application',
-        link: '/'
+        link: '/student_page/applications'
       },
       {
-        text: 'Help Document',
-        link: '/'
+        text: 'My Assessments',
+        link: '/student_page/assessments'
+      },
+    ],
+    breadItems: [
+      {
+        text: "Personal Details",
+        href: '/student_page/details',
+        disabled: false
+      },
+      {
+        text: "Apply",
+        href: '/student_page/apply',
+        disabled: true
+      },
+      {
+        text: "Confirm",
+        href: '/student_page/confirm',
+        disabled: true
       },
     ]
-  })
+  }),
+  watch: {
+    $route: {
+      handler(route) {
+        switch (route.path) {
+          case '/student_page/apply':
+            this.breadItems[1].disabled = false
+            this.breadItems[2].disabled = true
+            break
+          case '/student_page/confirm':
+            this.breadItems[1].disabled = false
+            this.breadItems[2].disabled = false
+            break
+          case '/student_page/details':
+          default:
+            this.breadItems[1].disabled = true
+            this.breadItems[2].disabled = true
+        }
+      },
+      immediate: true
+    }
+  }
 }
 </script>
 
 <style scoped>
-#container {
-  width: 800px;
-}
-.blue-bar {
-  width: inherit;
-  height: 50px;
-  background-color: cornflowerblue;
-  color: white;
-}
-.blue-bar h5 {
-  position: relative;
-  top: 15px;
-  left: 15px;
-}
-.input-container {
-  width: 400px;
-  margin: 15px 15px 15px 15px;
-}
-.text {
-  padding: 0;
-  margin: 12px -25px 0 0;
-}
-input {
-  padding: 0;
-  margin: 0;
-  border: 1px solid black;
-}
+
 </style>

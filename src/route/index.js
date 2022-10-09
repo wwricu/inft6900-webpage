@@ -10,6 +10,11 @@ const UserManage = () => import('@/pages/UserManagePage')
 const CourseManage = () => import('@/pages/CourseManagePage')
 const CourseInfo = () => import('@/pages/CourseInfoPage')
 const StudentPage = () => import('@/pages/StudentPage')
+const ApplyPage = () => import('@/components/student_components/ApplyPage')
+const ApplicationInfo = () => import('@/components/student_components/ApplicationInfo')
+const AssessmentInfo = () => import('@/components/student_components/AssessmentInfo')
+const PersonalDetail = () => import('@/components/student_components/PersonalDetail')
+const ConfirmPage = () => import('@/components/student_components/ConfirmPage')
 
 const routes = [
     {
@@ -50,7 +55,29 @@ const routes = [
     {
         path: '/student_page',
         name: 'student_page',
-        component: StudentPage
+        component: StudentPage,
+        children: [
+            {
+                path: 'details',
+                component: PersonalDetail
+            },
+            {
+                path: 'apply',
+                component: ApplyPage
+            },
+            {
+                path: 'confirm',
+                component: ConfirmPage
+            },
+            {
+                path: 'applications',
+                component: ApplicationInfo
+            },
+            {
+                path: 'assessments',
+                component: AssessmentInfo
+            }
+        ]
     },
 ]
 
