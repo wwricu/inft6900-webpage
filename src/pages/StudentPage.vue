@@ -12,7 +12,9 @@
                 :key="menu.text">
               <v-list-item-content>
                 <v-list-item-title
-                  @click="$router.push(menu.link)">
+                  :class="menu.class"
+                  @click="$router.push(menu.link)"
+                >
                   {{ menu.text }}
                 </v-list-item-title>
               </v-list-item-content>
@@ -51,15 +53,18 @@ export default {
     menus: [
       {
         text: 'Apply',
-        link: '/student_page/details'
+        link: '/student_page/details',
+        class: 'strong'
       },
       {
         text: 'My Application',
-        link: '/student_page/applications'
+        link: '/student_page/applications',
+        class: 'normal'
       },
       {
         text: 'My Assessments',
-        link: '/student_page/assessments'
+        link: '/student_page/assessments',
+        class: 'normal'
       },
     ],
     breadItems: [
@@ -84,6 +89,13 @@ export default {
     $route: {
       handler(route) {
         switch (route.path) {
+          case '/student_page/details':
+            this.breadItems[1].disabled = true
+            this.breadItems[2].disabled = true
+            this.menus[0].class = 'strong'
+            this.menus[1].class = ''
+            this.menus[2].class = ''
+            break
           case '/student_page/apply':
             this.breadItems[1].disabled = false
             this.breadItems[2].disabled = true
@@ -92,10 +104,15 @@ export default {
             this.breadItems[1].disabled = false
             this.breadItems[2].disabled = false
             break
-          case '/student_page/details':
+          case '/student_page/applications':
+            this.menus[0].class = ''
+            this.menus[1].class = 'strong'
+            this.menus[2].class = ''
+            break
           default:
-            this.breadItems[1].disabled = true
-            this.breadItems[2].disabled = true
+            this.menus[0].class = ''
+            this.menus[1].class = ''
+            this.menus[2].class = 'strong'
         }
       },
       immediate: true
@@ -107,5 +124,8 @@ export default {
 <style scoped>
 #container {
   width: 1000px;
+}
+.strong {
+  font-weight: bold;
 }
 </style>
