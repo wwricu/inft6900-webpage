@@ -353,7 +353,7 @@ export default {
     deleteCourseFromUser(item) {
       this.$axios({
         method: "POST",
-        url: 'http://localhost:5094/manage/relation',
+        url: `${store.host}/manage/relation`,
         data: {
           user: {
             userNumber: this.userNumber,
@@ -378,10 +378,7 @@ export default {
     getCoursesForAdd() {
       this.$axios({
         method: "GET",
-        url: 'http://localhost:5094/course/getCandidates?userNumber='
-                      .concat(this.userNumber)
-                      .concat('&permission=')
-                      .concat(this.userPermission.toString()),
+        url: `${store.host}/course/getCandidates?userNumber=${this.userNumber}&permission=${this.userPermission}`,
       }).then(res => {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);
@@ -417,7 +414,7 @@ export default {
       this.addCourseToUserDialog = false;
       this.$axios({
         method: "POST",
-        url: 'http://localhost:5094/manage/relation',
+        url: `${store.host}/manage/relation`,
         data: {
           user: {
             userNumber: this.userNumber,
@@ -442,7 +439,7 @@ export default {
     deleteCourse(item) {
       this.$axios({
         method: "POST",
-        url: 'http://localhost:5094/course/delete',
+        url: `${store.host}/course/delete`,
         data: item,
       }).then(res => {
         if (res.data.status === "success") {
@@ -457,7 +454,7 @@ export default {
       this.newCourse.semester = this.semesterSelect;
       this.$axios({
         method: "POST",
-        url: 'http://localhost:5094/course/new',
+        url: `${store.host}/course/new`,
         data: this.newCourse,
       }).then(res => {
         if (res.data.status === "success") {

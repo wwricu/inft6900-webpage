@@ -228,10 +228,7 @@ export default {
 
     // below for from course page
     getUsersForAdd() {
-      let addr = 'http://localhost:5094/manage/GetCandidates?permission='
-                      .concat(this.permission.toString())
-                      .concat('&courseOfferingID=')
-                      .concat(this.courseOfferingID.toString());
+      let addr = `${store.host}/manage/GetCandidates?permission=${this.permission}&courseOfferingID=${this.courseOfferingID}`
       if (this.searchStringForUser.length > 0) {
         addr = addr.concat('&userName=').concat(this.searchStringForUser)
       }
@@ -265,7 +262,7 @@ export default {
       this.addCourseToUserDialog = false;
       this.$axios({
         method: "POST",
-        url: 'http://localhost:5094/manage/relation',
+        url: `${store.host}/manage/relation`,
         data: {
           courseOffering: {
             courseOfferingID: this.courseOfferingID,
@@ -290,7 +287,7 @@ export default {
     removeCourseFromUser(item) {
       this.$axios({
         method: "POST",
-        url: 'http://localhost:5094/manage/relation',
+        url: `${store.host}/manage/relation`,
         data: {
           courseOffering: {
             courseOfferingID: this.courseOfferingID

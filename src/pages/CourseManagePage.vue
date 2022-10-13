@@ -66,6 +66,7 @@
 
 <script>
 import CourseTable from "@/components/CourseTable";
+import {store} from "@/global";
 export default {
   name: "CourseInfoPage",
   components: {CourseTable},
@@ -98,7 +99,7 @@ export default {
 
       this.$axios({
         method: "POST",
-        url: 'http://localhost:5094/course/getmultiple',
+        url: `${store.host}/course/getmultiple`,
         data: {
           years: this.yearSelect,
           semesters: this.semesterSelect,

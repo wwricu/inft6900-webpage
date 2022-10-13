@@ -73,6 +73,7 @@
 
 <script>
 import ManageUserCard from "@/components/UserTable";
+import {store} from "@/global";
 export default {
   name: "UserManagePage",
   components: {ManageUserCard},
@@ -94,8 +95,7 @@ export default {
   }),
   methods: {
     searchUsers() {
-      let url = 'http://localhost:5094/manage/getusers'
-          .concat(`?permission=${this.userTypeSelect.permission.toString()}`)
+      let url = `${store.host}/manage/getusers?permission=${this.userTypeSelect.permission}`
       if (this.searchString.length > 0) {
         url = url.concat(`&${this.stringTypeSelect.parameter}`)
                  .concat(`=${this.searchString}`)

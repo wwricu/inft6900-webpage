@@ -230,6 +230,8 @@
 </template>
 
 <script>
+import {store} from "@/global";
+
 export default {
   name: "AssessmentTable",
   data: () => ({
@@ -358,7 +360,7 @@ export default {
       * room: /get?campus=&building=
       * ID: /get?campus=&building=&room=&locationID=
       * */
-      let url = 'http://localhost:5094/location/get';
+      let url = `${store.host}/location/get`;
       if (arg !== 'campus') {  // return campus
         url = url.concat(`?campus=${this.locationData.campus}`)
       }
@@ -408,7 +410,7 @@ export default {
             parseInt(this.$route.params.courseID);
       this.$axios({
         method: "POST",
-        url: 'http://localhost:5094/assessment/new',
+        url: `${store.host}/assessment/new`,
         data: this.assessmentData
       }).then(res => {
         if (res.data.status !== "success") {
@@ -423,7 +425,7 @@ export default {
       this.assessmentDialog = false;
     },
     searchAssessment(sourcePage) {
-      let url = 'http://localhost:5094/assessment/get';
+      let url = `${store.host}/assessment/get`;
       if (sourcePage === 'course') {
         url = url.concat(`?courseOfferingID=${this.$route.params.courseID}`);
       } else if (sourcePage === 'user') {
@@ -467,7 +469,7 @@ export default {
       this.getLocation('room');
     },
     submitAssessment() {
-      let url = 'http://localhost:5094/assessment/'
+      let url = `${store.host}/assessment/`
       if (this.sourcePage === 'course') {
         url = url.concat('updateTemplate');
       } else if (this.sourcePage === 'user') {
@@ -491,7 +493,7 @@ export default {
     deleteAssessment(item) {
       this.$axios({
         method: "DELETE",
-        url: 'http://localhost:5094/assessment/delete',
+        url: `${store.host}/assessment/delete`,
         data: item
       }).then(res => {
         if (res.data.status !== "success") {

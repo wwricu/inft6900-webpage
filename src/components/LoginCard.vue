@@ -51,6 +51,7 @@
 
 <script>
 import md5 from 'md5-js'
+import {store} from "@/global";
 
 export default {
   name: "LoginCard",
@@ -58,7 +59,7 @@ export default {
     login() {
       this.$axios({
         method: "post",
-        url: "http://localhost:5094/auth/password",
+        url: `${store.host}/auth/password`,
         headers: {"Content-Type": "application/json"},
         data: {
           UserNumber: this.userNumber,

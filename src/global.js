@@ -18,14 +18,15 @@ export const store = reactive({
         Staff: 2,
         Admin: 3,
     },
-    AVN: 'WW'
+    AVN: 'WW',
+    devHost: 'http://localhost:5094',
+    host: 'https://inft6900.wwr-blog.com'
 })
 
 export function autoLogin() {
     Vue.prototype.$axios({
         method: "POST",
-        url: "http://localhost:5094/auth/token?token="
-            .concat(localStorage.getItem(("JWT"))),
+        url: `${store.host}/auth/token?token=${localStorage.getItem("JWT")}`,
     }).then(res => {
         if (res.data.status !== "success") {
             Vue.prototype.$router.push('/login').then();

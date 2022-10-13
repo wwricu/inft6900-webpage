@@ -173,7 +173,7 @@ export default {
       localStorage.removeItem("JWT");
       this.$axios({
         method: "DELETE",
-        url: 'http://localhost:5094/auth/logout'
+        url: `${store.host}/auth/logout`
       }).then(() => {
         alert('Log out!');
         location.reload();

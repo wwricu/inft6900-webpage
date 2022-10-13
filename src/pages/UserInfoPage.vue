@@ -232,9 +232,7 @@ export default {
     initUser(userNumber) {
       this.$axios({
         method: "GET",
-        url: 'http://localhost:5094/manage/getusers?userNumber='
-                .concat(userNumber).concat('&permission=')
-            .concat(store.rolesMap[this.$route.params.role]),
+        url: `${store.host}/manage/getusers?userNumber=${userNumber}&permission=${store.rolesMap[this.$route.params.role]}`,
       }).then(res => {
         if (res.data.status === "success") {
           this.inputInfo = res.data.obj[0];
@@ -257,7 +255,7 @@ export default {
           .concat(this.inputInfo.userNameArray[2]);
       this.$axios({
         method: "POST",
-        url: 'http://localhost:5094/manage/updateuser',
+        url: `${store.host}/manage/updateuser`,
         data: this.inputInfo,
       }).then(res => {
         if (res.data.status === "success") {
@@ -280,7 +278,7 @@ export default {
       this.inputInfo.birthdate = this.formatDate(this.inputInfo.birthdate,'toData');
       this.$axios({
         method: "POST",
-        url: 'http://localhost:5094/manage/adduser',
+        url: `${store.host}/manage/adduser`,
         data: this.inputInfo,
       }).then(res => {
         if (res.data.status === "success") {
@@ -303,8 +301,7 @@ export default {
     deleteUser() {
       this.$axios({
         method: "DELETE",
-        url: 'http://localhost:5094/manage/Delete?userNumber='
-              .concat(this.inputInfo.userNumber),
+        url: `${store.host}/manage/Delete?userNumber=${this.inputInfo.userNumber}`
       }).then(res => {
         if (res.data.status === "success") {
           alert("deleted!");
@@ -336,10 +333,7 @@ export default {
     searchCourse() {
       this.$axios({
         method: "GET",
-        url: 'http://localhost:5094/course/get?userNumber='
-                .concat(this.inputInfo.userNumber)
-                .concat('&permission=')
-                .concat(this.inputInfo.permission.toString()),
+        url: `${store.host}/course/get?userNumber=${this.inputInfo.userNumber}&permission=${this.inputInfo.permission}`,
       }).then(res => {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);

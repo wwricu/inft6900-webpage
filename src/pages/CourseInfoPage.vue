@@ -142,6 +142,7 @@
 <script>
 import UserTable from "@/components/UserTable";
 import AssessmentTable from "@/components/AssessmentTable";
+import {store} from "@/global";
 export default {
   name: "CourseInfoPage",
   components: {AssessmentTable, UserTable},
@@ -198,7 +199,7 @@ export default {
     init(courseID) {
       this.$axios({
         method: "GET",
-        url: 'http://localhost:5094/course/get?courseOfferingID='
+        url: `${store.host}/course/get?courseOfferingID=`
             .concat(courseID),
       }).then(res => {
         if (res.data.status !== "success") {
@@ -218,7 +219,7 @@ export default {
       this.inputCourseInfo.semester = this.semesterSelect;
       this.$axios({
         method: "POST",
-        url: 'http://localhost:5094/course/update',
+        url: `${store.host}/course/update`,
         data: this.inputCourseInfo,
       }).then(res => {
         if (res.data.status === "success") {
@@ -234,10 +235,9 @@ export default {
       this.userTablePermission = permission;
       this.showTable = true;
       this.showAssessment = false;
-      let addr = 'http://localhost:5094/manage/GetUsersByCourse?permission='
-                  .concat(permission.toString())
-                  .concat('&courseOfferingID=')
-                  .concat(this.inputCourseInfo.courseOfferingID.toString());
+      let addr = `${store.host}/manage/GetUsersByCourse?permission=
+                  ${permission}&courseOfferingID=
+                  ${this.inputCourseInfo.courseOfferingID}`
       this.$axios({
         method: "GET",
         url: addr,
