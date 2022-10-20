@@ -388,7 +388,11 @@ export default {
       this.$axios({
         method: "POST",
         url: `${store.host}/application/new`,
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        headers: {'Content-Type': 'multipart/form-data'},
+        transformRequest: [function(data, headers) {
+          delete headers.post['Content-Type']
+          return data
+        }],
         data: formData
       }).then(res => {
         if (res.data.status !== "success") {
