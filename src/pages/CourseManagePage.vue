@@ -99,7 +99,7 @@ export default {
 
       this.$axios({
         method: "POST",
-        url: `${store.host}/course/getmultiple`,
+        url: `${store.host}/course/getMultiple`,
         data: {
           years: this.yearSelect,
           semesters: this.semesterSelect,

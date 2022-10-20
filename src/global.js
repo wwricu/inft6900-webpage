@@ -5,6 +5,7 @@ export const store = reactive({
     loginStatus: false,
     role: '',
     permission: 0,
+    userNumber: '3362554',
     name: '',
     roles: [
         'User',
@@ -20,7 +21,8 @@ export const store = reactive({
     },
     AVN: 'WW',
     devHost: 'http://localhost:5094',
-    host: 'https://inft6900.wwr-blog.com'
+    // https://inft6900.wwr-blog.com
+    host: 'http://localhost:5094'
 })
 
 export function autoLogin() {

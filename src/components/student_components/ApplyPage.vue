@@ -17,9 +17,9 @@
             dense
             outlined
             class="mr-2"
-            label="Circumstance type"
-            v-model="typeSelect"
-            :items="typeItems"
+            label="Reason for this Application"
+            v-model="reasonSelect"
+            :items="reasonItems"
           ></v-select>
         </v-col>
         <v-col cols="6">
@@ -59,8 +59,12 @@
               outlined
               class="mr-2"
               label="Course"
-              v-model="typeSelect"
-              :items="typeItems"
+              return-object
+              item-text="name"
+              item-value="courseOfferingID"
+              v-model="courseSelect"
+              :items="courseItems"
+              @click="getAssessment('course')"
           ></v-select>
         </v-col>
         <v-col cols="4">
@@ -68,8 +72,12 @@
               dense
               outlined
               label="Assessment"
-              v-model="typeSelect"
-              :items="typeItems"
+              return-object
+              item-text="name"
+              item-value="assessmentID"
+              v-model="assessmentSelect"
+              :items="assessmentItems"
+              @click="getAssessment('assessment')"
           ></v-select>
         </v-col>
         <v-col cols="4">
@@ -78,8 +86,12 @@
               outlined
               class="ml-2"
               label="Coordinator"
-              v-model="typeSelect"
-              :items="typeItems"
+              return-object
+              item-text="name"
+              item-value="userNumber"
+              v-model="staffSelect"
+              :items="staffItems"
+              @click="getAssessment('staff')"
           ></v-select>
         </v-col>
         <v-col cols="12">
@@ -128,16 +140,98 @@
 </template>
 
 <script>
+import {store} from "@/global";
+
 export default {
   name: "SubmitPage",
   data: () => ({
+    reasonSelect: '',
+    reasonItems: [
+      'Health Grounds',
+      'Compassionate Grounds',
+      'Hardship or Trauma',
+      'Unavoidable Commitment'
+    ],
+    courseSelect: '',
+    courseItems: [],
+    assessmentSelect: '',
+    assessmentItems: [],
+    staffSelect: '',
+    staffItems: [],
     typeSelect: '',
     typeItems: [
       'test1',
       'test2'
     ],
     description: ''
-  })
+  }),
+  methods: {
+    getAssessment(type) {
+      /* type:
+      course: userNumber
+      assessment: userNumber
+      staff: courseId, permission=2
+      */
+      let parameter
+      if (type === 'course') {
+        parameter = `/course/get?userNumber=${store.userNumber}&permission=1`
+      } else if (type === 'assessment') {
+        parameter = `/assessment/get?userNumber=${store.userNumber}&permission=1`
+      } else if (type === 'staff') {
+        parameter = `/manage/GetUsersByCourse?courseOfferingID=${this.courseSelect.courseOfferingID}&permission=2`
+      } else {
+        return
+      }
+
+      this.$axios({
+        method: "GET",
+        url: store.host + parameter,
+      }).then(res => {
+        if (res.data.status !== "success") {
+          alert("message: " + res.data.message);
+          return;
+        }
+        this.fillItems(res.data.obj, type)
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    },
+    fillItems(obj, type) {
+      if (type === 'course') {
+        this.courseItems = []
+        for (const course of obj) {
+          let c = {
+            name: `${course.courseName} ${course.semester} ${course.year}`,
+            courseOfferingID: course.courseOfferingID
+          }
+          this.courseItems.push(c)
+        }
+      } else if (type === 'assessment') {
+        this.assessmentItems = []
+        for (const assessment of obj) {
+          if (assessment.courseOfferingID
+              !== this.courseSelect.courseOfferingID) {
+            continue
+          }
+
+          let a = {
+            name: assessment.name,
+            assessmentID: assessment.assessmentID
+          }
+          this.assessmentItems.push(a)
+        }
+      } else if (type === 'staff') {
+        this.staffItems = []
+        for (const staff of obj) {
+          let s = {
+            name: staff.userName,
+            userNumber: staff.userNumber,
+          }
+          this.staffItems.push(s)
+        }
+      }
+    }
+  }
 }
 </script>
 
@@ -152,10 +246,6 @@ export default {
   position: relative;
   top: 15px;
   left: 15px;
-}
-.input-container {
-  width: 400px;
-  margin: 15px 15px 15px 15px;
 }
 input {
   border: 1px solid black;
