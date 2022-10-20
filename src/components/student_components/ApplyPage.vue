@@ -5,13 +5,6 @@
     </div>
     <v-container class="pa-8">
       <v-row no-gutters>
-        <v-col cols="12">
-          <v-text-field
-            outlined
-            dense
-            label="reference number"
-          ></v-text-field>
-        </v-col>
         <v-col cols="6">
           <v-select
             dense
@@ -28,6 +21,7 @@
               dense
               class="ml-2"
               label="Days of this impact"
+              v-model="days"
           ></v-text-field>
         </v-col>
         <v-col cols="12">
@@ -73,7 +67,7 @@
               truncate-length="15"
               :label="item.documentSelect"
               class="mb-3"
-              v-model="item.docInfo"
+              v-model="item.fileInfo"
               :rules="[v => !!v || 'Compulsory']"
           ></v-file-input>
         </v-col>
@@ -119,7 +113,7 @@
               label="Coordinator"
               return-object
               item-text="name"
-              item-value="userNumber"
+              item-value="sysUserID"
               v-model="staffSelect"
               :items="staffItems"
               @click="getAssessment('staff')"
@@ -163,7 +157,7 @@
               outlined
               color="primary"
               class="mt-8 mb-2 ml-n1"
-              @click="$router.push('/student_page/confirm')"
+              @click="nextStep"
           >
             Next
           </v-btn>
@@ -179,6 +173,7 @@ import {store} from "@/global";
 export default {
   name: "SubmitPage",
   data: () => ({
+    days: '',
     availableTypesSet: Set,
     availableTypes: [
       'Documentary Evidence of Unavoidable Commitment',
@@ -197,7 +192,7 @@ export default {
         previousSelect: '',
         documentSelect: '',
         documentItems: [],
-        docInfo: null,
+        fileInfo: null,
       }
     ],
     reasonSelect: '',
@@ -254,7 +249,7 @@ export default {
         previousSelect: '',
         documentSelect: '',
         documentItems: [...this.availableTypesSet],
-        docInfo: null,
+        fileInfo: null,
       })
     },
     changeDocType(item) {
@@ -265,7 +260,7 @@ export default {
       if (item.previousSelect === item.documentSelect) {
         return
       }
-      if (item.previousSelect.length != 0) {
+      if (item.previousSelect.length !== 0) {
         this.availableTypesSet.add(item.previousSelect)
       }
       this.availableTypesSet.delete(item.documentSelect)
@@ -274,7 +269,7 @@ export default {
 
       for (let docs of this.documents) {
         docs.documentItems = newItems
-        if (docs.documentSelect.length != 0) {
+        if (docs.documentSelect.length !== 0) {
           docs.documentItems.unshift(docs.documentSelect)
           docs.documentItems.sort((a, b) => {
             if (a === 'Remove This Document') return true
@@ -345,11 +340,68 @@ export default {
         for (const staff of obj) {
           let s = {
             name: staff.userName,
-            userNumber: staff.userNumber,
+            sysUserID: staff.sysUserID,
           }
           this.staffItems.push(s)
         }
       }
+    },
+    packageBody() {
+      let body = {
+        userNumber: store.userNumber,
+        // applicationID: '',
+        reason: this.reasonSelect,
+        days: Number.parseInt(this.days),
+        description: this.circumstanceDescription,
+        docs: [],
+        instanceID: this.assessmentSelect.assessmentID,
+        staffID: this.staffSelect.sysUserID,
+        outcome: this.outcomeSelect.name,
+        outcomeDescription: this.outcomeDescription,
+        // staffComment: '',
+      }
+
+      for (let doc of this.documents) {
+        body.docs.push({
+          type: doc.documentSelect,
+          fileInfo: doc.fileInfo,
+        })
+      }
+      console.log(JSON.stringify(body))
+      localStorage.setItem("application", JSON.stringify(body))
+
+      let formData = new FormData()
+
+      formData.append('userNumber', body.userNumber)
+      formData.append('reason', body.reason)
+      formData.append('days', body.days)
+      formData.append('description', body.description)
+      formData.append('instanceID', body.instanceID)
+      formData.append('staffID', body.staffID)
+      formData.append('outcome', body.outcome)
+      formData.append('outcomeDescription', body.outcomeDescription)
+
+      for (let doc of body.docs) {
+        formData.append("docs[]", doc)
+      }
+
+      this.$axios({
+        method: "POST",
+        url: `${store.host}/application/new`,
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        data: formData
+      }).then(res => {
+        if (res.data.status !== "success") {
+          alert("message: " + res.data.message);
+        }
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+      return body
+    },
+    nextStep() {
+      this.packageBody()
+      this.$router.push('/student_page/confirm')
     }
   }
 }
