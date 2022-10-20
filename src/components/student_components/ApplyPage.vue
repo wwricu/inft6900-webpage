@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="blue-bar">
-      <h5>Circumstance Details</h5>
+      <h3>Circumstance Details</h3>
     </div>
     <v-container class="pa-8">
       <v-row no-gutters>
@@ -35,24 +35,55 @@
               name="input-7-1"
               label="Adverse Circumstance Details"
               outlined
-              :value="description"
+              :value="circumstanceDescription"
               hint="You Circumstance Details"
           ></v-textarea>
         </v-col>
       </v-row>
-      <p>Document type placeholder, multiple allowed???</p>
-      <v-row no-gutters>
-        <v-col cols="12">
+    </v-container>
+      <div class="blue-bar">
+        <h3>Documents</h3>
+        <v-btn
+          color="success"
+          style="float: right; bottom: 20px; right: 5px;"
+          @click="addDocument"
+        >Add a Document</v-btn>
+      </div>
+      <v-container class="pa-8">
+      <v-row
+          no-gutters
+          v-for="item in documents"
+          :key="item.documentSelect"
+      >
+        <v-col cols="6">
+          <v-select
+              label="Document Type"
+              v-model="item.documentSelect"
+              :items="item.documentItems"
+              @change="changeDocType(item)"
+          >
+          </v-select>
+        </v-col>
+        <v-col cols="6">
           <v-file-input
               counter
               multiple
               show-size
               small-chips
               truncate-length="15"
-              label="Document Upload"
+              :label="item.documentSelect"
               class="mb-3"
+              v-model="item.docInfo"
+              :rules="[v => !!v || 'Compulsory']"
           ></v-file-input>
         </v-col>
+      </v-row>
+      </v-container>
+      <div class="blue-bar">
+        <h3>Assessment and Outcome</h3>
+      </div>
+      <v-container class="pa-8">
+      <v-row no-gutters>
         <v-col cols="4">
           <v-select
               dense
@@ -99,17 +130,20 @@
               dense
               outlined
               label="Outcome"
-              v-model="typeSelect"
-              :items="typeItems"
+              return-object
+              item-text="name"
+              item-value="hint"
+              v-model="outcomeSelect"
+              :items="outcomeItems"
+              :hint="outcomeSelect.hint"
           ></v-select>
         </v-col>
-        <p>outcome options placeholder</p>
         <v-col cols="12">
           <v-textarea
               name="input-7-1"
-              label="Wished Outcome"
+              :label="outcomeSelect.placeholder"
               outlined
-              :value="description"
+              :value="outcomeDescription"
           ></v-textarea>
         </v-col>
       </v-row>
@@ -145,6 +179,27 @@ import {store} from "@/global";
 export default {
   name: "SubmitPage",
   data: () => ({
+    availableTypesSet: Set,
+    availableTypes: [
+      'Documentary Evidence of Unavoidable Commitment',
+      'Letter from AccessAbility Advisor',
+      'Letter from Counsellor or Doctor',
+      'Letter from Work Supervisor',
+      'Medical Certificate',
+      'Statement from Appropriate Authority',
+      'Statutory Declaration',
+      'Written statement from student',
+      'Other',
+      'Remove This Document'
+    ],
+    documents: [
+      {
+        previousSelect: '',
+        documentSelect: '',
+        documentItems: [],
+        docInfo: null,
+      }
+    ],
     reasonSelect: '',
     reasonItems: [
       'Health Grounds',
@@ -158,14 +213,77 @@ export default {
     assessmentItems: [],
     staffSelect: '',
     staffItems: [],
-    typeSelect: '',
-    typeItems: [
-      'test1',
-      'test2'
+    outcomeSelect: {
+      name: '',
+      hint: 'Select wished outcome',
+      placeholder: 'Describe wished outcome'
+    },
+    outcomeItems: [
+      {
+        name: 'Extension of Time',
+        hint: 'Due date of the exam will be delayed',
+        placeholder: 'Please describe your current progress and wished extended days'
+      },
+      {
+        name: 'Reschedule Exam',
+        hint: 'In class exam will be rescheduled in another class time,\n\
+               formal exam will be rescheduled in exam period',
+        placeholder: 'Please describe your willing time period'
+      },
+      {
+        name: 'Reschedule placement',
+        hint: 'Exam place will be rescheduled to another available place',
+        placeholder: 'Please describe your willing place'
+      },
+      {
+        name: 'Compulsory exemption',
+        hint: 'Your will be exempted to attending the exam',
+        placeholder: ''
+      },
     ],
-    description: ''
+    circumstanceDescription: '',
+    outcomeDescription: ''
   }),
+  created() {
+    this.documents[0].documentItems = this.availableTypes
+    this.availableTypesSet = new Set(this.availableTypes)
+  },
   methods: {
+    addDocument() {
+      this.documents.push({
+        previousSelect: '',
+        documentSelect: '',
+        documentItems: [...this.availableTypesSet],
+        docInfo: null,
+      })
+    },
+    changeDocType(item) {
+      if (item.documentSelect === 'Remove This Document') {
+        this.documents.splice(this.documents.indexOf(item), 1);
+        return
+      }
+      if (item.previousSelect === item.documentSelect) {
+        return
+      }
+      if (item.previousSelect.length != 0) {
+        this.availableTypesSet.add(item.previousSelect)
+      }
+      this.availableTypesSet.delete(item.documentSelect)
+      item.previousSelect = item.documentSelect
+      const newItems = [...this.availableTypesSet]
+      newItems.sort((a, b) => {
+        if (a === 'Remove This Document') return 1
+        if (b === 'Remove This Document') return -1
+        return a - b
+      })
+      // alert(newItems)
+      for (let docs of this.documents) {
+        docs.documentItems = newItems
+        if (docs.documentSelect.length != 0) {
+          docs.documentItems.unshift(docs.documentSelect)
+        }
+      }
+    },
     getAssessment(type) {
       /* type:
       course: userNumber
@@ -177,7 +295,7 @@ export default {
         parameter = `/course/get?userNumber=${store.userNumber}&permission=1`
       } else if (type === 'assessment') {
         parameter = `/assessment/get?userNumber=${store.userNumber}&permission=1`
-      } else if (type === 'staff') {
+      } else if (type === 'staff' && this.courseSelect.courseOfferingID != null) {
         parameter = `/manage/GetUsersByCourse?courseOfferingID=${this.courseSelect.courseOfferingID}&permission=2`
       } else {
         return
@@ -242,9 +360,9 @@ export default {
   background-color: cornflowerblue;
   color: white;
 }
-.blue-bar h5 {
+.blue-bar h3 {
   position: relative;
-  top: 15px;
+  top: 11px;
   left: 15px;
 }
 input {
