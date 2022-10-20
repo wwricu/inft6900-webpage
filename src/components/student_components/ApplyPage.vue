@@ -271,16 +271,18 @@ export default {
       this.availableTypesSet.delete(item.documentSelect)
       item.previousSelect = item.documentSelect
       const newItems = [...this.availableTypesSet]
-      newItems.sort((a, b) => {
-        if (a === 'Remove This Document') return 1
-        if (b === 'Remove This Document') return -1
-        return a - b
-      })
-      // alert(newItems)
+
       for (let docs of this.documents) {
         docs.documentItems = newItems
         if (docs.documentSelect.length != 0) {
           docs.documentItems.unshift(docs.documentSelect)
+          docs.documentItems.sort((a, b) => {
+            if (a === 'Remove This Document') return true
+            if (b === 'Remove This Document') return false
+            if (a === 'Other') return true
+            if (b === 'Other') return false
+            return a > b
+          })
         }
       }
     },
