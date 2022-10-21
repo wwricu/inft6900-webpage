@@ -47,7 +47,7 @@
       <v-row
           no-gutters
           v-for="item in documents"
-          :key="item.documentSelect"
+          :key="item.docID"
       >
         <v-col cols="6">
           <v-select
@@ -189,6 +189,7 @@ export default {
     ],
     documents: [
       {
+        docID: 0,
         previousSelect: '',
         documentSelect: '',
         documentItems: [],
@@ -246,6 +247,7 @@ export default {
   methods: {
     addDocument() {
       this.documents.push({
+        docID: this.documents.length,
         previousSelect: '',
         documentSelect: '',
         documentItems: [...this.availableTypesSet],
@@ -267,18 +269,18 @@ export default {
       item.previousSelect = item.documentSelect
       const newItems = [...this.availableTypesSet]
 
-      for (let docs of this.documents) {
-        docs.documentItems = newItems
-        if (docs.documentSelect.length !== 0) {
-          docs.documentItems.unshift(docs.documentSelect)
-          docs.documentItems.sort((a, b) => {
-            if (a === 'Remove This Document') return true
-            if (b === 'Remove This Document') return false
-            if (a === 'Other') return true
-            if (b === 'Other') return false
-            return a > b
-          })
+      for (let doc of this.documents) {
+        doc.documentItems = newItems.slice(0) // deep copy
+        if (doc.documentSelect.length !== 0) {
+          doc.documentItems.push(doc.documentSelect)
         }
+        doc.documentItems.sort((a, b) => {
+          if (a === 'Remove This Document') return true
+          if (b === 'Remove This Document') return false
+          if (a === 'Other') return true
+          if (b === 'Other') return false
+          return a > b
+        })
       }
     },
     getAssessment(type) {
