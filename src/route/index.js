@@ -48,11 +48,6 @@ const routes = [
         component: CourseManage
     },
     {
-        path: '/edit_course',
-        name: 'edit_course',
-        component: CourseInfo
-    },
-    {
         path: '/student_page',
         name: 'student_page',
         component: StudentPage,

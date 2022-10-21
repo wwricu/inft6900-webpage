@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import router from './route/index'
 import {reactive} from "vue";
 
 export const store = reactive({
@@ -31,12 +32,12 @@ export function autoLogin() {
         url: `${store.host}/auth/token?token=${localStorage.getItem("JWT")}`,
     }).then(res => {
         if (res.data.status !== "success") {
-            Vue.prototype.$router.push('/login').then();
+            router.push('/login').then();
         }
         changeLoginStatus(res);
     }).catch(function (err) {
         console.log(err);
-        Vue.prototype.$router.push('/login').then();
+        router.push('/login').then();
     })
 }
 
