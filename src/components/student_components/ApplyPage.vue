@@ -40,6 +40,7 @@
         <v-btn
           color="success"
           style="float: right; bottom: 20px; right: 5px;"
+          v-show="documents.length < 9"
           @click="addDocument"
         >Add a Document</v-btn>
       </div>
@@ -250,7 +251,13 @@ export default {
         docID: this.documents.length,
         previousSelect: '',
         documentSelect: '',
-        documentItems: [...this.availableTypesSet],
+        documentItems: [...this.availableTypesSet].sort((a, b) => {
+          if (a === 'Remove This Document') return true
+          if (b === 'Remove This Document') return false
+          if (a === 'Other') return true
+          if (b === 'Other') return false
+          return a > b
+        }),
         fileInfo: null,
       })
     },
