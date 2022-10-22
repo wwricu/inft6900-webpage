@@ -25,7 +25,9 @@
             cols="9"
         >
           <v-card>
-          <v-breadcrumbs :items="breadItems">
+          <v-breadcrumbs
+            v-if="showBread"
+            :items="breadItems">
             <template v-slot:divider>
               <v-icon>mdi-chevron-right</v-icon>
             </template>
@@ -50,6 +52,7 @@
 export default {
   name: "StudentPage",
   data: () => ({
+    showBread: true,
     menus: [
       {
         text: 'Apply',
@@ -88,6 +91,7 @@ export default {
   watch: {
     $route: {
       handler(route) {
+        this.showBread = true
         switch (route.path) {
           case '/student_page/details':
             this.breadItems[1].disabled = true
@@ -108,11 +112,13 @@ export default {
             this.menus[0].class = ''
             this.menus[1].class = 'strong'
             this.menus[2].class = ''
+            this.showBread = false
             break
           default:
             this.menus[0].class = ''
             this.menus[1].class = ''
             this.menus[2].class = 'strong'
+            this.showBread = false
         }
       },
       immediate: true
