@@ -21,7 +21,7 @@
       outlined
       color="primary"
       class="mt-6 mb-2 ml-n1"
-      @click="$router.push('/student_page/apply')"
+      @click="$router.push('/student_page/apply/info')"
     >
       Next Step
     </v-btn>

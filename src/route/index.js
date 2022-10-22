@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import ApplyPage from "@/components/student_components/ApplyPage";
 
 Vue.use(VueRouter)
 
@@ -10,7 +11,7 @@ const UserManage = () => import('@/pages/UserManagePage')
 const CourseManage = () => import('@/pages/CourseManagePage')
 const CourseInfo = () => import('@/pages/CourseInfoPage')
 const StudentPage = () => import('@/pages/StudentPage')
-const ApplyPage = () => import('@/components/student_components/ApplyPage')
+const ApplyDetails = () => import('@/components/student_components/ApplyDetails')
 const ApplicationInfo = () => import('@/components/student_components/ApplicationInfo')
 const AssessmentInfo = () => import('@/components/student_components/AssessmentInfo')
 const PersonalDetail = () => import('@/components/student_components/PersonalDetail')
@@ -53,16 +54,22 @@ const routes = [
         component: StudentPage,
         children: [
             {
-                path: 'details',
-                component: PersonalDetail
-            },
-            {
                 path: 'apply',
-                component: ApplyPage
-            },
-            {
-                path: 'confirm',
-                component: ConfirmPage
+                component: ApplyPage,
+                children: [
+                    {
+                        path: 'details',
+                        component: PersonalDetail
+                    },
+                    {
+                        path: 'info',
+                        component: ApplyDetails
+                    },
+                    {
+                        path: 'confirm',
+                        component: ConfirmPage
+                    },
+                ]
             },
             {
                 path: 'applications',

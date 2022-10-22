@@ -1,10 +1,13 @@
 <template>
-  <div>Assessment info</div>
+  <AssessmentCard>
+  </AssessmentCard>
 </template>
 
 <script>
+import AssessmentCard from "@/components/student_components/student_cards/AssessmentCard";
 export default {
-  name: "AssessmentInfo"
+  name: "AssessmentInfo",
+  components: {AssessmentCard}
 }
 </script>
 

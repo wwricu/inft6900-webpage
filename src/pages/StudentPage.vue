@@ -24,24 +24,9 @@
         <v-col
             cols="9"
         >
-          <v-card>
-          <v-breadcrumbs
-            v-if="showBread"
-            :items="breadItems">
-            <template v-slot:divider>
-              <v-icon>mdi-chevron-right</v-icon>
-            </template>
-            <template v-slot:item="{ item }">
-              <v-breadcrumbs-item
-                  :href="item.href"
-                  :disabled="item.disabled"
-              >
-                {{ item.text }}
-              </v-breadcrumbs-item>
-            </template>
-          </v-breadcrumbs>
+          <div>
           <router-view></router-view>
-          </v-card>
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -56,7 +41,7 @@ export default {
     menus: [
       {
         text: 'Apply',
-        link: '/student_page/details',
+        link: '/student_page/apply/details',
         class: 'strong'
       },
       {
@@ -70,60 +55,7 @@ export default {
         class: 'normal'
       },
     ],
-    breadItems: [
-      {
-        text: "Personal Details",
-        href: '/student_page/details',
-        disabled: false
-      },
-      {
-        text: "Apply",
-        href: '/student_page/apply',
-        disabled: true
-      },
-      {
-        text: "Confirm",
-        href: '/student_page/confirm',
-        disabled: true
-      },
-    ]
   }),
-  watch: {
-    $route: {
-      handler(route) {
-        this.showBread = true
-        switch (route.path) {
-          case '/student_page/details':
-            this.breadItems[1].disabled = true
-            this.breadItems[2].disabled = true
-            this.menus[0].class = 'strong'
-            this.menus[1].class = ''
-            this.menus[2].class = ''
-            break
-          case '/student_page/apply':
-            this.breadItems[1].disabled = false
-            this.breadItems[2].disabled = true
-            break
-          case '/student_page/confirm':
-            this.breadItems[1].disabled = false
-            this.breadItems[2].disabled = false
-            break
-          case '/student_page/applications':
-            this.menus[0].class = ''
-            this.menus[1].class = 'strong'
-            this.menus[2].class = ''
-            this.showBread = false
-            break
-          default:
-            this.menus[0].class = ''
-            this.menus[1].class = ''
-            this.menus[2].class = 'strong'
-            this.showBread = false
-        }
-      },
-      immediate: true
-    }
-  }
 }
 </script>
 

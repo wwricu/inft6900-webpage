@@ -1,10 +1,14 @@
 <template>
-$END$
+  <v-card>
+    <v-card-title>
+      INFO6900
+    </v-card-title>
+  </v-card>
 </template>
 
 <script>
 export default {
-name: "AssessmentCard"
+  name: "AssessmentCard"
 }
 </script>
 
