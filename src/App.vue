@@ -8,7 +8,9 @@
     >
       <v-app-bar-nav-icon
         color="primary"
-        @click="switchMenu"></v-app-bar-nav-icon>
+        @click="switchMenu"
+        v-if="loginStatus===true&&role!=='Student'"
+      ></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
       <v-btn
           text
@@ -133,7 +135,7 @@ export default {
     },
     AVN() {
       return store.AVN;
-    }
+    },
   },
 
   data: () => ({

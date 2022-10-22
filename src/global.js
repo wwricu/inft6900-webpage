@@ -37,7 +37,7 @@ export function autoLogin() {
         changeLoginStatus(res);
     }).catch(function (err) {
         console.log(err);
-        router.push('/login').then();
+        // router.push('/login').then();
     })
 }
 
@@ -45,6 +45,7 @@ export function changeLoginStatus(res) {
     localStorage.setItem("JWT", res.data.obj[1]);
     store.loginStatus = true;
     store.role = store.roles[res.data.obj[0].permission];
+    store.userNumber = res.data.obj[0].userNumber;
     const nameArray = res.data.obj[0].userName.split(' ');
     console.log(nameArray)
     store.name = nameArray[0];
