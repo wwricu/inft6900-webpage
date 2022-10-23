@@ -1,6 +1,10 @@
 <template>
   <v-row justify="center">
-    <v-expansion-panels accordion>
+    <v-expansion-panels
+      accordion
+      multiple
+      v-model="panel"
+    >
       <v-expansion-panel
           v-for="course in courses"
           :key="course.courseOfferingName"
@@ -42,6 +46,7 @@ import {store} from "@/global";
 export default {
   name: "AssessmentCard",
   data: () => ({
+    panel: [],
     courseOfferingMap: new Map(),
     courses: [
       /*{
@@ -73,14 +78,15 @@ export default {
           this.courseOfferingMap.set(assessment.courseOfferingName, [assessment])
         }
       }
+      let panelIndex = 0
       this.courseOfferingMap.forEach((assessments,
                                                 courseOfferingName) => {
+        this.panel.push(panelIndex++)
         this.courses.push({
           courseOfferingName: courseOfferingName,
           assessments: assessments
         })
-      });
-
+      })
     },
     getAssessments() {
       this.$axios({
