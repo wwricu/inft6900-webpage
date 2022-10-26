@@ -372,7 +372,7 @@ export default {
         url: `${store.host}/application/update`,
         headers: {'Content-Type': 'application/json'},
         data: {
-          applicationID: Number.parseInt(this.applicationID),
+          applicationID: this.applicationID,
           studentNumber: store.userNumber,
           reason: this.reasonSelect,
           daysOfImpact: this.daysOfImpact,

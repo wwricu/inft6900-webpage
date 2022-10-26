@@ -37,6 +37,7 @@ export default {
       }).then(res => {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);
+          return
         }
         this.applications = res.data.obj
         // alert(this.applications.length)
