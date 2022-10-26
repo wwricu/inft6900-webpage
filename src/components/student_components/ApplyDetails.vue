@@ -9,6 +9,7 @@
           <v-text-field
               dense
               outlined
+              disabled
               class="mr-2"
               label="Reference Number"
               v-model="applicationID"
@@ -38,7 +39,7 @@
               name="input-7-1"
               label="Adverse Circumstance Details"
               outlined
-              :value="circumstanceDetail"
+              v-model="circumstanceDetail"
               hint="You Circumstance Details"
           ></v-textarea>
         </v-col>
@@ -147,7 +148,7 @@
               name="input-7-1"
               :label="outcomeSelect.placeholder"
               outlined
-              :value="outcomeDetail"
+              v-model="outcomeDetail"
           ></v-textarea>
         </v-col>
       </v-row>
@@ -221,7 +222,7 @@ export default {
     staffSelect: '',
     staffItems: [],
     outcomeSelect: {
-      name: '',
+      name: 'aaa',
       hint: 'Select wished outcome',
       placeholder: 'Describe wished outcome'
     },
@@ -255,8 +256,58 @@ export default {
     this.documents[0].documentItems = this.availableTypes
     this.availableTypesSet = new Set(this.availableTypes)
     this.applicationID = this.$route.params.applicationID
+    this.initForm(this.$route.params.applicationID)
   },
   methods: {
+    initForm(applicationID) {
+      this.$axios({
+        method: "GET",
+        url: `${store.host}/application/get?applicationID=${applicationID}`,
+      }).then(res => {
+        if (res.data.status !== "success") {
+          alert("message: " + res.data.message);
+          return
+        }
+        this.readApplication(res.data.obj[0])
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    },
+    readApplication(application) {
+      this.applicationID = application.applicationID
+      this.reasonSelect = application.reason
+      this.daysOfImpact = application.daysOfImpact
+      this.circumstanceDetail = application.circumstanceDetail
+      if (application.assessmentInstance !== null) {
+        this.getAssessment('course', ()=> {
+          this.courseSelect = {
+            name: application.assessmentInstance.courseOfferingName,
+            courseOfferingID: application.assessmentInstance.courseOfferingID
+          }
+          this.getAssessment('assessment', ()=> {
+            this.assessmentSelect = {
+              name: application.assessmentInstance.name,
+              assessmentID: application.assessmentInstance.assessmentID
+            }
+            if (application.staff !== null) {
+              this.getAssessment('staff', () => {
+                this.staffSelect = {
+                  name: application.staff.userName,
+                  sysUserID: application.staff.sysUserID
+                }
+              })
+            }
+          })
+        })
+      }
+      for (let outcome of this.outcomeItems) {
+        if (application.outcome === outcome.name) {
+          this.outcomeSelect = outcome
+          break
+        }
+      }
+      this.outcomeDetail = application.outcomeDetail
+    },
     addDocument() {
       this.documents.push({
         docID: this.documents.length,
@@ -301,7 +352,7 @@ export default {
         })
       }
     },
-    getAssessment(type) {
+    getAssessment(type, handle) {
       /* type:
       course: userNumber
       assessment: userNumber
@@ -327,6 +378,9 @@ export default {
           return;
         }
         this.fillItems(res.data.obj, type)
+        if (handle != null) {
+          handle()
+        }
       }).catch(function (err) {
         alert("err " + err);
       })
