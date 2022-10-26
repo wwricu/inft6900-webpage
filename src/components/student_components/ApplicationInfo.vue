@@ -8,9 +8,14 @@
       >
         <v-card>
           <v-card-title>Reference Number: {{app.applicationID}} </v-card-title>
-          <v-card-text>Assessment: {{app.assessmentID}}</v-card-text>
-          <v-card-text>Staff: {{app.staffID}}</v-card-text>
+          <v-card-text>
+            Assessment:
+            {{app.assessmentInstance.courseOfferingName}}
+            {{app.assessmentInstance.name}}
+          </v-card-text>
+          <v-card-text>Staff: {{app.staff.userName}}</v-card-text>
           <v-card-text>Submit Time: {{app.submitDate}}</v-card-text>
+          <v-card-text>Statue: {{app.status}}</v-card-text>
         </v-card>
       </div>
   </div>
