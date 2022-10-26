@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import ApplyPage from "@/components/student_components/ApplyPage";
 
 Vue.use(VueRouter)
 
@@ -15,6 +14,7 @@ const ApplyDetails = () => import('@/components/student_components/ApplyDetails'
 const ApplicationInfo = () => import('@/components/student_components/ApplicationInfo')
 const AssessmentInfo = () => import('@/components/student_components/AssessmentInfo')
 const PersonalDetail = () => import('@/components/student_components/PersonalDetail')
+const ApplyPage = () => import('@/components/student_components/ApplyPage')
 const ConfirmPage = () => import('@/components/student_components/ConfirmPage')
 
 const routes = [
@@ -62,7 +62,7 @@ const routes = [
                         component: PersonalDetail
                     },
                     {
-                        path: 'info',
+                        path: 'info/:applicationID',
                         component: ApplyDetails
                     },
                     {

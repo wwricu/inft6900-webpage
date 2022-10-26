@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import router from './route/index'
+// import router from './route/index'
 import {reactive} from "vue";
 
 export const store = reactive({
@@ -23,7 +23,7 @@ export const store = reactive({
     AVN: 'WW',
     devHost: 'http://localhost:5094',
     // https://inft6900.wwr-blog.com
-    host: 'http://localhost:5094'
+    host: 'http://localhost:80'
 })
 
 export function autoLogin() {
@@ -32,7 +32,8 @@ export function autoLogin() {
         url: `${store.host}/auth/token?token=${localStorage.getItem("JWT")}`,
     }).then(res => {
         if (res.data.status !== "success") {
-            router.push('/login').then();
+            console.log(localStorage.getItem("JWT"))
+            // router.push('/login').then();
         }
         changeLoginStatus(res);
     }).catch(function (err) {
