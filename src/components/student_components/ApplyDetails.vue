@@ -5,6 +5,15 @@
     </div>
     <v-container class="pa-8">
       <v-row no-gutters>
+        <v-col cols="12">
+          <v-text-field
+              dense
+              outlined
+              class="mr-2"
+              label="Reference Number"
+              v-model="applicationID"
+          ></v-text-field>
+        </v-col>
         <v-col cols="6">
           <v-select
             dense
@@ -21,7 +30,7 @@
               dense
               class="ml-2"
               label="Days of this impact"
-              v-model="days"
+              v-model="daysOfImpact"
           ></v-text-field>
         </v-col>
         <v-col cols="12">
@@ -29,7 +38,7 @@
               name="input-7-1"
               label="Adverse Circumstance Details"
               outlined
-              :value="circumstanceDescription"
+              :value="circumstanceDetail"
               hint="You Circumstance Details"
           ></v-textarea>
         </v-col>
@@ -138,7 +147,7 @@
               name="input-7-1"
               :label="outcomeSelect.placeholder"
               outlined
-              :value="outcomeDescription"
+              :value="outcomeDetail"
           ></v-textarea>
         </v-col>
       </v-row>
@@ -174,8 +183,8 @@ import {store} from "@/global";
 export default {
   name: "SubmitPage",
   data: () => ({
-
-    days: '',
+    applicationID: '',
+    daysOfImpact: '',
     availableTypesSet: Set,
     availableTypes: [
       'Documentary Evidence of Unavoidable Commitment',
@@ -220,7 +229,7 @@ export default {
       {
         name: 'Extension of Time',
         hint: 'Due date of the exam will be delayed',
-        placeholder: 'Please describe your current progress and wished extended days'
+        placeholder: 'Please describe your current progress and wished extended daysOfImpact'
       },
       {
         name: 'Reschedule Exam',
@@ -239,12 +248,13 @@ export default {
         placeholder: ''
       },
     ],
-    circumstanceDescription: '',
-    outcomeDescription: ''
+    circumstanceDetail: '',
+    outcomeDetail: ''
   }),
   created() {
     this.documents[0].documentItems = this.availableTypes
     this.availableTypesSet = new Set(this.availableTypes)
+    this.applicationID = this.$route.params.applicationID
   },
   methods: {
     addDocument() {
@@ -357,20 +367,33 @@ export default {
       }
     },
     packageBody() {
+      this.$axios({
+        method: "POST",
+        url: `${store.host}/application/update`,
+        headers: {'Content-Type': 'application/json'},
+        data: {
+          applicationID: Number.parseInt(this.applicationID),
+          studentNumber: store.userNumber,
+          reason: this.reasonSelect,
+          daysOfImpact: this.daysOfImpact,
+          circumstanceDetail: this.circumstanceDetail,
+          instanceID: this.assessmentSelect.assessmentID,
+          staffID: this.staffSelect.sysUserID,
+          outcome: this.outcomeSelect.name,
+          outcomeDetail: this.outcomeDetail,
+        }
+      }).then(res => {
+        if (res.data.status !== "success") {
+          alert("message: " + res.data.message);
+        }
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    },
+    documentsUpload() {
       let body = {
-        userNumber: store.userNumber,
-        // applicationID: '',
-        reason: this.reasonSelect,
-        days: Number.parseInt(this.days),
-        description: this.circumstanceDescription,
         docs: [],
-        instanceID: this.assessmentSelect.assessmentID,
-        staffID: this.staffSelect.sysUserID,
-        outcome: this.outcomeSelect.name,
-        outcomeDescription: this.outcomeDescription,
-        // staffComment: '',
       }
-
       for (let doc of this.documents) {
         body.docs.push({
           type: doc.documentSelect,
@@ -384,12 +407,12 @@ export default {
 
       formData.append('userNumber', body.userNumber)
       formData.append('reason', body.reason)
-      formData.append('days', body.days)
+      formData.append('daysOfImpact', body.daysOfImpact)
       formData.append('description', body.description)
       formData.append('instanceID', body.instanceID)
       formData.append('staffID', body.staffID)
       formData.append('outcome', body.outcome)
-      formData.append('outcomeDescription', body.outcomeDescription)
+      formData.append('outcomeDetail', body.outcomeDetail)
 
       for (let doc of body.docs) {
         formData.append("docs[]", doc)
@@ -397,7 +420,7 @@ export default {
 
       this.$axios({
         method: "POST",
-        url: `/application/new`,
+        url: `${store.host}/application/new`,
         headers: {'Content-Type': 'multipart/form-data'},
         transformRequest: [function(data, headers) {
           delete headers.post['Content-Type']
