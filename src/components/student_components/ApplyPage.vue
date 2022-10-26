@@ -25,17 +25,17 @@ export default {
     breadItems: [
       {
         text: "Personal Details",
-        href: '/student_page/details',
+        href: '/student_page/apply/details',
         disabled: false
       },
       {
         text: "Apply",
-        href: '/student_page/apply',
+        href: '/student_page/apply/info',
         disabled: true
       },
       {
         text: "Confirm",
-        href: '/student_page/confirm',
+        href: '/student_page/apply/confirm',
         disabled: true
       },
     ],
