@@ -80,8 +80,8 @@ export default {
         }
       }).then(res => {
         if (res.data.status === "success") {
+          alert(`delete ${application.applicationID}`)
           this.applications.splice(this.applications.indexOf(application),1);
-          // alert("success")
         }
       }).catch(function (err) {
         alert("err " + err);

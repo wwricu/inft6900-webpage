@@ -75,15 +75,13 @@ export default {
   }),
   methods: {
     nextStep() {
-      let applicationID = 0
       this.$axios({
         method: "GET",
         url: `${store.host}/application/new`,
       }).then(res => {
         if (res.data.status === "success") {
-          applicationID = res.data.obj
+          this.$router.push(`/student_page/apply/info/${res.data.obj}`)
         }
-        this.$router.push(`/student_page/apply/info/${applicationID}`)
       }).catch(function (err) {
         alert("err " + err);
       })
