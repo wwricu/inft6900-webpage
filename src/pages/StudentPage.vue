@@ -97,4 +97,7 @@ export default {
 .strong {
   font-weight: bold;
 }
+.strong:hover, .normal:hover {
+  cursor: pointer;
+}
 </style>
