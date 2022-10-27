@@ -4,22 +4,32 @@
           class="mb-4"
           v-for="app in applications"
           :key="app.applicationID"
-          @click="$router.push(`/student_page/apply/info/${app.applicationID}`)"
       >
         <v-card>
-          <v-card-title>Reference Number: {{app.applicationID}}</v-card-title>
-          <v-card-text v-if="app.assessmentInstance !== null">
-            Assessment:
+          <v-card-text>
+          <div>Reference Number: {{app.applicationID}}</div>
+          <p
+            class="text-h5 text--primary"
+            v-if="app.assessmentInstance !== null"
+          >
             {{app.assessmentInstance.courseOfferingName}}
             {{app.assessmentInstance.name}}
+          </p>
+          <p>{{app.status}}</p>
+          <div class="text--primary" v-if="app.staff !== null">
+            Staff: {{app.staff.userName}}<br>
+            Submit Time: {{app.submitDate}}
+          </div>
           </v-card-text>
-          <v-card-text
-              v-if="app.staff !== null"
-          >
-            Staff: {{app.staff.userName}}
-          </v-card-text>
-          <v-card-text>Submit Time: {{app.submitDate}}</v-card-text>
-          <v-card-text>Statue: {{app.status}}</v-card-text>
+          <v-card-actions>
+            <v-btn
+                text
+                color="deep-purple accent-4"
+                @click="$router.push(`/student_page/apply/info/${app.applicationID}`)"
+            >
+              Modify
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </div>
   </div>
