@@ -14,26 +14,23 @@
             v-for="assessment in course.assessments"
             :key="assessment.assessmentID"
         >
-          <v-divider
-              v-if="course.assessments.indexOf(assessment) !== 0"
-          ></v-divider>
-          <div>
-            <v-card-text>
+          <v-divider></v-divider>
+          <v-card-text>
+            <div class="text--secondary">
               {{assessment.type}} &ensp;·&ensp;
               {{assessment.status}}
-            </v-card-text>
-            <v-card-title>{{assessment.name}}</v-card-title>
-            <p></p>
-            <v-card-text>
+            </div>
+            <p class="text-h5 text--primary">
+              {{assessment.name}}
+            </p>
+            <div class="text--primary">
               {{assessment.beginDate}} &ensp;~&ensp;
-              {{assessment.endDate}}
-            </v-card-text>
-            <v-card-text>
+              {{assessment.endDate}}<br>
               {{assessment.location.building}}
               {{assessment.location.room}},
               {{assessment.location.campus}}
-            </v-card-text>
-          </div>
+            </div>
+          </v-card-text>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
