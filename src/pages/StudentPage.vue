@@ -13,7 +13,12 @@
               <v-list-item-content>
                 <v-list-item-title
                   :class="menu.class"
-                  @click="$router.push(menu.link)"
+                  @click="()=>{
+                    if ($route.path.split('/')[2]
+                    !== menu.link.split('/')[2]) {
+                      $router.push(menu.link)
+                    }
+                  }"
                 >
                   {{ menu.text }}
                 </v-list-item-title>
@@ -56,6 +61,32 @@ export default {
       },
     ],
   }),
+  watch: {
+    $route: {
+      handler(route) {
+        // alert(route.path.split('/')[2])
+        switch (route.path.split('/')[2]) {
+          case 'apply':
+            this.menus[0].class = 'strong'
+            this.menus[1].class = 'normal'
+            this.menus[2].class = 'normal'
+            break
+          case 'applications':
+            this.menus[0].class = 'normal'
+            this.menus[1].class = 'strong'
+            this.menus[2].class = 'normal'
+            break
+          case 'assessments':
+            this.menus[0].class = 'normal'
+            this.menus[1].class = 'normal'
+            this.menus[2].class = 'strong'
+            break
+          default:
+        }
+      },
+      immediate: true
+    }
+  },
 }
 </script>
 
