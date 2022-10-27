@@ -29,6 +29,14 @@
             >
               Modify
             </v-btn>
+            <v-btn
+                text
+                color="red accent-4"
+                v-if="app.status === null || app.status === 'Draft'"
+                @click="deleteApplication(app)"
+            >
+              Delete
+            </v-btn>
           </v-card-actions>
         </v-card>
       </div>
@@ -41,9 +49,7 @@ import {store} from "@/global";
 export default {
   name: "ApplicationInfo",
   data: ()=> ({
-    applications: [
-
-    ],
+    applications: [],
   }),
   created() {
     this.getApplications()
@@ -60,6 +66,23 @@ export default {
         }
         this.applications = res.data.obj
         // alert(this.applications.length)
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    },
+    deleteApplication(application) {
+      this.$axios({
+        method: "DELETE",
+        headers: {"Content-type": "application/json"},
+        url: `${store.host}/application/delete`,
+        data: {
+            applicationID: application.applicationID
+        }
+      }).then(res => {
+        if (res.data.status === "success") {
+          this.applications.splice(this.applications.indexOf(application),1);
+          // alert("success")
+        }
       }).catch(function (err) {
         alert("err " + err);
       })
