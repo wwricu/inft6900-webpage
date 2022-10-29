@@ -25,6 +25,7 @@
             <v-btn
                 text
                 color="deep-purple accent-4"
+                v-if="app.status === null || app.status === 'Draft'"
                 @click="$router.push(`/student_page/apply/info/${app.applicationID}`)"
             >
               Modify
