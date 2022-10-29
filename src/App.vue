@@ -150,7 +150,7 @@ export default {
       ],
       Staff: [
         // { title: 'Home', icon: 'mdi-home', link: '/' },
-        { title: 'View Applications', icon: 'mdi-view-dashboard', link: 'manage_user' },
+        { title: 'View Applications', icon: 'mdi-view-dashboard', link: '/application' },
         { title: 'Search Contact', icon: 'mdi-magnify', link: '/user_manage' },
         { title: 'Personal Info', icon: 'mdi-account', link: '/' },
         { title: 'About', icon: 'mdi-forum', link: 'user_info' },
@@ -159,7 +159,7 @@ export default {
           // { title: 'Home', icon: 'mdi-home', link: '/' },
           { title: 'User Management', icon: 'mdi-view-dashboard', link: '/user_manage' },
           { title: 'Course Management', icon: 'mdi-view-dashboard', link: '/course_manage' },
-          { title: 'View Applications', icon: 'mdi-view-dashboard', link: '/' },
+          { title: 'View Applications', icon: 'mdi-view-dashboard', link: '/application' },
           { title: 'Personal Info', icon: 'mdi-account', link: '/student_page' },
           { title: 'About', icon: 'mdi-forum', link: 'user_info' },
       ],

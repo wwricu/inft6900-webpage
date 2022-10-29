@@ -1,38 +1,26 @@
 <template>
   <div>
-    <v-card-title>Reference Number</v-card-title>
-    <v-card-subtitle>{{application.applicationID}}</v-card-subtitle>
-    <v-card-title>Student Info</v-card-title>
-    <v-card-subtitle>{{ studentInfo }}</v-card-subtitle>
-    <v-card-title>Reason</v-card-title>
-    <v-card-subtitle>{{application.reason}}</v-card-subtitle>
-    <v-card-title>Days of Impact</v-card-title>
-    <v-card-subtitle>{{application.daysOfImpact}}</v-card-subtitle>
-    <v-card-title>Circumstance Detail</v-card-title>
-    <v-card-subtitle>{{application.circumstanceDetail}}</v-card-subtitle>
-    <v-card-title>Assessment</v-card-title>
-    <v-card-subtitle>{{application.assessmentInfo}}</v-card-subtitle>
-    <v-card-title>Desired Outcome</v-card-title>
-    <v-card-subtitle>{{application.desiredOutcome}}</v-card-subtitle>
-    <v-card-subtitle>{{application.outcomeDetail}}</v-card-subtitle>
-    <v-card-actions>
-      <v-btn
-        color="primary"
-        @click="submitApplication()"
-      >
-        submit
-      </v-btn>
-    </v-card-actions>
+    <ApplicationCard :application="application">
+      <template v-slot:submit>
+        <v-btn
+            color="primary"
+            @click="submitApplication()"
+        >
+          submit
+        </v-btn>
+      </template>
+    </ApplicationCard>
   </div>
 </template>
 
 <script>
 import {store} from "@/global";
+import ApplicationCard from "@/components/ApplicationCard";
 
 export default {
   name: "ConfirmPage",
+  components: {ApplicationCard},
   data: () => ({
-    studentInfo: store.userNumber + " " + store.name,
     application: {
       applicationID: '',
       reason: '',
@@ -41,15 +29,13 @@ export default {
       assessmentInfo: '',
       desiredOutcome: '',
       outcomeDetail: '',
+      studentInfo: store.userNumber + " " + store.name,
     }
   }),
   created() {
     this.initForm(this.$route.params.applicationID)
   },
   methods: {
-    test() {
-      alert("here")
-    },
     initForm(applicationID) {
       this.$axios({
         method: "GET",
@@ -91,6 +77,7 @@ export default {
       }).then(res => {
         if (res.data.status === "success") {
           alert("message: " + res.data.status);
+          this.$router.push(`/student_page/applications`)
         }
       }).catch(function (err) {
         alert("err " + err);

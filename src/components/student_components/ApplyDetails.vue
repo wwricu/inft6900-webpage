@@ -445,7 +445,9 @@ export default {
       }).then(res => {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);
+          return
         }
+        this.$router.push(`/student_page/apply/confirm/${this.$route.params.applicationID}`)
       }).catch(function (err) {
         alert("err " + err);
       })
@@ -490,15 +492,16 @@ export default {
       }).then(res => {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);
+          return;
         }
+        alert('here')
       }).catch(function (err) {
         alert("err " + err);
       })
       return body
     },
     nextStep() {
-      // this.packageBody()
-      this.$router.push(`/student_page/apply/confirm/${this.$route.params.applicationID}`)
+      this.packageBody()
     }
   }
 }

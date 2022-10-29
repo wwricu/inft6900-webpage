@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import applicationTable from "@/components/ApplicationTable";
+import ApplicationPage from "@/pages/ApplicationPage";
 
 Vue.use(VueRouter)
 
@@ -47,6 +49,16 @@ const routes = [
         path: '/course_manage',
         name: 'course_manage',
         component: CourseManage
+    },
+    {
+        path: '/application',
+        name: 'application',
+        component: applicationTable
+    },
+    {
+        path: '/application/view/:applicationID',
+        name: 'applicationView',
+        component: ApplicationPage
     },
     {
         path: '/student_page',
