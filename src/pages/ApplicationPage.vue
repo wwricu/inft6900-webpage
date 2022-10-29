@@ -1,7 +1,12 @@
 <template>
   <v-card class="ma-8 pa-8">
-    <ApplicationCard
-        :application="application"/>
+    <ApplicationCard :application="application"/>
+    <AssessmentDialog
+      ref="dialog"
+      :assessmentID="assessment.assessmentID"
+      dialog-action="Approve"
+      :disabled="true"
+    />
     <v-card-actions>
       <v-btn
         color="error"
@@ -9,7 +14,8 @@
         reject
       </v-btn>
       <v-btn
-          color="success"
+        color="success"
+        @click="$refs.dialog.showDialog()"
       >
         approve
       </v-btn>
@@ -20,9 +26,11 @@
 <script>
 import {store} from "@/global";
 import ApplicationCard from '@/components/ApplicationCard'
+import AssessmentDialog from "@/components/AssessmentDialog";
 export default {
   name: "ApplicationPage",
   components: {
+    AssessmentDialog,
     ApplicationCard,
   },
   data: () => ({
@@ -35,7 +43,9 @@ export default {
       desiredOutcome: '',
       outcomeDetail: '',
       studentInfo: store.userNumber + " " + store.name,
-    }
+    },
+    assessment: {},
+    dialogSwitch: false
   }),
   created() {
     this.initForm(this.$route.params.applicationID)
@@ -62,10 +72,12 @@ export default {
       this.application.reason = application.reason
       this.application.daysOfImpact = application.daysOfImpact
       this.application.circumstanceDetail = application.circumstanceDetail
-      if (application.assessmentInstance !== null) {
+      if (application.assessmentInstance != null) {
         this.application.assessmentInfo =
             application.assessmentInstance.courseOfferingName
             + " " + application.assessmentInstance.name
+        this.assessment = application.assessmentInstance
+        alert(this.assessment.assessmentID)
       }
       this.application.desiredOutcome = application.outcome
       this.outcomeDetail = application.outcomeDetail
