@@ -152,29 +152,33 @@
           ></v-textarea>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="3">
-          <v-btn
-              outlined
-              color="primary"
-              class="mt-8 mb-2 ml-n1"
-              @click="$router.push('/student_page/apply/details')"
-          >
-            Back
-          </v-btn>
-        </v-col>
-        <v-col cols="3">
-          <v-btn
-              outlined
-              color="primary"
-              class="mt-8 mb-2 ml-n1"
-              @click="nextStep"
-          >
-            Next
-          </v-btn>
-        </v-col>
-      </v-row>
     </v-container>
+    <v-card-actions>
+      <v-spacer/>
+      <v-btn
+          color="error"
+          class="mr-6 mb-2"
+          @click="nextStep"
+      >
+        Discard
+      </v-btn>
+      <v-btn
+          outlined
+          color="primary"
+          class="mr-6 mb-2"
+          @click="$router.push('/student_page/apply/details')"
+      >
+        Back
+      </v-btn>
+      <v-btn
+          outlined
+          color="primary"
+          class="mr-6 mb-2"
+          @click="nextStep"
+      >
+        Next
+      </v-btn>
+    </v-card-actions>
   </div>
 </template>
 
