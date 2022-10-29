@@ -66,7 +66,7 @@ const routes = [
                         component: ApplyDetails
                     },
                     {
-                        path: 'confirm',
+                        path: 'confirm/:applicationID',
                         component: ConfirmPage
                     },
                 ]

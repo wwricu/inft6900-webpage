@@ -497,8 +497,8 @@ export default {
       return body
     },
     nextStep() {
-      this.packageBody()
-      this.$router.push('/student_page/apply/confirm')
+      // this.packageBody()
+      this.$router.push(`/student_page/apply/confirm/${this.$route.params.applicationID}`)
     }
   }
 }
