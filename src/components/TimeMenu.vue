@@ -41,20 +41,11 @@ export default {
     return {
       time: null,
       menu: false,
-      modal: false,
     }
   },
   created() {
     this.time = this.initTime
   }
-  // watch: {
-  //   initTime: {
-  //     handler(initTime) {
-  //       this.time = initTime
-  //     },
-  //     immediate: true,
-  //   }
-  // }
 }
 </script>
 

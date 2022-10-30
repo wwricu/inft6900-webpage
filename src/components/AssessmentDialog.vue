@@ -68,7 +68,7 @@
                 :items="statusItem"
             ></v-select>
           </v-col>
-          <v-col md="12">
+          <v-col cols="6">
             <v-menu
                 ref="menu1"
                 v-model="beginDateMenu"
@@ -93,7 +93,14 @@
               ></v-date-picker>
             </v-menu>
           </v-col>
-          <v-col md="12">
+          <v-col cols="6">
+            <TimeMenu
+                ref="beginTime"
+                label="Begin Time"
+              :initTime="assessmentData.beginTime"
+            />
+          </v-col>
+          <v-col cols="6">
             <v-menu
                 offset-y
                 ref="menu2"
@@ -119,6 +126,13 @@
               ></v-date-picker>
             </v-menu>
           </v-col>
+          <v-col cols="6">
+            <TimeMenu
+                ref="endTime"
+                label="End Time"
+                :initTime="assessmentData.endTime"
+            />
+          </v-col>
         </v-row>
       </v-container>
       <v-divider></v-divider>
@@ -129,9 +143,11 @@
 
 <script>
 import {store} from "@/global";
+import TimeMenu from "@/components/TimeMenu";
 
 export default {
   name: "AssessmentDialog",
+  components: {TimeMenu},
   props: {
     assessmentID: {
       type: String,
@@ -163,6 +179,8 @@ export default {
       type: '',
       status: '',
       beginDate: '',
+      beginTime: '',
+      endTime: '',
       endDate: '',
       locationID: 0,
     },
@@ -295,6 +313,9 @@ export default {
       })
     },
     submitAssessment() {
+      this.assessmentData.beginTime = this.$refs.beginTime.time
+      this.assessmentData.endTime = this.$refs.endTime.time
+
       this.$axios({
         method: "POST",
         url: `${store.host}/assessment/updateInstance`,
