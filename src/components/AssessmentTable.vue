@@ -89,7 +89,7 @@
                       label="Room"
                       item-text="room"
                       item-value="locationID"
-                      @change="assessmentData.locationID=roomSelect.locationID"
+                      @change="this.assessmentData.locationID=roomSelect.locationID"
                       @click="getLocation('room', false)"
                       :items="roomItems"
                       v-model="roomSelect"
@@ -105,7 +105,7 @@
                       v-model="assessmentData.status"
                   ></v-text-field>
                 </v-col>
-                <v-col md="12">
+                <v-col md="6">
                   <v-menu
                       ref="menu1"
                       v-model="beginDateMenu"
@@ -130,7 +130,10 @@
                     ></v-date-picker>
                   </v-menu>
                 </v-col>
-                <v-col md="12">
+                <v-col cols="6">
+                  <TimeMenu ref="startTime" label="Start Time"/>
+                </v-col>
+                <v-col md="6">
                   <v-menu
                       offset-y
                       ref="menu2"
@@ -155,6 +158,9 @@
                         no-title
                     ></v-date-picker>
                   </v-menu>
+                </v-col>
+                <v-col cols="6">
+                  <TimeMenu ref="endTime" label="End Time"/>
                 </v-col>
               </v-row>
             </v-container>
@@ -181,6 +187,14 @@
           </v-card>
         </v-dialog>
       </v-toolbar>
+    </template>
+    <template v-slot:[`item.beginDate`]="{ item }">
+        {{ item.beginDate }}
+        {{ item.beginTime }}
+    </template>
+    <template v-slot:[`item.endDate`]="{ item }">
+        {{ item.endDate }}
+        {{ item.endTime }}
     </template>
     <template v-slot:[`item.location`]="{ item }">
       <v-chip
@@ -232,9 +246,11 @@
 
 <script>
 import {store} from "@/global";
+import TimeMenu from "@/components/TimeMenu";
 
 export default {
   name: "AssessmentTable",
+  components: {TimeMenu},
   data: () => ({
     sourcePage: '',
     search: '',
@@ -288,6 +304,8 @@ export default {
     beginDateMenu: false,
     endDateMenu: false,
     pickerBeginDate: null,
+    beginTime: '',
+    endTime: '',
     pickerEndDate: null,
     assessmentDialog: false,
     assessmentData: {
@@ -295,6 +313,8 @@ export default {
       type: '',
       status: '',
       beginDate: '',
+      startTime: '',
+      endTime: '',
       endDate: '',
       locationID: 0,
     },
@@ -414,6 +434,9 @@ export default {
     newAssessment() {
       this.assessmentData.courseOfferingID =
             parseInt(this.$route.params.courseID);
+      this.assessmentData.beginTime = this.$refs.startTime.time
+      this.assessmentData.endTime = this.$refs.endTime.time
+      this.assessmentData.locationID = this.roomSelect.locationID
       this.$axios({
         method: "POST",
         url: `${store.host}/assessment/new`,
@@ -481,6 +504,10 @@ export default {
       } else if (this.sourcePage === 'user') {
         url = url.concat('updateInstance');
       }
+
+      this.assessmentData.startTime = this.$refs.startTime.time
+      this.assessmentData.endTime = this.$refs.endTime.time
+
       this.$axios({
         method: "POST",
         url: url,

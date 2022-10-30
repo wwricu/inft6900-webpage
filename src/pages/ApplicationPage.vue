@@ -119,7 +119,7 @@ export default {
       this.application.reason = application.reason
       this.application.daysOfImpact = application.daysOfImpact
       this.application.circumstanceDetail = application.circumstanceDetail
-      this.getStudent(application.studentNumber)
+      this.getStudent(application.student.userNumber)
       if (application.assessmentInstance != null) {
         this.application.assessmentInfo =
             application.assessmentInstance.courseOfferingName

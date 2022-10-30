@@ -125,7 +125,7 @@ export default {
       for (let application of applications) {
         let info = {
             applicationID: application.applicationID,
-            studentNumber: application.studentNumber,
+            studentNumber: application.student.userNumber,
             assessmentInfo: '',
             reason: application.reason,
             status: application.status

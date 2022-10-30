@@ -303,7 +303,6 @@ export default {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);
           this.$router.push('/application')
-          return;
         }
       }).catch(function (err) {
         alert("err " + err);
