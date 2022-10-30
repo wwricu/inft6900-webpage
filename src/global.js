@@ -6,7 +6,8 @@ export const store = reactive({
     loginStatus: false,
     role: '',
     permission: 0,
-    userNumber: '3362554',
+    sysUserID: 0,
+    userNumber: '',
     name: '',
     roles: [
         'User',
@@ -46,6 +47,7 @@ export function changeLoginStatus(res) {
     localStorage.setItem("JWT", res.data.obj[1]);
     store.loginStatus = true;
     store.role = store.roles[res.data.obj[0].permission];
+    store.sysUserID = res.data.obj[0].sysUserID;
     store.userNumber = res.data.obj[0].userNumber;
     const nameArray = res.data.obj[0].userName.split(' ');
     console.log(nameArray)

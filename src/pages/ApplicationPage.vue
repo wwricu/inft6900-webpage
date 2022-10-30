@@ -119,16 +119,17 @@ export default {
       this.application.reason = application.reason
       this.application.daysOfImpact = application.daysOfImpact
       this.application.circumstanceDetail = application.circumstanceDetail
-      this.getStudent(application.student.userNumber)
+      // this.getStudent(application.student.userNumber)
+      this.application.studentInfo = application.student.userNumber + " "
+                  + application.student.userName
       if (application.assessmentInstance != null) {
         this.application.assessmentInfo =
             application.assessmentInstance.courseOfferingName
             + " " + application.assessmentInstance.name
         this.assessment = application.assessmentInstance
       }
-      alert(JSON.stringify(application))
       this.application.desiredOutcome = application.outcome
-      this.outcomeDetail = application.outcomeDetail
+      this.application.outcomeDetail = application.outcomeDetail
     },
     handleApplication(result) {
       this.$axios({

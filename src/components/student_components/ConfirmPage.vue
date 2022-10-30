@@ -67,7 +67,6 @@ export default {
     },
     submitApplication() {
       const applicationID = this.$route.params.applicationID
-      alert(applicationID)
       this.$axios({
         method: "POST",
         url: `${store.host}/application/submit`,
@@ -77,11 +76,11 @@ export default {
       }).then(res => {
         if (res.data.status === "success") {
           alert("message: " + res.data.status);
-          this.$router.push(`/student_page/applications`)
         }
       }).catch(function (err) {
         alert("err " + err);
       })
+      this.$router.push(`/student_page/applications`)
     }
   }
 }

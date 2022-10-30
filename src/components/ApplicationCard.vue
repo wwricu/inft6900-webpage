@@ -51,7 +51,7 @@
       </v-col>
 
       <v-col cols="3">
-        <p class="text--secondary">Desired Outcome Detail:</p>
+        <p class="text--secondary">Outcome Detail:</p>
       </v-col>
       <v-col cols="9">
         <p>{{application.outcomeDetail}}</p>
@@ -68,19 +68,19 @@ export default {
   name: "ApplicationCard",
   props: {
     application: {
-      default: {
-        applicationID: '',
-        reason: '',
-        daysOfImpact: '',
-        circumstanceDetail: '',
-        assessmentInfo: '',
-        desiredOutcome: '',
-        outcomeDetail: '',
-        studentInfo: ''
-      },
+      // default: {
+      //   applicationID: '',
+      //   reason: '',
+      //   daysOfImpact: '',
+      //   circumstanceDetail: '',
+      //   assessmentInfo: '',
+      //   desiredOutcome: '',
+      //   outcomeDetail: '',
+      //   studentInfo: ''
+      // },
       required: true
     }
-  },
+  }
 }
 </script>
 

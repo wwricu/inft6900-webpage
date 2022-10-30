@@ -433,6 +433,7 @@ export default {
         headers: {'Content-Type': 'application/json'},
         data: {
           applicationID: this.applicationID,
+          studentID: store.sysUserID,
           studentNumber: store.userNumber,
           reason: this.reasonSelect,
           daysOfImpact: this.daysOfImpact,
