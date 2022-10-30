@@ -126,6 +126,7 @@ export default {
             + " " + application.assessmentInstance.name
         this.assessment = application.assessmentInstance
       }
+      alert(JSON.stringify(application))
       this.application.desiredOutcome = application.outcome
       this.outcomeDetail = application.outcomeDetail
     },

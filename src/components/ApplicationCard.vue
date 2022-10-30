@@ -1,29 +1,69 @@
 <template>
-  <div>
-    <v-card-title>Reference Number</v-card-title>
-    <v-card-subtitle>{{application.applicationID}}</v-card-subtitle>
-    <v-card-title>Student Info</v-card-title>
-    <v-card-subtitle>{{ application.studentInfo }}</v-card-subtitle>
-    <v-card-title>Reason</v-card-title>
-    <v-card-subtitle>{{application.reason}}</v-card-subtitle>
-    <v-card-title>Days of Impact</v-card-title>
-    <v-card-subtitle>{{application.daysOfImpact}}</v-card-subtitle>
-    <v-card-title>Circumstance Detail</v-card-title>
-    <v-card-subtitle>{{application.circumstanceDetail}}</v-card-subtitle>
-    <v-card-title>Assessment</v-card-title>
-    <v-card-subtitle>{{application.assessmentInfo}}</v-card-subtitle>
-    <v-card-title>Desired Outcome</v-card-title>
-    <v-card-subtitle>{{application.desiredOutcome}}</v-card-subtitle>
-    <v-card-subtitle>{{application.outcomeDetail}}</v-card-subtitle>
+  <v-container>
+    <v-row>
+      <v-col cols="3">
+        <p class="text--secondary">Reference Number:</p>
+      </v-col>
+      <v-col cols="9">
+        <p>{{application.applicationID}}</p>
+      </v-col>
+
+      <v-col cols="3">
+        <p class="text--secondary">Student Info:</p>
+      </v-col>
+      <v-col cols="9">
+        <p>{{application.studentInfo}}</p>
+      </v-col>
+
+      <v-col cols="3">
+        <p class="text--secondary">Reason:</p>
+      </v-col>
+      <v-col cols="9">
+        <p>{{application.reason}}</p>
+      </v-col>
+
+      <v-col cols="3">
+        <p class="text--secondary">Days of Impact:</p>
+      </v-col>
+      <v-col cols="9">
+        <p>{{application.daysOfImpact}} days</p>
+      </v-col>
+
+      <v-col cols="3">
+        <p class="text--secondary">Circumstance Detail</p>
+      </v-col>
+      <v-col cols="9">
+        <p>{{application.circumstanceDetail}}</p>
+      </v-col>
+
+      <v-col cols="3">
+        <p class="text--secondary">Assessment:</p>
+      </v-col>
+      <v-col cols="9">
+        <p>{{application.assessmentInfo}}</p>
+      </v-col>
+
+      <v-col cols="3">
+        <p class="text--secondary">Desired Outcome:</p>
+      </v-col>
+      <v-col cols="9">
+        <p>{{application.desiredOutcome}}</p>
+      </v-col>
+
+      <v-col cols="3">
+        <p class="text--secondary">Desired Outcome Detail:</p>
+      </v-col>
+      <v-col cols="9">
+        <p>{{application.outcomeDetail}}</p>
+      </v-col>
+    </v-row>
     <v-card-actions>
       <slot name="submit"></slot>
     </v-card-actions>
-  </div>
+  </v-container>
 </template>
 
 <script>
-import {store} from "@/global";
-
 export default {
   name: "ApplicationCard",
   props: {
@@ -36,7 +76,7 @@ export default {
         assessmentInfo: '',
         desiredOutcome: '',
         outcomeDetail: '',
-        studentInfo: store.userNumber + " " + store.name,
+        studentInfo: ''
       },
       required: true
     }
