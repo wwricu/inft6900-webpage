@@ -1,6 +1,7 @@
-import Vue from 'vue';
+// import Vue from 'vue';
 // import router from './route/index'
-import {reactive} from "vue";
+import Vue, {reactive} from "vue";
+// import axios from "axios";
 
 export const store = reactive({
     loginStatus: false,
@@ -27,6 +28,17 @@ export const store = reactive({
     host: 'http://localhost:80'
 })
 
+export function syncAutoLogin() {
+    const xhr = new XMLHttpRequest();
+    const url = `${store.host}/auth/token?token=${localStorage.getItem("JWT")}`
+    xhr.open('POST', url, false)
+    xhr.send()
+    const res = JSON.parse(xhr.responseText)
+    console.log('login')
+    console.log(JSON.stringify(res))
+    changeLoginStatus(res);
+}
+
 export function autoLogin() {
     Vue.prototype.$axios({
         method: "POST",
@@ -34,23 +46,21 @@ export function autoLogin() {
     }).then(res => {
         if (res.data.status !== "success") {
             console.log(localStorage.getItem("JWT"))
-            // router.push('/login').then();
+            return
         }
-        changeLoginStatus(res);
+        changeLoginStatus(res.data);
     }).catch(function (err) {
         console.log(err);
-        // router.push('/login').then();
     })
 }
 
 export function changeLoginStatus(res) {
-    localStorage.setItem("JWT", res.data.obj[1]);
-    store.loginStatus = true;
-    store.role = store.roles[res.data.obj[0].permission];
-    store.sysUserID = res.data.obj[0].sysUserID;
-    store.userNumber = res.data.obj[0].userNumber;
-    const nameArray = res.data.obj[0].userName.split(' ');
-    console.log(nameArray)
+    localStorage.setItem("JWT", res.obj[1]);
+    store.permission = res.obj[0].permission;
+    store.role = store.roles[res.obj[0].permission];
+    store.sysUserID = res.obj[0].sysUserID;
+    store.userNumber = res.obj[0].userNumber;
+    const nameArray = res.obj[0].userName.split(' ');
     store.name = nameArray[0];
     store.AVN = nameArray[0].substring(0,1);
 
@@ -58,5 +68,23 @@ export function changeLoginStatus(res) {
         store.name = store.name.concat(' ').concat(nameArray[i]);
         store.AVN = store.AVN.concat(nameArray[i].substring(0,1));
     }
+    store.loginStatus = true;
+    console.log('login')
 }
+
+function sleep(ms) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
+}
+
+export async function waitForLogin() {
+    if (store.loginStatus === true) {
+        return
+    }
+    await sleep(500);
+    await waitForLogin()
+}
+
+
 

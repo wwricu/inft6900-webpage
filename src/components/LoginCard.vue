@@ -71,7 +71,13 @@ export default {
           return;
         }
         this.$changeLoginStatus(res);
-        this.$router.push('/');
+        let url;
+        switch (store.permission) {
+          case 1: url = '/student_page/assessments'; break
+          case 2: url = '/application'; break
+          case 3: url = '/user_manage'; break
+        }
+        this.$router.push(url).then(r => console.log(r));
       }).catch(function (err) {
         alert("err " + err);
       })

@@ -6,7 +6,6 @@ import ApplicationPage from "@/pages/ApplicationPage";
 Vue.use(VueRouter)
 
 const Login = () => import('@/components/LoginCard') // lazy load
-const HelloWorld = () => import('@/components/HelloWorld')
 const UserInfo = () => import('@/pages/UserInfoPage')
 const UserManage = () => import('@/pages/UserManagePage')
 const CourseManage = () => import('@/pages/CourseManagePage')
@@ -23,7 +22,7 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        component: HelloWorld,
+        component: Login,
     },
     {
         path: '/login',

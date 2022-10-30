@@ -3,12 +3,13 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import router from './route/index'
 import axios from "axios"
-import {autoLogin} from "@/global";
+import { syncAutoLogin, waitForLogin} from "@/global";
 import {changeLoginStatus} from "@/global";
 
 Vue.prototype.$axios = axios
-Vue.prototype.$autoLogin = autoLogin
+Vue.prototype.$autoLogin = syncAutoLogin//autoLogin
 Vue.prototype.$changeLoginStatus = changeLoginStatus
+Vue.prototype.$waitForLogin = waitForLogin
 
 Vue.config.productionTip = false
 

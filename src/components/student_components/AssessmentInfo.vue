@@ -64,6 +64,7 @@ export default {
   }),
   created() {
     this.getAssessments()
+    console.log("get assessment")
   },
   methods: {
     setAssessmentData(assessmentArray) {
@@ -85,6 +86,7 @@ export default {
       })
     },
     getAssessments() {
+      console.log("get assessment")
       this.$axios({
         method: "GET",
         url: `${store.host}/assessment/get?userNumber=${store.userNumber}&permission=1`,
@@ -93,7 +95,7 @@ export default {
           alert("message: " + res.data.message);
           return;
         }
-        console.log(JSON.stringify(res.data.obj))
+        // console.log(JSON.stringify(res.data.obj))
         this.setAssessmentData(res.data.obj)
       }).catch(function (err) {
         alert("err " + err);
