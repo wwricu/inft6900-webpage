@@ -131,7 +131,11 @@
                   </v-menu>
                 </v-col>
                 <v-col cols="6">
-                  <TimeMenu ref="beginTime" label="Begin Time"/>
+                  <TimeMenu
+                    :initTime="assessmentData.beginTime"
+                    ref="beginTime"
+                    label="Begin Time"
+                  />
                 </v-col>
                 <v-col md="6">
                   <v-menu
@@ -160,7 +164,11 @@
                   </v-menu>
                 </v-col>
                 <v-col cols="6">
-                  <TimeMenu ref="endTime" label="End Time"/>
+                  <TimeMenu
+                    ref="endTime"
+                    label="End Time"
+                    :initTime="assessmentData.endTime"
+                  />
                 </v-col>
               </v-row>
             </v-container>
