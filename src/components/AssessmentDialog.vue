@@ -122,15 +122,7 @@
         </v-row>
       </v-container>
       <v-divider></v-divider>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn
-            text
-            color="primary"
-        >
-          SUBMIT
-        </v-btn>
-      </v-card-actions>
+      <slot name="actions"/>
     </v-card>
   </v-dialog>
 </template>
@@ -175,7 +167,7 @@ export default {
       locationID: 0,
     },
     statusItem: [
-      'TO BE COMPLETE',
+      'TO BE COMPLETED',
       'EXEMPTED',
       'COMPLETED',
     ],
@@ -301,7 +293,22 @@ export default {
       }).catch(function (err) {
         alert("err " + err);
       })
-    }
+    },
+    submitAssessment() {
+      this.$axios({
+        method: "POST",
+        url: `${store.host}/assessment/updateInstance`,
+        data: this.assessmentData
+      }).then(res => {
+        if (res.data.status !== "success") {
+          alert("message: " + res.data.message);
+          this.$router.push('/application')
+          return;
+        }
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    },
   }
 }
 </script>

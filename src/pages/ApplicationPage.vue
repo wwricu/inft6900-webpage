@@ -6,10 +6,23 @@
       :assessmentID="assessment.assessmentID"
       dialog-action="Approve"
       :disabled="true"
-    />
+    >
+      <template v-slot:actions>
+        <v-card-actions>
+          <v-spacer/>
+          <v-btn
+            color="success"
+            @click="handleApplication('approved')"
+          >
+            CONFIRM
+          </v-btn>
+        </v-card-actions>
+      </template>
+    </AssessmentDialog>
     <v-card-actions>
       <v-btn
         color="error"
+        @click="handleApplication('rejected')"
       >
         reject
       </v-btn>
@@ -44,6 +57,22 @@ export default {
       outcomeDetail: '',
       studentInfo: store.userNumber + " " + store.name,
     },
+    originApplication: {
+      applicationID:"1586339909302620160",
+      reason:"Health Grounds",
+      daysOfImpact:"5",
+      circumstanceDetail:"circumstance",
+      documentList:null,
+      outcome:"Extension of Time",
+      outcomeDetail:"outcome details",
+      status:"Pending",
+      submitDate:"2022/10/29 23:51:41",
+      staffComment:null,
+      studentNumber:"c3362554",
+      student:null,
+      staffID:3,
+      instanceID:"6c75a980-cf9d-4150-b98c-b8461aae2328"
+    },
     assessment: {},
     dialogSwitch: false
   }),
@@ -67,11 +96,30 @@ export default {
         alert("err " + err);
       })
     },
+    getStudent(studentNumber) {
+      this.$axios({
+        method: "GET",
+        url: `${store.host}/manage/GetUsers?userNumber=${studentNumber}`,
+      }).then(res => {
+        if (res.data.status !== "success") {
+          alert("message: " + res.data.message);
+          return
+        }
+        console.log(JSON.stringify(res.data.obj))
+        if (res.data.obj !== null && res.data.obj.length > 0) {
+          this.application.studentInfo =
+              res.data.obj[0].userNumber + " " + res.data.obj[0].userName
+        }
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    },
     readApplication(application) {
       this.application.applicationID = application.applicationID
       this.application.reason = application.reason
       this.application.daysOfImpact = application.daysOfImpact
       this.application.circumstanceDetail = application.circumstanceDetail
+      this.getStudent(application.studentNumber)
       if (application.assessmentInstance != null) {
         this.application.assessmentInfo =
             application.assessmentInstance.courseOfferingName
@@ -81,17 +129,19 @@ export default {
       this.application.desiredOutcome = application.outcome
       this.outcomeDetail = application.outcomeDetail
     },
-    submitApplication() {
-      const applicationID = this.$route.params.applicationID
+    handleApplication(result) {
       this.$axios({
         method: "POST",
-        url: `${store.host}/application/submit`,
+        url: `${store.host}/application/changeState`,
         data: {
-          applicationID: applicationID
+          applicationID: this.application.applicationID,
+          status: result,
+          staffComment: `${result} your application`
         }
       }).then(res => {
         if (res.data.status === "success") {
           alert("message: " + res.data.status);
+          this.$refs.dialog.submitAssessment()
         }
       }).catch(function (err) {
         alert("err " + err);

@@ -299,7 +299,7 @@ export default {
       locationID: 0,
     },
     statusItem: [
-      'TO BE COMPLETE',
+      'TO BE COMPLETED',
       'EXEMPTED',
       'COMPLETED',
     ],
