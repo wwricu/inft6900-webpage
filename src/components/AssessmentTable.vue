@@ -131,7 +131,7 @@
                   </v-menu>
                 </v-col>
                 <v-col cols="6">
-                  <TimeMenu ref="startTime" label="Start Time"/>
+                  <TimeMenu ref="beginTime" label="Begin Time"/>
                 </v-col>
                 <v-col md="6">
                   <v-menu
@@ -313,7 +313,7 @@ export default {
       type: '',
       status: '',
       beginDate: '',
-      startTime: '',
+      beginTime: '',
       endTime: '',
       endDate: '',
       locationID: 0,
@@ -434,7 +434,7 @@ export default {
     newAssessment() {
       this.assessmentData.courseOfferingID =
             parseInt(this.$route.params.courseID);
-      this.assessmentData.beginTime = this.$refs.startTime.time
+      this.assessmentData.beginTime = this.$refs.beginTime.time
       this.assessmentData.endTime = this.$refs.endTime.time
       this.assessmentData.locationID = this.roomSelect.locationID
       this.$axios({
@@ -505,7 +505,7 @@ export default {
         url = url.concat('updateInstance');
       }
 
-      this.assessmentData.startTime = this.$refs.startTime.time
+      this.assessmentData.beginTime = this.$refs.beginTime.time
       this.assessmentData.endTime = this.$refs.endTime.time
 
       this.$axios({
