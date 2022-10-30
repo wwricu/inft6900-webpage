@@ -100,6 +100,7 @@
                       hide-details
                       label="Status"
                       class="mb-6"
+                      :items="statusItem"
                       v-if="sourcePage==='user'"
                       v-model="assessmentData.status"
                   ></v-text-field>
@@ -297,6 +298,11 @@ export default {
       endDate: '',
       locationID: 0,
     },
+    statusItem: [
+      'TO BE COMPLETE',
+      'EXEMPTED',
+      'COMPLETED',
+    ],
     assessmentTypeItems: [
         'Quiz',
         'Assignment',

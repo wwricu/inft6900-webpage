@@ -60,12 +60,13 @@
             ></v-select>
           </v-col>
           <v-col cols="12">
-            <v-text-field
+            <v-select
                 hide-details
                 label="Status"
                 class="mb-6"
                 v-model="assessmentData.status"
-            ></v-text-field>
+                :items="statusItem"
+            ></v-select>
           </v-col>
           <v-col md="12">
             <v-menu
@@ -173,6 +174,11 @@ export default {
       endDate: '',
       locationID: 0,
     },
+    statusItem: [
+      'TO BE COMPLETE',
+      'EXEMPTED',
+      'COMPLETED',
+    ],
 
     campusItems: [],
     buildingItems: [],

@@ -77,14 +77,12 @@ export default {
             application.assessmentInstance.courseOfferingName
             + " " + application.assessmentInstance.name
         this.assessment = application.assessmentInstance
-        alert(this.assessment.assessmentID)
       }
       this.application.desiredOutcome = application.outcome
       this.outcomeDetail = application.outcomeDetail
     },
     submitApplication() {
       const applicationID = this.$route.params.applicationID
-      alert(applicationID)
       this.$axios({
         method: "POST",
         url: `${store.host}/application/submit`,
