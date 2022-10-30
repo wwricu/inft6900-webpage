@@ -56,6 +56,12 @@
       <v-col cols="9">
         <p>{{application.outcomeDetail}}</p>
       </v-col>
+      <v-col cols="3">
+        <p class="text--secondary">Status:</p>
+      </v-col>
+      <v-col cols="9">
+        <p>{{application.status}}</p>
+      </v-col>
     </v-row>
     <v-card-actions>
       <slot name="submit"></slot>

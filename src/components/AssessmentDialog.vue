@@ -313,8 +313,11 @@ export default {
       })
     },
     submitAssessment() {
-      this.assessmentData.beginTime = this.$refs.beginTime.time
-      this.assessmentData.endTime = this.$refs.endTime.time
+      if (this.$refs.beginTime != null
+      && this.$refs.endTime != null) {
+        this.assessmentData.beginTime = this.$refs.beginTime.time
+        this.assessmentData.endTime = this.$refs.endTime.time
+      }
 
       this.$axios({
         method: "POST",

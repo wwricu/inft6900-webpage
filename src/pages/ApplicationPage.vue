@@ -55,6 +55,7 @@ export default {
       assessmentInfo: '',
       desiredOutcome: '',
       outcomeDetail: '',
+      status: '',
       studentInfo: store.userNumber + " " + store.name,
     },
     originApplication: {
@@ -96,24 +97,6 @@ export default {
         alert("err " + err);
       })
     },
-    getStudent(studentNumber) {
-      this.$axios({
-        method: "GET",
-        url: `${store.host}/manage/GetUsers?userNumber=${studentNumber}`,
-      }).then(res => {
-        if (res.data.status !== "success") {
-          alert("message: " + res.data.message);
-          return
-        }
-        console.log(JSON.stringify(res.data.obj))
-        if (res.data.obj !== null && res.data.obj.length > 0) {
-          this.application.studentInfo =
-              res.data.obj[0].userNumber + " " + res.data.obj[0].userName
-        }
-      }).catch(function (err) {
-        alert("err " + err);
-      })
-    },
     readApplication(application) {
       this.application.applicationID = application.applicationID
       this.application.reason = application.reason
@@ -130,6 +113,7 @@ export default {
       }
       this.application.desiredOutcome = application.outcome
       this.application.outcomeDetail = application.outcomeDetail
+      this.application.status = application.status
     },
     handleApplication(result) {
       this.$axios({
