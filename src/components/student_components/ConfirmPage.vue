@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <div class="pl-4">
     <ApplicationCard :application="application">
       <template v-slot:submit>
         <v-btn
-            color="primary"
-            @click="submitApplication()"
+          color="primary"
+          @click="submitApplication()"
+          class="mt-2 ml-n2"
         >
           submit
         </v-btn>
@@ -63,7 +64,8 @@ export default {
             + " " + application.assessmentInstance.name
       }
       this.application.desiredOutcome = application.outcome
-      this.outcomeDetail = application.outcomeDetail
+      this.application.outcomeDetail = application.outcomeDetail
+      this.application.status = application.status
     },
     submitApplication() {
       const applicationID = this.$route.params.applicationID

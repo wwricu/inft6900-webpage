@@ -1,5 +1,5 @@
 <template>
-  <v-card class="ma-8 pa-8">
+  <v-card class="mx-auto ma-8 pa-8" max-width="600px">
     <ApplicationCard :application="application"/>
     <AssessmentDialog
       ref="dialog"
@@ -12,7 +12,7 @@
           <v-spacer/>
           <v-btn
             color="success"
-            @click="handleApplication('approved')"
+            @click="handleApplication('Approved')"
           >
             CONFIRM
           </v-btn>
@@ -20,17 +20,20 @@
       </template>
     </AssessmentDialog>
     <v-card-actions>
+      <v-spacer/>
       <v-btn
         color="error"
-        @click="handleApplication('rejected')"
+        @click="handleApplication('Rejected')"
+        v-if="application.status==='Pending'"
       >
-        reject
+        Reject
       </v-btn>
       <v-btn
         color="success"
         @click="$refs.dialog.showDialog()"
+        v-if="application.status==='Pending'"
       >
-        approve
+        Approve
       </v-btn>
     </v-card-actions>
   </v-card>

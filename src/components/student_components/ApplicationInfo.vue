@@ -25,6 +25,14 @@
             <v-btn
                 text
                 color="deep-purple accent-4"
+                v-if="app.status === 'Rejected' || app.status === 'Approved'"
+                @click="$router.push(`/student_page/apply/confirm/${app.applicationID}`)"
+            >
+              View
+            </v-btn>
+            <v-btn
+                text
+                color="deep-purple accent-4"
                 v-if="app.status === null || app.status === 'Draft'"
                 @click="$router.push(`/student_page/apply/info/${app.applicationID}`)"
             >

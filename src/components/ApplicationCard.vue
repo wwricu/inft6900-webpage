@@ -64,7 +64,11 @@
       </v-col>
     </v-row>
     <v-card-actions>
-      <slot name="submit"></slot>
+      <v-spacer/>
+      <slot
+        name="submit"
+        v-if="application.status == null || application.status === 'Draft'"
+      ></slot>
     </v-card-actions>
   </v-container>
 </template>

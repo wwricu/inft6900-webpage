@@ -123,6 +123,11 @@ export default {
     },
     readApplications(applications) {
       for (let application of applications) {
+        if (application.status !== 'Approved'
+         && application.status !== 'Rejected'
+         && application.status !== 'Pending') {
+          continue
+        }
         let info = {
             applicationID: application.applicationID,
             studentNumber: application.student.userNumber,

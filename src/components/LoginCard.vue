@@ -70,7 +70,7 @@ export default {
           alert("message: " + res.data.message);
           return;
         }
-        this.$changeLoginStatus(res);
+        this.$changeLoginStatus(res.data);
         let url;
         switch (store.permission) {
           case 1: url = '/student_page/assessments'; break
