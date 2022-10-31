@@ -62,20 +62,20 @@ export default {
       studentInfo: store.userNumber + " " + store.name,
     },
     originApplication: {
-      applicationID:"1586339909302620160",
-      reason:"Health Grounds",
-      daysOfImpact:"5",
-      circumstanceDetail:"circumstance",
-      documentList:null,
-      outcome:"Extension of Time",
-      outcomeDetail:"outcome details",
-      status:"Pending",
-      submitDate:"2022/10/29 23:51:41",
-      staffComment:null,
-      studentNumber:"c3362554",
-      student:null,
-      staffID:3,
-      instanceID:"6c75a980-cf9d-4150-b98c-b8461aae2328"
+      // applicationID:"1586339909302620160",
+      // reason:"Health Grounds",
+      // daysOfImpact:"5",
+      // circumstanceDetail:"circumstance",
+      // documentList:null,
+      // outcome:"Extension of Time",
+      // outcomeDetail:"outcome details",
+      // status:"Pending",
+      // submitDate:"2022/10/29 23:51:41",
+      // staffComment:null,
+      // studentNumber:"c3362554",
+      // student:null,
+      // staffID:3,
+      // instanceID:"6c75a980-cf9d-4150-b98c-b8461aae2328"
     },
     assessment: {},
     dialogSwitch: false
@@ -125,7 +125,7 @@ export default {
         data: {
           applicationID: this.application.applicationID,
           status: result,
-          staffComment: `${result} your application`
+          staffComment: this.$refs.dialog.staffComment
         }
       }).then(res => {
         if (res.data.status === "success") {

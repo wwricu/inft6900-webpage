@@ -133,6 +133,14 @@
                 :initTime="assessmentData.endTime"
             />
           </v-col>
+          <v-col cols="12">
+            <v-textarea
+                label="Comment"
+                outlined
+                v-model="staffComment"
+                hint="This comment will be sent to student"
+            ></v-textarea>
+          </v-col>
         </v-row>
       </v-container>
       <v-divider></v-divider>
@@ -164,6 +172,7 @@ export default {
     }
   },
   data: () => ({
+    staffComment: '',
     assessmentTypeItems: [
       'Quiz',
       'Assignment',
