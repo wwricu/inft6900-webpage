@@ -172,13 +172,13 @@
     </v-container>
     <v-card-actions>
       <v-spacer/>
-      <v-btn
-          color="error"
-          class="mr-6 mb-2"
-          @click="nextStep"
-      >
-        Discard
-      </v-btn>
+<!--      <v-btn-->
+<!--          color="error"-->
+<!--          class="mr-6 mb-2"-->
+<!--          @click="nextStep"-->
+<!--      >-->
+<!--        Discard-->
+<!--      </v-btn>-->
       <v-btn
           outlined
           color="primary"

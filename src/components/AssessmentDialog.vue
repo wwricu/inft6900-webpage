@@ -333,7 +333,7 @@ export default {
         url: `${store.host}/assessment/updateInstance`,
         data: this.assessmentData
       }).then(res => {
-        if (res.data.status !== "success") {
+        if (res.data.status === "success") {
           alert("message: " + res.data.message);
           this.$router.push('/application')
         }
