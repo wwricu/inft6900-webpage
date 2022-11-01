@@ -1,5 +1,4 @@
 // import Vue from 'vue';
-// import router from '@/route/index'
 import Vue, {reactive} from "vue";
 // import axios from "axios";
 
@@ -70,7 +69,6 @@ export function changeLoginStatus(res) {
         store.AVN = store.AVN.concat(nameArray[i].substring(0,1));
     }
     store.loginStatus = true;
-
 }
 
 function sleep(ms) {

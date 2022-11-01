@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import applicationTable from "@/components/ApplicationTable";
-import ApplicationPage from "@/pages/ApplicationPage";
+import {store, syncAutoLogin} from "@/global";
 
 Vue.use(VueRouter)
 
@@ -17,6 +16,9 @@ const AssessmentInfo = () => import('@/components/student_components/AssessmentI
 const PersonalDetail = () => import('@/components/student_components/PersonalDetail')
 const ApplyPage = () => import('@/components/student_components/ApplyPage')
 const ConfirmPage = () => import('@/components/student_components/ConfirmPage')
+const applicationTable = () => import('@/components/ApplicationTable')
+const ApplicationPage = () => import('@/pages/ApplicationPage')
+
 
 const routes = [
     {
@@ -92,12 +94,53 @@ const routes = [
             }
         ]
     },
+    // {
+    //     path: '/404',
+    //     name: '404',
+    //     component: '<template>404, what r u doing?!</template>'
+    // },
+    // {
+    //     path: '*',
+    //     redirect: '/404'
+    // }
 ]
 
 const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
     routes,
+})
+
+// router.beforeEach((to, from, next) => {
+//     if (to.path === '/login') {
+//         return next();
+//     }
+//     if (localStorage.getItem("JWT") == null) {
+//         return next('/login')
+//     }
+//     next()
+// })
+router.beforeEach((to, from, next) => {
+    if (to.path === '/login') {
+        return next();
+    }
+    if (localStorage.getItem("JWT") == null) {
+        return next({path: '/login'})
+    }
+
+    if (store.loginStatus !== true) {
+        syncAutoLogin()
+    }
+    if (to.path === '/') {
+        if (store.role === 'Admin') {
+            return next({path: '/user_manage'})
+        } else if (store.role === 'Staff') {
+            return next({path: '/application'})
+        } else if (store.role === 'Student') {
+            return next({path: '/student_page/apply/details'})
+        }
+    }
+    return next()
 })
 
 export default router;
