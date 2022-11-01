@@ -49,18 +49,26 @@
         <h3>Documents</h3>
         <v-btn
           color="success"
+          small
           style="float: right; bottom: 20px; right: 5px;"
           v-show="documents.length < 9"
           @click="addDocument"
-        >Add a Document</v-btn>
+        >Add a Document Type</v-btn>
       </div>
       <v-container class="pa-8">
+        <v-row>
+          <v-col cols="12">
+            <DocumentCard
+              v-if="existedDocuments.length > 0"
+              :documents="existedDocuments"
+            />
+          </v-col>
+        </v-row>
       <v-row
-          no-gutters
           v-for="item in documents"
           :key="item.docID"
       >
-        <v-col cols="6">
+        <v-col cols="4">
           <v-select
               label="Document Type"
               v-model="item.documentSelect"
@@ -77,10 +85,18 @@
               small-chips
               truncate-length="15"
               :label="item.documentSelect"
-              class="mb-3"
               v-model="item.fileInfo"
               :rules="[v => !!v || 'Compulsory']"
           ></v-file-input>
+        </v-col>
+        <v-col cols="2" class="align-self-center">
+          <v-btn
+            small
+            color="success"
+            @click="documentsUpload(item)"
+          >
+            upload
+          </v-btn>
         </v-col>
       </v-row>
       </v-container>
@@ -184,9 +200,11 @@
 
 <script>
 import {store} from "@/global";
+import DocumentCard from "@/components/DocumentCard";
 
 export default {
   name: "SubmitPage",
+  components: {DocumentCard},
   data: () => ({
     applicationID: '',
     daysOfImpact: '',
@@ -203,6 +221,7 @@ export default {
       'Other',
       'Remove This Document'
     ],
+    existedDocuments: [],
     documents: [
       {
         docID: 0,
@@ -284,6 +303,9 @@ export default {
       this.reasonSelect = application.reason
       this.daysOfImpact = application.daysOfImpact
       this.circumstanceDetail = application.circumstanceDetail
+      if (application.documentList != null) {
+        this.existedDocuments = application.documentList
+      }
       if (application.assessmentInstance !== null) {
         this.getAssessment('course', ()=> {
           this.courseSelect = {
@@ -453,37 +475,20 @@ export default {
         alert("err " + err);
       })
     },
-    documentsUpload() {
-      let body = {
-        docs: [],
-      }
-      for (let doc of this.documents) {
-        body.docs.push({
-          type: doc.documentSelect,
-          fileInfo: doc.fileInfo,
-        })
-      }
-      console.log(JSON.stringify(body))
-      localStorage.setItem("application", JSON.stringify(body))
+    documentsUpload(documentItem) {
+      console.log(JSON.stringify(documentItem))
 
       let formData = new FormData()
 
-      formData.append('userNumber', body.userNumber)
-      formData.append('reason', body.reason)
-      formData.append('daysOfImpact', body.daysOfImpact)
-      formData.append('description', body.description)
-      formData.append('instanceID', body.instanceID)
-      formData.append('staffID', body.staffID)
-      formData.append('outcome', body.outcome)
-      formData.append('outcomeDetail', body.outcomeDetail)
-
-      for (let doc of body.docs) {
-        formData.append("docs[]", doc)
+      formData.append('applicationID', this.applicationID)
+      formData.append('type', documentItem.documentSelect)
+      for (const file of documentItem.fileInfo) {
+        formData.append('file', file)
       }
 
       this.$axios({
         method: "POST",
-        url: `${store.host}/application/new`,
+        url: `${store.host}/document/upload`,
         headers: {'Content-Type': 'multipart/form-data'},
         transformRequest: [function(data, headers) {
           delete headers.post['Content-Type']
@@ -495,11 +500,9 @@ export default {
           alert("message: " + res.data.message);
           return;
         }
-        alert('here')
       }).catch(function (err) {
         alert("err " + err);
       })
-      return body
     },
     nextStep() {
       this.packageBody()
