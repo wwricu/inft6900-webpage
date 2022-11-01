@@ -60,38 +60,26 @@ export default {
   }),
   methods: {
     deleteDocument(documentID, type) {
-      this.documentsView['test'] = [
-        {
-          documentID: 1,
-          applicationID: '',
-          title: 'test',
-          type: 'test',
-        }
-      ]
-      for (let i = 0; i < this.documentsView[type].length; i++) {
-        if (this.documentsView[type][i].documentID === documentID) {
-          if (this.documentsView[type].length === 1) {
-            this.documentsView[type] = []
-          } else {
-            this.documentsView[type].splice(i, 1)
-          }
-          // documentType array is NOT reactive, but I do not know why
-          this.$forceUpdate()
-          // alert(this.documentsView[type].length)
-          break
-        }
-      }
-
-      if (type !== undefined) {
-        return
-      }
-
       this.$axios({
         method: "DELETE",
-        url: `${store.host}/document/delete?documentID=${documentID}`,
+        url: `${store.host}/document/delete`,
+        data: {
+          documentID: documentID
+        }
       }).then(res => {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);
+          return
+        }
+
+        for (let i = 0; i < this.documentsView[type].length; i++) {
+          if (this.documentsView[type][i].documentID === documentID) {
+            this.documentsView[type].splice(i, 1)
+            // documentType array is NOT reactive, but I do not know why
+            this.$forceUpdate()
+            // alert(this.documentsView[type].length)
+            break
+          }
         }
       }).catch(function (err) {
         alert("err " + err);

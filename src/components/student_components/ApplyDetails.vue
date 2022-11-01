@@ -59,6 +59,7 @@
         <v-row>
           <v-col cols="12">
             <DocumentCard
+              ref="documentCard"
               v-if="existedDocuments.length > 0"
               :documents="existedDocuments"
             />
@@ -500,6 +501,8 @@ export default {
           alert("message: " + res.data.message);
           return;
         }
+        documentItem.fileInfo = null
+        this.initForm(this.$route.params.applicationID)
       }).catch(function (err) {
         alert("err " + err);
       })
