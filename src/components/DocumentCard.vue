@@ -17,7 +17,9 @@
       >
         <v-row>
           <v-col cols="10">
-            <a :href="document.url">{{document.title}}</a>
+            <a @click="getDocument(document.documentID)">
+              {{document.title}}
+            </a>
           </v-col>
           <v-col cols="2">
             <v-btn
@@ -59,11 +61,55 @@ export default {
           applicationID: '',
           title: 'test',
           type: 'test',
+          url: '',
         }
       ]
     },
   }),
   methods: {
+    resolveBlob(response) {
+      const headerVal = response.headers['content-disposition'];
+      if (headerVal != null) {
+        let filename = headerVal.split(';')[1].split('=')[1].replace('"', '').replace('"', '');
+        filename = decodeURI(filename);
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        window.URL.revokeObjectURL(url);
+        link.remove();
+      }
+    },
+    getDocument(documentID) {
+      this.$axios({
+        method: "GET",
+        responseType: 'blob',
+        url: `${store.host}/document/get?documentID=${documentID}`,
+      }).then(res => {
+        let blob = new Blob([res.data], {
+          type: 'application/octet-stream',
+        });
+        alert(res.headers['content-disposition'])
+        let filename = res.headers['content-disposition']
+                          .split(';')[1]
+                          .split('=')[1]
+                          .replace('"', '')
+                          .replace('"', '');
+        // filename = decodeURI(filename);
+        const link = document.createElement('a')
+        link.download = filename
+        link.style.display = 'none'
+        link.href = URL.createObjectURL(blob)
+        document.body.appendChild(link)
+        link.click()
+        URL.revokeObjectURL(link.href) // 释放URL 对象
+        document.body.removeChild(link)
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    },
     deleteDocument(documentID, type) {
       this.$axios({
         method: "DELETE",
