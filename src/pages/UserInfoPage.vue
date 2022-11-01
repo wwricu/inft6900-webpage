@@ -232,7 +232,7 @@ export default {
     initUser(userNumber) {
       this.$axios({
         method: "GET",
-        url: `${store.host}/manage/getusers?userNumber=${userNumber}&permission=${store.rolesMap[this.$route.params.role]}`,
+        url: `${store.host}/manage/getUsers?userNumber=${userNumber}&permission=${store.rolesMap[this.$route.params.role]}`,
       }).then(res => {
         if (res.data.status === "success") {
           this.inputInfo = res.data.obj[0];
@@ -255,7 +255,7 @@ export default {
           .concat(this.inputInfo.userNameArray[2]);
       this.$axios({
         method: "POST",
-        url: `${store.host}/manage/updateuser`,
+        url: `${store.host}/manage/updateUser`,
         data: this.inputInfo,
       }).then(res => {
         if (res.data.status === "success") {
@@ -307,12 +307,10 @@ export default {
           permission: this.inputInfo.permission
         }
       }).then(res => {
-        if (res.data.status === "success") {
-          alert("deleted!");
-          this.$router.push('user_manage')
-        } else {
-          alert(res.data.message);
+        if (res.data.status !== "success") {
+          console.log(res + " deleted!");
         }
+        this.$router.push('/user_manage')
       }).catch(function (err) {
         alert("err " + err);
       })
