@@ -125,10 +125,10 @@ const routes = [
         name: '404',
         component: () => import('@/pages/PageNotFound')
     },
-    // {
-    //     path: '*',
-    //     redirect: '/404'
-    // }
+    {
+        path: '*',
+        redirect: '/404'
+    }
 ]
 
 const router = new VueRouter({
@@ -177,7 +177,7 @@ router.beforeEach((to, from, next) => {
         }
         return next('/403')
     }
-    return next('/403')
+    return next()
 })
 
 export default router;
