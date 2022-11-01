@@ -1,5 +1,5 @@
 // import Vue from 'vue';
-// import router from './route/index'
+// import router from '@/route/index'
 import Vue, {reactive} from "vue";
 // import axios from "axios";
 
@@ -34,9 +34,10 @@ export function syncAutoLogin() {
     xhr.open('POST', url, false)
     xhr.send()
     const res = JSON.parse(xhr.responseText)
-    console.log('login')
-    console.log(JSON.stringify(res))
-    changeLoginStatus(res);
+    // console.log(JSON.stringify(res))
+    if (res.status === 'success') {
+        changeLoginStatus(res);
+    }
 }
 
 export function autoLogin() {
@@ -69,7 +70,7 @@ export function changeLoginStatus(res) {
         store.AVN = store.AVN.concat(nameArray[i].substring(0,1));
     }
     store.loginStatus = true;
-    console.log('login')
+
 }
 
 function sleep(ms) {

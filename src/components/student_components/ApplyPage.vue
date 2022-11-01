@@ -45,7 +45,7 @@ export default {
     $route: {
       handler(route) {
         if (route.params.applicationID != null) {
-          this.breadItems[1].href += '/' + route.params.applicationID
+          this.breadItems[1].href = '/student_page/apply/info/' + route.params.applicationID
         }
         switch (route.path.split('/')[3]) {
           case 'details':

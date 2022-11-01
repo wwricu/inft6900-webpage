@@ -22,16 +22,7 @@ export default {
   name: "ConfirmPage",
   components: {ApplicationCard},
   data: () => ({
-    application: {
-      applicationID: '',
-      reason: '',
-      daysOfImpact: '',
-      circumstanceDetail: '',
-      assessmentInfo: '',
-      desiredOutcome: '',
-      outcomeDetail: '',
-      studentInfo: store.userNumber + " " + store.name,
-    }
+    application: {}
   }),
   created() {
     this.initForm(this.$route.params.applicationID)
@@ -46,8 +37,8 @@ export default {
           alert("message: " + res.data.message);
           return
         }
-        if (res.data.obj !== null && res.data.obj.length > 0) {
-          this.readApplication(res.data.obj[0])
+        if (res.data.obj != null && res.data.obj.length === 1) {
+          this.application = res.data.obj[0]
         }
       }).catch(function (err) {
         alert("err " + err);

@@ -23,6 +23,7 @@
             <v-btn
                 icon
                 color="error"
+                v-if="disabled === false"
                 @click="deleteDocument(document.documentID, typeIndex)"
             >
               <v-icon>mdi-delete</v-icon>
@@ -43,6 +44,10 @@ export default {
     documents: {
       type: Array,
       required: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data: ()=> ({
