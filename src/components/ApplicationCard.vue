@@ -51,17 +51,23 @@
         <v-divider class="mb-4"/>
       </v-col>
       <v-col cols="3">
-        <p class="text--secondary">Assessment:</p>
+        <p class="text--secondary">Course:</p>
       </v-col>
-      <v-col cols="9">
-        <p>{{application.assessmentInfo}}</p>
+      <v-col cols="9" v-if="application.assessmentInstance != null">
+        <p>{{application.assessmentInstance.courseOfferingName}}</p>
       </v-col>
 
+      <v-col cols="3">
+        <p class="text--secondary">Assessment:</p>
+      </v-col>
+      <v-col cols="9" v-if="application.assessmentInstance != null">
+        <p>{{application.assessmentInstance.name}}</p>
+      </v-col>
       <v-col cols="3">
         <p class="text--secondary">Desired Outcome:</p>
       </v-col>
       <v-col cols="9">
-        <p>{{application.desiredOutcome}}</p>
+        <p>{{application.outcome}}</p>
       </v-col>
 
       <v-col cols="12">
