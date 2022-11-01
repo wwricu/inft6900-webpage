@@ -35,36 +35,57 @@ const routes = [
         path: '/user/:action/:role/:userNumber',
         name: 'edit_user',
         component: UserInfo,
+        meta: {
+            roles: ['Admin']
+        }
     },
     {
         path: '/course/:action/:courseID',
         name: 'edit_course',
         component: CourseInfo,
+        meta: {
+            roles: ['Admin']
+        }
     },
     {
         path: '/user_manage',
         name: 'user_manage',
         component: UserManage,
+        meta: {
+            roles: ['Admin','Staff']
+        }
     },
     {
         path: '/course_manage',
         name: 'course_manage',
-        component: CourseManage
+        component: CourseManage,
+        meta: {
+            roles: ['Admin']
+        }
     },
     {
         path: '/application',
         name: 'application',
-        component: applicationTable
+        component: applicationTable,
+        meta: {
+            roles: ['Admin','Staff']
+        }
     },
     {
         path: '/application/view/:applicationID',
         name: 'applicationView',
-        component: ApplicationPage
+        component: ApplicationPage,
+        meta: {
+            roles: ['Admin','Staff']
+        }
     },
     {
         path: '/student_page',
         name: 'student_page',
         component: StudentPage,
+        meta: {
+            roles: ['Student']
+        },
         children: [
             {
                 path: 'apply',
@@ -94,11 +115,16 @@ const routes = [
             }
         ]
     },
-    // {
-    //     path: '/404',
-    //     name: '404',
-    //     component: '<template>404, what r u doing?!</template>'
-    // },
+    {
+        path: '/403',
+        name: '403',
+        component: () => import('@/pages/UnauthorizedPage')
+    },
+    {
+        path: '/404',
+        name: '404',
+        component: () => import('@/pages/PageNotFound')
+    },
     // {
     //     path: '*',
     //     redirect: '/404'
@@ -121,7 +147,9 @@ const router = new VueRouter({
 //     next()
 // })
 router.beforeEach((to, from, next) => {
-    if (to.path === '/login') {
+    if (to.path === '/login'
+     || to.path === '/403'
+     || to.path === '/404') {
         return next();
     }
     if (localStorage.getItem("JWT") == null) {
@@ -140,7 +168,16 @@ router.beforeEach((to, from, next) => {
             return next({path: '/student_page/apply/details'})
         }
     }
-    return next()
+    const roles = to.meta.roles
+    if (roles != null) {
+        for (const role of roles) {
+            if (store.role === role) {
+                return next()
+            }
+        }
+        return next('/403')
+    }
+    return next('/403')
 })
 
 export default router;
