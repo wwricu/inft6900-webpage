@@ -137,28 +137,16 @@ const router = new VueRouter({
     routes,
 })
 
-// router.beforeEach((to, from, next) => {
-//     if (to.path === '/login') {
-//         return next();
-//     }
-//     if (localStorage.getItem("JWT") == null) {
-//         return next('/login')
-//     }
-//     next()
-// })
 router.beforeEach((to, from, next) => {
-    if (to.path === '/login'
-     || to.path === '/403'
-     || to.path === '/404') {
-        return next();
-    }
-    if (localStorage.getItem("JWT") == null) {
+    if (to.path !== '/login' &&
+        localStorage.getItem("JWT") == null) {
         return next({path: '/login'})
     }
 
     if (store.loginStatus !== true) {
         syncAutoLogin()
     }
+
     if (to.path === '/') {
         if (store.role === 'Admin') {
             return next({path: '/user_manage'})
@@ -175,7 +163,7 @@ router.beforeEach((to, from, next) => {
                 return next()
             }
         }
-        return next('/403')
+        next('/403')
     }
     return next()
 })
