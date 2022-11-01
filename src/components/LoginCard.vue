@@ -1,13 +1,9 @@
 <template>
   <v-card
-      class="mx-auto mt-8 pl-12 pr-12"
+      class="mx-auto mt-16 pa-2"
       max-width="400"
   >
     <v-card-text>
-      <v-card-title
-        class="text-h4 text--primary text-center pt-4 pb-10">
-        Sign in to ACAS
-      </v-card-title>
       <div>
         <v-text-field
             label="User Number"
@@ -23,15 +19,15 @@
         ></v-text-field>
       </div>
     </v-card-text>
-    <v-card-actions class="pt-0">
+    <v-card-actions class="pt-0" v-if="false">
       <v-checkbox
           tile
           :label="`Remember me`"
       ></v-checkbox>
     </v-card-actions>
-    <v-card-actions class="mb-2">
+    <v-card-actions>
       <v-btn
-          class="mx-auto"
+          class="mx-auto mb-4"
           color="success"
           @click="login"
           block
@@ -39,7 +35,7 @@
         Login
       </v-btn>
     </v-card-actions>
-    <v-card-text class="text-center">
+    <v-card-text class="text-center" v-if="false">
       <div>
         <a>Forget Password?</a>
       </div>
