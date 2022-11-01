@@ -289,7 +289,7 @@ export default {
         url: `${store.host}/application/get?applicationID=${applicationID}`,
       }).then(res => {
         if (res.data.status !== "success") {
-          alert("message: " + res.data.message);
+          // alert("message: " + res.data.message);
           return
         }
         if (res.data.obj !== null && res.data.obj.length > 0) {
@@ -403,7 +403,7 @@ export default {
         url: store.host + parameter,
       }).then(res => {
         if (res.data.status !== "success") {
-          alert("message: " + res.data.message);
+          // alert("message: " + res.data.message);
           return;
         }
         this.fillItems(res.data.obj, type)
@@ -468,7 +468,7 @@ export default {
         }
       }).then(res => {
         if (res.data.status !== "success") {
-          alert("message: " + res.data.message);
+          // alert("message: " + res.data.message);
           return
         }
         if (handler != null) {
@@ -500,7 +500,7 @@ export default {
         data: formData
       }).then(res => {
         if (res.data.status !== "success") {
-          alert("message: " + res.data.message);
+          // alert("message: " + res.data.message);
           return;
         }
         this.packageBody(() => {
