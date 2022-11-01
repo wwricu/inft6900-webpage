@@ -2,8 +2,9 @@
   <v-card class="mx-auto ma-8 pa-8" max-width="600px">
     <ApplicationCard :application="application"/>
     <AssessmentDialog
+      v-if="application.assessmentInstance != null"
       ref="dialog"
-      :assessmentID="assessment.assessmentID"
+      :assessmentID="application.assessmentInstance.assessmentID"
       dialog-action="Approve"
       :disabled="true"
     >
@@ -89,24 +90,6 @@ export default {
       }).catch(function (err) {
         alert("err " + err);
       })
-    },
-    readApplication(application) {
-      this.application.applicationID = application.applicationID
-      this.application.reason = application.reason
-      this.application.daysOfImpact = application.daysOfImpact
-      this.application.circumstanceDetail = application.circumstanceDetail
-      // this.getStudent(application.student.userNumber)
-      this.application.studentInfo = application.student.userNumber + " "
-                  + application.student.userName
-      if (application.assessmentInstance != null) {
-        this.application.assessmentInfo =
-            application.assessmentInstance.courseOfferingName
-            + " " + application.assessmentInstance.name
-        this.assessment = application.assessmentInstance
-      }
-      this.application.desiredOutcome = application.outcome
-      this.application.outcomeDetail = application.outcomeDetail
-      this.application.status = application.status
     },
     handleApplication(result) {
       this.$axios({

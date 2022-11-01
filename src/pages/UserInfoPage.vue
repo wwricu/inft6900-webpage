@@ -301,7 +301,11 @@ export default {
     deleteUser() {
       this.$axios({
         method: "DELETE",
-        url: `${store.host}/manage/Delete?userNumber=${this.inputInfo.userNumber}`
+        url: `${store.host}/manage/Delete`,
+        data: {
+          userNumber: this.inputInfo.userNumber,
+          permission: this.inputInfo.permission
+        }
       }).then(res => {
         if (res.data.status === "success") {
           alert("deleted!");

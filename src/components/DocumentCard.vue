@@ -91,7 +91,7 @@ export default {
         let blob = new Blob([res.data], {
           type: 'application/octet-stream',
         });
-        alert(res.headers['content-disposition'])
+        // alert(res.headers['content-disposition'])
         let filename = res.headers['content-disposition']
                           .split(';')[1]
                           .split('=')[1]

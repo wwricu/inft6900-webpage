@@ -1,23 +1,28 @@
 <template>
   <v-container>
     <v-row no-gutters>
-
       <v-col cols="3">
         <p class="text--secondary">Reference Number:</p>
       </v-col>
       <v-col cols="9">
         <p>{{application.applicationID}}</p>
       </v-col>
+    </v-row>
 
+    <v-row no-gutters v-if="application.student != null">
       <v-col cols="3">
         <p class="text--secondary">Student Info:</p>
       </v-col>
-      <v-col cols="9" v-if="application.student != null">
+      <v-col cols="9" >
         <p>{{application.studentNumber + " " + application.student.userName}}</p>
       </v-col>
+    </v-row>
+
+    <v-row no-gutters>
       <v-col cols="12">
         <v-divider class="mb-4"/>
       </v-col>
+
       <v-col cols="3">
         <p class="text--secondary">Reason:</p>
       </v-col>
@@ -47,49 +52,68 @@
             :disabled="true"
         />
       </v-col>
+
       <v-col cols="12">
         <v-divider class="mb-4"/>
       </v-col>
-      <v-col cols="3">
-        <p class="text--secondary">Course:</p>
-      </v-col>
-      <v-col cols="9" v-if="application.assessmentInstance != null">
-        <p>{{application.assessmentInstance.courseOfferingName}}</p>
-      </v-col>
+    </v-row>
 
-      <v-col cols="3">
-        <p class="text--secondary">Assessment:</p>
-      </v-col>
-      <v-col cols="9" v-if="application.assessmentInstance != null">
-        <p>{{application.assessmentInstance.name}}</p>
-      </v-col>
+      <v-row no-gutters v-if="application.assessmentInstance != null">
+        <v-col cols="3">
+          <p class="text--secondary">Course:</p>
+        </v-col>
+        <v-col cols="9">
+          <p>{{application.assessmentInstance.courseOfferingName}}</p>
+        </v-col>
+
+        <v-col cols="3">
+          <p class="text--secondary">Assessment:</p>
+        </v-col>
+        <v-col cols="9">
+          <p>{{application.assessmentInstance.name}}</p>
+        </v-col>
+      </v-row>
+
+    <v-row no-gutters>
       <v-col cols="3">
         <p class="text--secondary">Desired Outcome:</p>
       </v-col>
       <v-col cols="9">
         <p>{{application.outcome}}</p>
       </v-col>
-
-      <v-col cols="12">
-        <p class="text--secondary">Outcome Detail:</p>
-      </v-col>
-      <v-col cols="12" v-if="application.outcomeDetail != null">
-        <p>{{application.outcomeDetail}}</p>
-      </v-col>
-
-      <v-col cols="3">
-        <p class="text--secondary">Modified Time:</p>
-      </v-col>
-      <v-col cols="9">
-        <p>{{application.submitDate}}</p>
-      </v-col>
-      <v-col cols="3">
-        <p class="text--secondary">Status:</p>
-      </v-col>
-      <v-col cols="9">
-        <p>{{application.status}}</p>
-      </v-col>
     </v-row>
+
+      <v-row no-gutters v-if="application.outcomeDetail != null">
+        <v-col cols="12">
+          <p class="text--secondary">Outcome Detail:</p>
+        </v-col>
+        <v-col cols="12" >
+          <p>{{application.outcomeDetail}}</p>
+        </v-col>
+      </v-row>
+
+      <v-row no-gutters>
+        <v-col cols="3">
+          <p class="text--secondary">Modified Time:</p>
+        </v-col>
+        <v-col cols="9">
+          <p>{{application.submitDate}}</p>
+        </v-col>
+        <v-col cols="3">
+          <p class="text--secondary">Status:</p>
+        </v-col>
+        <v-col cols="9">
+          <p>{{application.status}}</p>
+        </v-col>
+      </v-row>
+      <v-row no-gutters v-if="application.staffComment != null">
+        <v-col cols="12">
+          <p class="text--secondary">Staff Comment:</p>
+        </v-col>
+        <v-col cols="12">
+          <p>{{application.staffComment}}</p>
+        </v-col>
+      </v-row>
     <v-card-actions>
       <v-spacer/>
       <slot

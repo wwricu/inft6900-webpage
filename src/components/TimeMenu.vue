@@ -45,6 +45,13 @@ export default {
   },
   created() {
     this.time = this.initTime
+  },
+  watch: {
+    initTime: {
+      handler(newTime) {
+        this.time = newTime
+      }
+    }
   }
 }
 </script>

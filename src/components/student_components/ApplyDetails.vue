@@ -449,7 +449,7 @@ export default {
         }
       }
     },
-    packageBody() {
+    packageBody(handler) {
       this.$axios({
         method: "POST",
         url: `${store.host}/application/update`,
@@ -471,7 +471,9 @@ export default {
           alert("message: " + res.data.message);
           return
         }
-        this.$router.push(`/student_page/apply/confirm/${this.$route.params.applicationID}`)
+        if (handler != null) {
+          handler()
+        }
       }).catch(function (err) {
         alert("err " + err);
       })
@@ -501,14 +503,18 @@ export default {
           alert("message: " + res.data.message);
           return;
         }
-        documentItem.fileInfo = null
-        this.initForm(this.$route.params.applicationID)
+        this.packageBody(() => {
+          this.initForm(this.$route.params.applicationID)
+          documentItem.fileInfo = null
+        })
       }).catch(function (err) {
         alert("err " + err);
       })
     },
     nextStep() {
-      this.packageBody()
+      this.packageBody(() => {
+        this.$router.push(`/student_page/apply/confirm/${this.$route.params.applicationID}`)
+      })
     }
   }
 }
