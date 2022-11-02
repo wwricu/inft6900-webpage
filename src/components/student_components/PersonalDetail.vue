@@ -35,45 +35,57 @@ export default {
   name: "PersonalDetail",
   data: () => ({
     inputItems: [
-      {
-        text: 'Student ID:',
-        value: '3362554'
-      },
-      {
-        text: 'First Name:',
-        value: 'Weiran'
-      },
-      {
-        text: 'Middle Name:',
-        value: ''
-      },
-      {
-        text: 'Last Name:',
-        value: 'Wang'
-      },
-      {
-        text: 'Email:',
-        value: 'wwr@wwr.com'
-      },
-      {
-        text: 'Phone:',
-        value: '493316052'
-      },
-      {
-        text: 'Address Line 1:',
-        value: 'Addr1'
-      },
-      {
-        text: 'Address Line 2:',
-        value: 'Addr2'
-      },
-      {
-        text: 'Address Line 3:',
-        value: 'Addr3'
-      },
+
     ]
   }),
+  created() {
+    this.getPersonalDetail()
+  },
   methods: {
+    getPersonalDetail() {
+      this.$axios({
+        method: "GET",
+        url: `${store.host}/manage/GetUsers?userNumber=${store.userNumber}`,
+      }).then(res => {
+        if (res.data.status === "success") {
+          console.log(JSON.stringify(res.data.obj))
+          this.handleUserInfo(res.data.obj[0])
+        }
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    },
+    handleUserInfo(sysUser) {
+      console.log(sysUser)
+      this.inputItems.push(      {
+        text: 'Student ID:',
+        value: sysUser.userNumber
+      })
+      this.inputItems.push({
+        text: 'Student Name:',
+        value: sysUser.userName
+      })
+      this.inputItems.push({
+        text: 'Email:',
+        value: sysUser.email
+      })
+      this.inputItems.push({
+        text: 'Phone:',
+        value: sysUser.phone
+      })
+      this.inputItems.push({
+        text: 'Address Line 1:',
+        value: sysUser.addresses[0]
+      })
+      this.inputItems.push({
+        text: 'Address Line 2:',
+        value: sysUser.addresses[1]
+      })
+      this.inputItems.push({
+        text: 'Address Line 3:',
+        value: sysUser.addresses[2]
+      })
+    },
     nextStep() {
       this.$axios({
         method: "GET",
