@@ -15,8 +15,9 @@
           text
           rounded
           class="my-2"
+          @click="openLink(link.link)"
       >
-        {{ link }}
+        {{ link.text }}
       </v-btn>
     </v-row>
   </v-footer>
@@ -27,17 +28,32 @@ export default {
   name: "FooterPage",
   data: () => ({
     links: [
-      'UoN Home Page',
-      'Canvas',
-      'MyUni',
-      'Library',
+      {
+        text: 'UoN Home Page',
+        link: 'https://www.newcastle.edu.au/'
+      },
+      {
+        text: 'Canvas',
+        link: 'https://canvas.newcastle.edu.au/'
+      },
+      {
+        text: 'MyUni',
+        link: 'https://myuni.newcastle.edu.au/'
+      },
+      {
+        text: 'Library',
+        link: 'https://newcastle.summon.serialssolutions.com/'
+      },
     ],
   }),
+  methods: {
+    openLink(link) {
+      window.open(link, '_blank')
+    }
+  }
 }
 </script>
 
 <style scoped>
-.v-btn {
-  text-transform: none;
-}
+
 </style>
