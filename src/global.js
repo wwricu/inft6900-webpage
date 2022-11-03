@@ -24,9 +24,9 @@ export const store = reactive({
     AVN: 'WW',
     devHost: 'http://localhost:5094',
     // https://inft6900.wwr-blog.com
-    // host: 'http://localhost:80'
+    host: 'http://localhost:80'
     // host: 'https://inft6900.wwr-blog.com'
-    host: ''
+    // host: ''
 })
 
 export function syncAutoLogin() {
