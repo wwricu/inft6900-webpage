@@ -8,7 +8,7 @@ import {changeLoginStatus} from "@/global";
 
 axios.defaults.withCredentials = true;
 Vue.prototype.$axios = axios
-Vue.prototype.$autoLogin = syncAutoLogin//autoLogin
+Vue.prototype.$autoLogin = syncAutoLogin // autoLogin
 Vue.prototype.$changeLoginStatus = changeLoginStatus
 Vue.prototype.$waitForLogin = waitForLogin
 

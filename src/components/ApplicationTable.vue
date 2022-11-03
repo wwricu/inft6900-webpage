@@ -123,9 +123,7 @@ export default {
     },
     readApplications(applications) {
       for (let application of applications) {
-        if (application.status !== 'Approved'
-         && application.status !== 'Rejected'
-         && application.status !== 'Pending') {
+        if (application.status === 'Draft') {
           continue
         }
         let info = {

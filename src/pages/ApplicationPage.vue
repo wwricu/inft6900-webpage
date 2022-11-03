@@ -126,7 +126,8 @@ export default {
         data: {
           applicationID: this.application.applicationID,
           status: result,
-          staffComment: this.$refs.dialog.staffComment
+          staffComment: this.$refs.dialog.staffComment,
+          staffID: this.application.staffID
         }
       }).then(res => {
         if (res.data.status === "success") {
