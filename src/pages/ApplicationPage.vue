@@ -20,19 +20,30 @@
         </v-card-actions>
       </template>
     </AssessmentDialog>
+    <AssignDialog
+      ref="assignDialog"
+      :application="application"
+    />
     <v-card-actions>
       <v-spacer/>
       <v-btn
+        color="primary"
+        @click="$refs.assignDialog.showDialog()"
+        v-if="showReject"
+      >
+        Assign
+      </v-btn>
+      <v-btn
         color="error"
         @click="handleApplication('Rejected')"
-        v-if="application.status==='Pending'"
+        v-if="showReject"
       >
         Reject
       </v-btn>
       <v-btn
         color="success"
         @click="$refs.dialog.showDialog()"
-        v-if="application.status==='Pending'"
+        v-if="showApproved"
       >
         Approve
       </v-btn>
@@ -44,9 +55,11 @@
 import {store} from "@/global";
 import ApplicationCard from '@/components/ApplicationCard'
 import AssessmentDialog from "@/components/AssessmentDialog";
+import AssignDialog from "@/components/StudentService/AssignDialog";
 export default {
   name: "ApplicationPage",
   components: {
+    AssignDialog,
     AssessmentDialog,
     ApplicationCard,
   },
@@ -69,8 +82,23 @@ export default {
       // instanceID:"6c75a980-cf9d-4150-b98c-b8461aae2328"
     },
     assessment: {},
-    dialogSwitch: false
+    dialogSwitch: false,
+    showApproved: false,
+    showReject: false
   }),
+  watch: {
+    store: {
+      handler() {
+        this.showApproved =
+            this.application.status!=='Approved'
+         && this.application.status!=='Rejected'
+         && store.role==='Staff'
+        this.showReject = this.application.status!=='Approved'
+                       && this.application.status!=='Rejected'
+      },
+      immediate: true
+    }
+  },
   created() {
     this.initForm(this.$route.params.applicationID)
   },
@@ -108,7 +136,7 @@ export default {
       }).catch(function (err) {
         alert("err " + err);
       })
-    }
+    },
   }
 }
 </script>

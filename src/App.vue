@@ -6,12 +6,17 @@
         dense
         color="white"
     >
+      <v-app-bar-nav-icon
+          color="primary"
+          @click="switchMenu"
+          v-if="loginStatus===true&&role!=='Student'"
+      ></v-app-bar-nav-icon>
       <img
-        v-if="loginStatus&&role==='Student'"
         :src="require('./assets/newcastle.png')"
         style="max-height: 36px;"
       >
       <p
+        v-if="loginStatus&&role==='Student'"
         class="white black--text ml-12 mt-4">
         Adverse Circumstance
       </p>
@@ -19,11 +24,6 @@
 <!--        v-if="loginStatus&&role==='Student'">-->
 <!--        Adverse Circumstance System-->
 <!--      </p>-->
-      <v-app-bar-nav-icon
-        color="primary"
-        @click="switchMenu"
-        v-if="loginStatus===true&&role!=='Student'"
-      ></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
       <v-btn
           text
