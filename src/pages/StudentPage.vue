@@ -1,5 +1,5 @@
 <template>
-  <div id="container" class="mx-auto">
+  <div id="container" class="mx-auto mb-14">
     <v-container>
       <v-row>
         <v-col

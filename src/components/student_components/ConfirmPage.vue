@@ -22,7 +22,8 @@ export default {
   name: "ConfirmPage",
   components: {ApplicationCard},
   data: () => ({
-    application: {}
+    application: {},
+    policyApproved: false
   }),
   created() {
     this.initForm(this.$route.params.applicationID)
