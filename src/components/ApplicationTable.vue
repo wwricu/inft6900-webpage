@@ -101,7 +101,6 @@ export default {
     ]
   }),
   created() {
-    console.log(store.name)
     this.initTable()
   },
   methods: {

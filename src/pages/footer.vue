@@ -10,7 +10,7 @@
     >
       <v-btn
           v-for="link in links"
-          :key="link"
+          :key="link.text"
           color="white"
           text
           rounded
@@ -55,5 +55,7 @@ export default {
 </script>
 
 <style scoped>
-
+.v-btn {
+  text-transform: none;
+}
 </style>
