@@ -106,7 +106,7 @@
       </div>
       <v-container class="pa-8">
       <v-row no-gutters>
-        <v-col cols="4">
+        <v-col cols="6">
           <v-select
               dense
               outlined
@@ -120,7 +120,7 @@
               @click="getAssessment('course')"
           ></v-select>
         </v-col>
-        <v-col cols="4">
+        <v-col cols="6">
           <v-select
               dense
               outlined
@@ -133,20 +133,20 @@
               @click="getAssessment('assessment')"
           ></v-select>
         </v-col>
-        <v-col cols="4">
-          <v-select
-              dense
-              outlined
-              class="ml-2"
-              label="Coordinator"
-              return-object
-              item-text="name"
-              item-value="sysUserID"
-              v-model="staffSelect"
-              :items="staffItems"
-              @click="getAssessment('staff')"
-          ></v-select>
-        </v-col>
+<!--        <v-col cols="4">-->
+<!--          <v-select-->
+<!--              dense-->
+<!--              outlined-->
+<!--              class="ml-2"-->
+<!--              label="Coordinator"-->
+<!--              return-object-->
+<!--              item-text="name"-->
+<!--              item-value="sysUserID"-->
+<!--              v-model="staffSelect"-->
+<!--              :items="staffItems"-->
+<!--              @click="getAssessment('staff')"-->
+<!--          ></v-select>-->
+<!--        </v-col>-->
         <v-col cols="12">
           <v-select
               dense
@@ -460,7 +460,7 @@ export default {
           daysOfImpact: this.daysOfImpact,
           circumstanceDetail: this.circumstanceDetail,
           instanceID: this.assessmentSelect.assessmentID,
-          staffID: this.staffSelect.sysUserID,
+          // staffID: this.staffSelect.sysUserID,
           outcome: this.outcomeSelect.name,
           outcomeDetail: this.outcomeDetail,
         }
