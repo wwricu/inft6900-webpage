@@ -69,7 +69,7 @@
         enable-resize-watcher
         floating
         v-model="showMenu"
-        v-if="loginStatus"
+        v-if="loginStatus===true&&role!=='Student'"
         class="elevation-4"
     >
       <v-list-item>
