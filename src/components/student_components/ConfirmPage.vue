@@ -1,14 +1,40 @@
 <template>
   <div class="pl-4">
     <ApplicationCard :application="application">
-      <template v-slot:submit>
-        <v-btn
-          color="primary"
-          @click="submitApplication()"
-          class="mt-2 ml-n2"
-        >
-          submit
-        </v-btn>
+      <template v-slot:actions>
+        <div>
+        <v-row align="end" class="d-flex justify-end mb-2 mt-2">
+          <a>You MUST confirm adverse circumstance policy to submit</a>
+          <v-checkbox
+              hide-details
+              v-model="policyAgreed"
+              class="shrink mr-2 mt-0"
+          ></v-checkbox>
+        </v-row>
+        <v-row align="end" class="d-flex justify-end mb-2">
+          <a>You MUST confirm privacy agreement to submit</a>
+          <v-checkbox
+              hide-details
+              v-model="privacyAgreed"
+              class="shrink mr-2 mt-0"
+          ></v-checkbox>
+        </v-row>
+        <v-card-actions class="d-flex justify-end">
+          <v-btn
+            color="primary"
+            @click="$router.push(`/student_page/apply/info/${$route.params.applicationID}`)"
+          >
+            back
+          </v-btn>
+          <v-btn
+              color="primary"
+              @click="submitApplication()"
+              :disabled="privacyAgreed !== true || policyAgreed !== true"
+          >
+            submit
+          </v-btn>
+        </v-card-actions>
+        </div>
       </template>
     </ApplicationCard>
   </div>
@@ -23,7 +49,8 @@ export default {
   components: {ApplicationCard},
   data: () => ({
     application: {},
-    policyApproved: false
+    policyAgreed: false,
+    privacyAgreed: false
   }),
   created() {
     this.initForm(this.$route.params.applicationID)
@@ -44,20 +71,6 @@ export default {
       }).catch(function (err) {
         alert("err " + err);
       })
-    },
-    readApplication(application) {
-      this.application.applicationID = application.applicationID
-      this.application.reason = application.reason
-      this.application.daysOfImpact = application.daysOfImpact
-      this.application.circumstanceDetail = application.circumstanceDetail
-      if (application.assessmentInstance !== null) {
-        this.application.assessmentInfo =
-            application.assessmentInstance.courseOfferingName
-            + " " + application.assessmentInstance.name
-      }
-      this.application.desiredOutcome = application.outcome
-      this.application.outcomeDetail = application.outcomeDetail
-      this.application.status = application.status
     },
     submitApplication() {
       const applicationID = this.$route.params.applicationID

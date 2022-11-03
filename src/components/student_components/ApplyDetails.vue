@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pb-2">
     <div class="blue-bar">
       <h3>Circumstance Details</h3>
     </div>
@@ -170,7 +170,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-card-actions>
+    <v-card-actions class="mr-6">
       <v-spacer/>
 <!--      <v-btn-->
 <!--          color="error"-->
@@ -182,7 +182,6 @@
       <v-btn
           outlined
           color="primary"
-          class="mr-6 mb-2"
           @click="$router.push('/student_page/apply/details')"
       >
         Back
@@ -190,7 +189,6 @@
       <v-btn
           outlined
           color="primary"
-          class="mr-6 mb-2"
           @click="nextStep"
       >
         Next

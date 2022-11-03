@@ -117,7 +117,7 @@
     <v-card-actions>
       <v-spacer/>
       <slot
-        name="submit"
+        name="actions"
         v-if="application.status == null || application.status === 'Draft'"
       ></slot>
     </v-card-actions>
