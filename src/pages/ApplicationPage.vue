@@ -20,6 +20,18 @@
         </v-card-actions>
       </template>
     </AssessmentDialog>
+    <reject-dialog
+      ref="rejectDialog"
+    >
+      <v-card-actions>
+        <v-btn
+          color="primary"
+          @click="confirmReject()"
+        >
+          confirm
+        </v-btn>
+      </v-card-actions>
+    </reject-dialog>
     <AssignDialog
       ref="assignDialog"
       :application="application"
@@ -35,7 +47,7 @@
       </v-btn>
       <v-btn
         color="error"
-        @click="handleApplication('Rejected')"
+        @click="reject()"
         v-if="showReject"
       >
         Reject
@@ -56,9 +68,11 @@ import {store} from "@/global";
 import ApplicationCard from '@/components/ApplicationCard'
 import AssessmentDialog from "@/components/AssessmentDialog";
 import AssignDialog from "@/components/StudentService/AssignDialog";
+import RejectDialog from "@/components/RejectDialog";
 export default {
   name: "ApplicationPage",
   components: {
+    RejectDialog,
     AssignDialog,
     AssessmentDialog,
     ApplicationCard,
@@ -138,6 +152,28 @@ export default {
         alert("err " + err);
       })
     },
+    reject() {
+      this.$refs.rejectDialog.switchRejectDialog();
+    },
+    confirmReject() {
+      this.$axios({
+        method: "POST",
+        url: `${store.host}/application/changeState`,
+        data: {
+          applicationID: this.application.applicationID,
+          status: 'Reject',
+          staffComment: this.$refs.rejectDialog.staffComment,
+          staffID: this.application.staffID
+        }
+      }).then(res => {
+        if (res.data.status === "success") {
+          alert("message: " + res.data.status);
+          this.$refs.rejectDialog.switchRejectDialog()
+        }
+      }).catch(function (err) {
+        alert("err " + err);
+      })
+    }
   }
 }
 </script>
