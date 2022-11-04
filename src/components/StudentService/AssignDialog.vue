@@ -75,6 +75,7 @@ export default {
           alert("message: " + res.data.message);
         } else {
           alert(res.data.status)
+          this.$router.push('/application')
         }
         this.assignDialog = false
       }).catch(function (err) {
