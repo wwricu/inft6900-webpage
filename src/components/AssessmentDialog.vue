@@ -234,6 +234,9 @@ export default {
       this.getLocation('campus')
       this.assessmentDialog = true
     },
+    hideDialog() {
+      this.assessmentDialog = false
+    },
     searchAssessment() {
       this.$axios({
         method: "GET",

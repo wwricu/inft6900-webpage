@@ -23,14 +23,17 @@
     <reject-dialog
       ref="rejectDialog"
     >
-      <v-card-actions>
-        <v-btn
-          color="primary"
-          @click="confirmReject()"
-        >
-          confirm
-        </v-btn>
-      </v-card-actions>
+      <template v-slot:actions>
+        <v-card-actions>
+          <v-spacer/>
+          <v-btn
+            color="primary"
+            @click="confirmReject()"
+          >
+            confirm
+          </v-btn>
+        </v-card-actions>
+      </template>
     </reject-dialog>
     <AssignDialog
       ref="assignDialog"
@@ -103,20 +106,30 @@ export default {
   watch: {
     store: {
       handler() {
-        this.showApproved =
-            this.application.status!=='Approved'
-         && this.application.status!=='Rejected'
-         && store.role==='Staff'
-        this.showReject = this.application.status!=='Approved'
-                       && this.application.status!=='Rejected'
+        this.computeVisibility()
+      },
+      immediate: true
+    },
+    application: {
+      handler() {
+        this.computeVisibility()
       },
       immediate: true
     }
   },
   created() {
     this.initForm(this.$route.params.applicationID)
+    this.computeVisibility()
   },
   methods: {
+    computeVisibility() {
+      this.showApproved =
+          this.application.status!=='Approved'
+          && this.application.status!=='Rejected'
+          && store.role==='Staff'
+      this.showReject = this.application.status!=='Approved'
+          && this.application.status!=='Rejected'
+    },
     initForm(applicationID) {
       this.$axios({
         method: "GET",
@@ -147,6 +160,7 @@ export default {
         if (res.data.status === "success") {
           alert("message: " + res.data.status);
           this.$refs.dialog.submitAssessment()
+          this.$refs.dialog.hideDialog()
         }
       }).catch(function (err) {
         alert("err " + err);
