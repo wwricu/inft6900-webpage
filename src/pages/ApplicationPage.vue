@@ -175,7 +175,7 @@ export default {
         url: `${store.host}/application/changeState`,
         data: {
           applicationID: this.application.applicationID,
-          status: 'Reject',
+          status: 'Rejected',
           staffComment: this.$refs.rejectDialog.staffComment,
           staffID: this.application.staffID
         }
