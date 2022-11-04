@@ -6,15 +6,6 @@
         dense
         color="white"
     >
-      <img
-        v-if="loginStatus&&role==='Student'"
-        :src="require('./assets/newcastle.png')"
-        style="max-height: 36px;"
-      >
-      <p
-        class="white black--text ml-12 mt-4">
-        Adverse Circumstance
-      </p>
 <!--      <p-->
 <!--        v-if="loginStatus&&role==='Student'">-->
 <!--        Adverse Circumstance System-->
