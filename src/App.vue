@@ -184,6 +184,7 @@ export default {
         url: `${store.host}/auth/logout`
       }).then(() => {
         alert('Log out!');
+        this.showMenu = false
         this.$router.push('/login')
       }).catch(function (err) {
         alert("err " + err);
