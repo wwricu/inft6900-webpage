@@ -334,7 +334,6 @@ export default {
         data: this.assessmentData
       }).then(res => {
         if (res.data.status === "success") {
-          alert("message: " + res.data.message);
           this.$router.push('/application')
         }
       }).catch(function (err) {
