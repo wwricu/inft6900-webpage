@@ -83,11 +83,11 @@ export default {
       }).then(res => {
         if (res.data.status === "success") {
           alert("message: " + res.data.status);
+          this.$router.push(`/student_page/applications`)
         }
       }).catch(function (err) {
         alert("err " + err);
       })
-      this.$router.push(`/student_page/applications`)
     }
   }
 }
