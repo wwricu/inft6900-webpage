@@ -69,7 +69,7 @@ export default {
     getApplications() {
       this.$axios({
         method: "GET",
-        url: `${store.host}/application/get?sysUserID=${store.sysUserID}&permission=${store.permission}`,
+        url: `${store.host}/application/get?studentID=${store.sysUserID}`,
       }).then(res => {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);

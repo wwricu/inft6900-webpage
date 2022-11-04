@@ -107,7 +107,7 @@ export default {
     initTable() {
       this.$axios({
         method: "GET",
-        url: `${store.host}/application/get?sysUserID=${store.sysUserID}&permission=${store.permission}`,
+        url: `${store.host}/application/get?staffID=${store.sysUserID}`,
       }).then(res => {
         if (res.data.status !== "success") {
           alert("message: " + res.data.message);
