@@ -165,8 +165,8 @@ export default {
       ],
       Admin: [
           // { title: 'Home', icon: 'mdi-home', link: '/' },
-          { title: 'User Management', icon: 'mdi-view-dashboard', link: '/user_manage' },
-          { title: 'Course Management', icon: 'mdi-view-dashboard', link: '/course_manage' },
+          { title: 'User Management', icon: 'mdi-account-cog', link: '/user_manage' },
+          { title: 'Course Management', icon: 'mdi-school', link: '/course_manage' },
           { title: 'View Applications', icon: 'mdi-view-dashboard', link: '/application' },
       ],
     },

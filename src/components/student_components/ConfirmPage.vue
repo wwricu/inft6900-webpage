@@ -4,7 +4,8 @@
       <template v-slot:actions>
         <div>
         <v-row align="end" class="d-flex justify-end mb-2 mt-2">
-          <a>You MUST confirm adverse circumstance policy to submit</a>
+          <a href="https://policies.newcastle.edu.au/document/view-current.php?id=235">
+            You MUST confirm adverse circumstance policy to submit</a>
           <v-checkbox
               hide-details
               v-model="policyAgreed"
@@ -12,7 +13,8 @@
           ></v-checkbox>
         </v-row>
         <v-row align="end" class="d-flex justify-end mb-2">
-          <a>You MUST confirm privacy agreement to submit</a>
+          <a href="https://policies.newcastle.edu.au/document/view-current.php?id=236">
+            You MUST confirm adverse circumstance procedure to submit</a>
           <v-checkbox
               hide-details
               v-model="privacyAgreed"

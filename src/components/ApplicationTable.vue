@@ -65,9 +65,9 @@ export default {
         value: 'applicationID',
       },
       {
-        text: 'Student Number',
+        text: 'Student Info',
         sortable: true,
-        value: 'studentNumber'
+        value: 'studentInfo'
       },
       {
         text: 'Assessment Info',
@@ -75,9 +75,14 @@ export default {
         value: 'assessmentInfo'
       },
       {
-        text: 'Circumstance',
+        text: 'Reason',
         sortable: true,
         value: 'reason'
+      },
+      {
+        text: 'Desired Outcome',
+        sortable: true,
+        value: 'outcome'
       },
       {
         text: 'Status',
@@ -85,15 +90,21 @@ export default {
         value: 'status'
       },
       {
+        text: 'Submit Time',
+        sortable: true,
+        value: 'submitDate'
+      },
+      {
         text: 'Check',
         value: 'actions',
-        sortable: false
+        sortable: false,
+        filterable: false
       },
     ],
     applications: [
       /*{
         applicationID: '111',
-        studentNumber: 'number',
+        studentInfo: 'number',
         assessmentInfo: 'assess',
         reason: 'reason',
         status: 'pending'
@@ -127,12 +138,18 @@ export default {
         }
         let info = {
             applicationID: application.applicationID,
-            studentNumber: application.student.userNumber,
+            studentInfo: '',
             assessmentInfo: '',
             reason: application.reason,
-            status: application.status
+            outcome: application.outcome,
+            status: application.status,
+            submitDate: application.submitDate
         }
-        if (application.assessmentInstance !== null) {
+        if (application.student != null) {
+          info.studentInfo = application.student.userNumber
+                     + ' ' + application.student.userName
+        }
+        if (application.assessmentInstance != null) {
           info.assessmentInfo =
               application.assessmentInstance.courseOfferingName
               + " " + application.assessmentInstance.name
