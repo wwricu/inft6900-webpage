@@ -46,17 +46,9 @@ export default {
     staffSelect: [],
     staffList: []
   }),
-  watch: {
-    application: {
-      handler() {
-        console.log(JSON.stringify(this.application))
-        this.getStaffList()
-      },
-      immediate: true
-    }
-  },
   methods: {
     showDialog() {
+      this.getStaffList()
       this.assignDialog = true
     },
     assign() {
