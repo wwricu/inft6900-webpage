@@ -44,7 +44,7 @@
       <v-btn
         color="primary"
         @click="$refs.assignDialog.showDialog()"
-        v-if="showReject"
+        v-if="showAssign"
       >
         Assign
       </v-btn>
@@ -101,7 +101,8 @@ export default {
     assessment: {},
     dialogSwitch: false,
     showApproved: false,
-    showReject: false
+    showReject: false,
+    showAssign: false
   }),
   watch: {
     store: {
@@ -129,6 +130,10 @@ export default {
           && store.role==='Staff'
       this.showReject = this.application.status!=='Approved'
           && this.application.status!=='Rejected'
+      this.showAssign =
+          this.application.status!=='Approved'
+          && this.application.status!=='Rejected'
+          && store.role==='Admin'
     },
     initForm(applicationID) {
       this.$axios({

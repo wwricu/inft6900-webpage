@@ -47,13 +47,6 @@
     </v-container>
       <div class="blue-bar">
         <h3>Documents</h3>
-        <v-btn
-          color="success"
-          small
-          style="float: right; bottom: 20px; right: 5px;"
-          v-show="documents.length < 9"
-          @click="addDocument"
-        >Add a Document Type</v-btn>
       </div>
       <v-container class="pa-8">
         <v-row>
@@ -87,7 +80,6 @@
               truncate-length="15"
               :label="item.documentSelect"
               v-model="item.fileInfo"
-              :rules="[v => !!v || 'Compulsory']"
           ></v-file-input>
         </v-col>
         <v-col cols="2" class="align-self-center">
@@ -218,7 +210,7 @@ export default {
       'Statutory Declaration',
       'Written statement from student',
       'Other',
-      'Remove This Document'
+      // 'Remove This Document'
     ],
     existedDocuments: [],
     documents: [
@@ -352,7 +344,7 @@ export default {
     },
     changeDocType(item) {
       if (item.documentSelect === 'Remove This Document') {
-        this.documents.splice(this.documents.indexOf(item), 1);
+        // this.documents.splice(this.documents.indexOf(item), 1);
         return
       }
       if (item.previousSelect === item.documentSelect) {
