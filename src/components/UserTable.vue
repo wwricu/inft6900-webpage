@@ -1,3 +1,10 @@
+<!-- 
+  2022 Trimester 3 INFT6900 Final Project
+  Team   : Four Square
+  Author : Weiran Wang
+  Date   : 19/09/2022
+-->
+
 <template>
   <v-data-table
       :headers="headers"

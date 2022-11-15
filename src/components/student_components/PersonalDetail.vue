@@ -1,3 +1,10 @@
+<!-- 
+  2022 Trimester 3 INFT6900 Final Project
+  Team   : Four Square
+  Author : Weiran Wang
+  Date   : 09/10/2022
+-->
+
 <template>
   <v-container class="input-container ma-3">
     <v-row v-for="item in inputItems"

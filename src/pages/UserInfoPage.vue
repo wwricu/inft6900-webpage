@@ -1,3 +1,10 @@
+<!-- 
+  2022 Trimester 3 INFT6900 Final Project
+  Team   : Four Square
+  Author : Chao Zhang
+  Date   : 19/09/2022
+-->
+
 <template>
   <div class="pa-8">
   <v-card class="pt-4 pl-8 pr-8 pb-4">

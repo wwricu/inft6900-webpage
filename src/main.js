@@ -1,3 +1,10 @@
+/******************************************
+  2022 Trimester 3 INFT6900 Final Project
+  Team   : Four Square
+  Author : Weiran Wang
+  Date   : 18/09/2022
+******************************************/
+
 import Vue from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
