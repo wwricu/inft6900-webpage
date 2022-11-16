@@ -98,7 +98,16 @@
     >
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="text-h6">
+          <v-list-item-title
+            v-if="role==='Admin'"
+            class="text-h6"
+          >
+            Student Service
+          </v-list-item-title>
+          <v-list-item-title
+            v-else
+            class="text-h6"
+          >
             {{role}}
           </v-list-item-title>
         </v-list-item-content>
